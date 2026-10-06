@@ -58,8 +58,23 @@ Automated signal may NEVER establish violation.
 
 BRD_B = BRD_A.replace("NEVER", "only NEVER")
 BRD_C = BRD_A.replace("NEVER", "MAY")
-BRD_NO_ID_CONTEXT = BRD_A + "\nGeneral policy statement.\n"
-BRD_NO_ID_CONTEXT_CHANGED = BRD_A + "\nGeneral policy statement changed.\n"
+BRD_NO_ID_CONTEXT = """---
+project: JAGA-JKN
+status: FROZEN
+owner: Panji
+artifact_authority_level: A3
+---
+# BRD
+
+General policy statement.
+
+## BR-001
+Automated signal may NEVER establish violation.
+"""
+BRD_NO_ID_CONTEXT_CHANGED = BRD_NO_ID_CONTEXT.replace(
+    "General policy statement.",
+    "General policy statement changed.",
+)
 
 APPROVAL = """path_prefix,authority_scope,authorized_approver_login,accountable_role,required_human_review_role,enforcement_note
 docs/02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/,A3,panjiaryasoma,Project/Product Accountable,,test
