@@ -1,0 +1,12 @@
+path_prefix,authority_scope,authorized_approver_login,accountable_role,required_human_review_role,enforcement_note
+docs/00_PROJECT_GOVERNANCE/,A1,panjiaryasoma,Project/Product Accountable,,Machine-valid approver
+docs/01_DISCOVERY_AND_PROBLEM/,A2,panjiaryasoma,Project/Product Accountable,,Machine-valid approver
+docs/02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/,A3,panjiaryasoma,Project/Product Accountable,,Machine-valid approver
+docs/03_EVALUATION_AND_DOMAIN_RULES/,A3,panjiaryasoma,Project/Product Accountable,Relevant Data or ML workstream owner when affected,Cross-workstream reviewer identity is not yet machine-bound
+docs/04_DATA_STRATEGY/,A4,panjiaryasoma,Project/Product Accountable,Data workstream owner (Lintang),Cross-workstream reviewer identity is not yet machine-bound
+docs/02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/,A4,panjiaryasoma,Project/Product Accountable,ML workstream owner (Haidir),Cross-workstream reviewer identity is not yet machine-bound
+docs/08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/,A6,panjiaryasoma,Project/Product Accountable,ML workstream owner (Haidir),Cross-workstream reviewer identity is not yet machine-bound
+docs/07_TRACEABILITY_AND_CONTROL/,A6,panjiaryasoma,Project/Product Accountable,,Machine-valid approver
+docs/10_COMPETITION_AND_SUBMISSION/,A6,panjiaryasoma,Project/Product Accountable,,Machine-valid approver
+.github/,CONTROL,panjiaryasoma,Project/Product Accountable,,Trusted-control change requires pre-approved CR once bootstrap is established
+scripts/validate_governance.py,CONTROL,panjiaryasoma,Project/Product Accountable,,Trusted-control change requires pre-approved CR once bootstrap is established

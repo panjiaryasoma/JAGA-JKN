@@ -1,14 +1,14 @@
 path,status,artifact_authority_level,source_authority,artifact_role,authority,owner,notes
 00_PROJECT_GOVERNANCE/CHANGE_CONTROL_PROCESS.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
 00_PROJECT_GOVERNANCE/CHANGE_LOG.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
-00_PROJECT_GOVERNANCE/CHANGE_REQUEST_TEMPLATE.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
+00_PROJECT_GOVERNANCE/CHANGE_REQUEST_TEMPLATE.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed template; artifact_kind=TEMPLATE
 00_PROJECT_GOVERNANCE/DECISION_LOG.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
 00_PROJECT_GOVERNANCE/DEFINITION_OF_DONE.md,DRAFT,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Not authoritative until reviewed/frozen
 00_PROJECT_GOVERNANCE/DEFINITION_OF_READY.md,DRAFT,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Not authoritative until reviewed/frozen
 00_PROJECT_GOVERNANCE/PROJECT_ACCEPTANCE_CRITERIA.md,DRAFT,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Not authoritative until reviewed/frozen
 00_PROJECT_GOVERNANCE/PROJECT_CHARTER.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Phase B reviewed draft; NOT FROZEN pending contradiction audit and repository enforcement verification
 00_PROJECT_GOVERNANCE/PROJECT_SCOPE_STATEMENT.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Phase B reviewed draft; NOT FROZEN pending contradiction audit and repository enforcement verification
-00_PROJECT_GOVERNANCE/RACI_MATRIX.csv,DRAFT,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/RACI_MATRIX.csv,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed accountability baseline
 00_PROJECT_GOVERNANCE/RAID_REGISTER.csv,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
 00_PROJECT_GOVERNANCE/README_PROJECT_GOVERNANCE.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
 00_PROJECT_GOVERNANCE/STAKEHOLDER_REGISTER.md,DRAFT,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Not authoritative until reviewed/frozen
@@ -208,6 +208,7 @@ path,status,artifact_authority_level,source_authority,artifact_role,authority,ow
 12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/TECHNICAL_REQUIREMENTS.md,DRAFT,A6,,FUTURE_PRODUCTION_SUPPORT,Future Production / Procurement,Panji,Not authoritative until reviewed/frozen
 12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/VENDOR_EVALUATION_CRITERIA.md,DRAFT,A6,,FUTURE_PRODUCTION_SUPPORT,Future Production / Procurement,Panji,Not authoritative until reviewed/frozen
 README.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
-10_COMPETITION_AND_SUBMISSION/A0_CONFLICT_REGISTER.md,DRAFT,A6,,SUPPORTING,Supporting Artifact,Panji,Not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/A0_CONFLICT_REGISTER.md,REVIEWED,A6,A0,A0_DERIVED_REGISTRY,Derived Registry of Official Sources,Panji,A0 conflict control register; project-maintained derived registry
 00_PROJECT_GOVERNANCE/change_requests/README.md,DRAFT,A6,,SUPPORTING,Supporting Artifact,Panji,Not authoritative until reviewed/frozen
 00_PROJECT_GOVERNANCE/PHASE_B_CONTRADICTION_AUDIT.md,REVIEWED,A6,,VERIFICATION_EVIDENCE,Verification & Governance Evidence,Panji,Phase B contradiction audit; freeze remains HOLD
+00_PROJECT_GOVERNANCE/APPROVAL_AUTHORITY.csv,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Machine-readable authorized approver registry

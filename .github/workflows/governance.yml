@@ -1,4 +1,4 @@
-name: Governance
+name: Governance Head Advisory
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  governance:
+  governance-head:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

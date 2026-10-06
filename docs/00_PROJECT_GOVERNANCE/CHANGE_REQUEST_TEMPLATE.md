@@ -1,21 +1,31 @@
 ---
 project: JAGA-JKN
-status: TEMPLATE
+status: REVIEWED
+artifact_kind: TEMPLATE
 owner: Panji
-authority_level: A1
+artifact_authority_level: A1
 authority: Project Governance
+last_updated: 2026-10-07
 ---
 
 # Change Request — CR-YYYY-NNN
 
+<!-- GOVERNANCE-CR
+{
+  "cr_id": "CR-YYYY-NNN",
+  "decision": "PENDING",
+  "approver": "",
+  "approved_at": "",
+  "affected_paths": [],
+  "affected_ids": [],
+  "validation_plan": ""
+}
+GOVERNANCE-CR -->
+
 ## Metadata
-- CR ID:
 - Initiator:
 - Date:
 - Status: DRAFT
-- Decision: PENDING
-- Approver:
-- Decision date:
 
 ## Requested change
 
@@ -47,4 +57,4 @@ authority: Project Governance
 
 ## Decision rationale
 
-A CR is effective only after `Decision: APPROVE` and an authorized approver is recorded.
+A CR is effective only after its machine-readable block says `decision=APPROVE`, the approver is authorized, the approval predates the protected semantic-change PR, and every protected path/changed ID is covered.
