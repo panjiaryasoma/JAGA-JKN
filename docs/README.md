@@ -2,42 +2,58 @@
 
 **Sistem Intelijen Kepatuhan Pemberi Kerja JKN** untuk **BPJS Kesehatan Healthkathon 2026**.
 
-## Baseline yang dibekukan
+## Status proyek
+
+- Repository scaffold: `ACCEPTED`
+- Phase A — authority + discovery: `PASS_WITH_CONSTRAINTS`
+- Business freeze: `NOT_STARTED`
+- Preproduction: `HOLD`
+- Implementation: `NOT_AUTHORIZED`
+
+Phase A memvalidasi bahwa kategori **Efisiensi Risiko Pemberi Kerja** dan modus risikonya memang ditetapkan oleh penyelenggara, serta bahwa kewajiban pemberi kerja memiliki dasar regulasi. Phase A **tidak** membuktikan workflow internal BPJS, availability sumber data operasional, prevalence tiap modus, atau threshold domain produksi.
+
+## Baseline konseptual
 
 - Kategori: **Risiko Pemberi Kerja**
-- Produk: **Web app internal BPJS Kesehatan, desktop-first responsive**
-- Inti solusi: merekonstruksi kondisi kepatuhan yang seharusnya, membandingkannya dengan kondisi aktual, mendeteksi episode ketidaksesuaian, merekomendasikan intervensi, dan memantau penyelesaian/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated; real JKN data only with official authorization.
-- Human-in-the-loop: AI/ML supports detection, prioritization, explanation, and recommendation; final decision stays with BPJS officers.
-- Pembagian awal tim: Lintang: synthetic data & validation; Haidir: ML & evaluation; Panji: system/product/integration/backend/frontend/deployment.
+- Kandidat produk: **web decision-support internal BPJS Kesehatan, desktop-first responsive**
+- Hipotesis solusi: expected/reference state → observed state → discrepancy → temporal episode → review/intervention → human decision → resolution/recurrence.
+- Data prototipe: synthetic, seeded, versioned, validated.
+- AI/ML tidak boleh menetapkan fraud, pelanggaran, utang, atau sanksi secara otomatis.
 
-## Urutan otoritas
+## Authority model
 
-1. Ketentuan resmi Healthkathon.
-2. Project Charter / scope yang sudah disetujui.
-3. BRD dan KAK/TOR.
-4. PRD dan SRS.
-5. Kontrak aktif di `05_PREPRODUCTION/01_CONTRACTS_ACTIVE/`.
-6. RTM / acceptance evidence.
+Status dokumen dan authority adalah dua hal berbeda. Folder atau nama file **tidak pernah** membuat sebuah artefak otomatis authoritative.
 
-## Status lifecycle dokumen
+| Level | Authority | Contoh |
+|---|---|---|
+| A0 | Official competition / applicable law & regulation | Guide resmi, T&C resmi, peraturan |
+| A1 | Approved project governance | Charter, scope, change control |
+| A2 | Reviewed discovery / problem evidence | problem brief, discovery evidence |
+| A3 | Frozen business/domain authority | BRD, business rules, domain policy |
+| A4 | Frozen product/system/data architecture | PRD, SRS, data/ML requirements, architecture |
+| A5 | Frozen implementation contracts | API/data/model/inference contracts |
+| A6 | Verification/evidence/supporting artifacts | RTM, tests, acceptance evidence, submission mapping |
 
-`DRAFT → REVIEWED → APPROVED/FROZEN → IMPLEMENTED → VERIFIED → ACCEPTED`
+### Conflict rule
 
-Perubahan pada artefak yang sudah `FROZEN` wajib melalui change control.
+1. Higher authority level wins unless a formally approved change supersedes it.
+2. A `DRAFT` document never overrides a `FROZEN` parent authority.
+3. If two A0 sources conflict on mutable competition information such as dates, the newest official channel wins; the conflict must remain recorded.
+4. If an implementation contract conflicts with a higher-level requirement, implementation is considered wrong until an approved change updates the higher-level authority.
+5. Unknown facts remain `UNKNOWN`; they are not filled by assumption.
 
-## Navigasi
+## DOCUMENT_MANIFEST.csv = control plane
 
-- `00_PROJECT_GOVERNANCE/` tata kelola proyek.
-- `01_DISCOVERY_AND_PROBLEM/` problem dan evidence.
-- `02_BUSINESS_AND_PRODUCT_REQUIREMENTS/` BRD, KAK/TOR, PRD, SRS, ML, decision support.
-- `03_EVALUATION_AND_DOMAIN_RULES/` aturan domain dan evaluasi.
-- `04_DATA_STRATEGY/` strategi synthetic data dan quality.
-- `05_PREPRODUCTION/` kontrak, triage, integration, readiness gate.
-- `06_ARCHITECTURE_AND_DESIGN/` arsitektur dan desain.
-- `07_TRACEABILITY_AND_CONTROL/` RTM dan compliance matrix.
-- `08_TESTING_AND_ACCEPTANCE/` SIT, UAT, model/security validation.
-- `09_RELEASE_AND_OPERATIONS/` release dan readiness.
-- `10_COMPETITION_AND_SUBMISSION/` proposal, demo, evidence, readiness submission.
-- `11_PROJECT_MANAGEMENT/` WBS, schedule, dependencies, work allocation.
-- `12_FUTURE_PRODUCTION_AND_PROCUREMENT/` pilot-to-production dan RFP opsional.
+`DOCUMENT_MANIFEST.csv` is the machine-readable registry for status, authority level, owner, and state. Metadata inside individual files must converge to the manifest before freeze.
+
+The path `05_PREPRODUCTION/01_CONTRACTS_ACTIVE/` is legacy naming from the scaffold. Files inside it remain **inactive** while their manifest status is `DRAFT`. Path semantics do not override manifest state.
+
+## Lifecycle
+
+`DRAFT → REVIEWED → FROZEN → IMPLEMENTED → VERIFIED → ACCEPTED`
+
+`SUPERSEDED` and `RETIRED` are terminal governance states for documents that no longer carry active authority.
+
+## Next dependency
+
+Phase B may now draft and review Charter → Scope → BRD → domain authority, but none may be frozen unless every material claim traces to Phase A evidence or is explicitly marked as an assumption.

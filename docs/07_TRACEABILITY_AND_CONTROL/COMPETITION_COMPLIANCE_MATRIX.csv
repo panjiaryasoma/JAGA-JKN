@@ -1,6 +1,13 @@
-competition_id,requirement,artifact,implementation,evidence,proposal_slide,status
-HC-01,Relevansi masalah JKN,BRD,,,TBD,DRAFT
-HC-02,AI tepat guna,ML_REQUIREMENTS,,,TBD,DRAFT
-HC-03,Human-in-the-loop,HUMAN_IN_THE_LOOP_REQUIREMENTS,,,TBD,DRAFT
-HC-04,Privasi dan keamanan,SECURITY_PRIVACY_REQUIREMENTS,,,TBD,DRAFT
-HC-05,Dampak terukur,ML_SUCCESS_CRITERIA,,,TBD,DRAFT
+competition_id,requirement,source_id,artifact,implementation,evidence,proposal_slide,requirement_status,implementation_status
+HC-001,Select exactly one competition category,SRC-COMP-001,HEALTHKATHON_REQUIREMENTS.md,JAGA-JKN selects Employer Risk,SRC-COMP-001,TBD,VERIFIED,PLANNED
+HC-002,One team submits one innovation,SRC-COMP-001,HEALTHKATHON_REQUIREMENTS.md,JAGA-JKN is one solution,SRC-COMP-001,TBD,VERIFIED,PLANNED
+HC-003,Multiple related subcategories allowed inside selected category,SRC-COMP-001,problem_brief.md,MVP proposes three related employer-risk slices,SRC-COMP-001,TBD,VERIFIED,PLANNED
+HC-004,Do not use real JKN participant data without authorization,SRC-COMP-001;SRC-COMP-002,DATASET_STRATEGY.md,Synthetic strategy,SRC-COMP-001;SRC-COMP-002,TBD,VERIFIED,PLANNED
+HC-005,Proposal maximum 20 slides PDF maximum 10 MB,SRC-COMP-002,HEALTHKATHON_REQUIREMENTS.md,,,TBD,VERIFIED,NOT_STARTED
+HC-006,Problem must be credible and urgent with clear sources,SRC-COMP-002,discovery_real_world_evidence.md,Phase A evidence register,Official guide + legal sources,TBD,VERIFIED,IN_PROGRESS
+HC-007,Explain input data source process/model and output/decision,SRC-COMP-002,PRD.md,,,TBD,VERIFIED,NOT_STARTED
+HC-008,Demonstrate actual maturity/prototype honestly,SRC-COMP-002,PROPOSAL_EVIDENCE_PLAN.md,,,TBD,VERIFIED,NOT_STARTED
+HC-009,Show measurable impact and avoid overclaim,SRC-COMP-002,ML_SUCCESS_CRITERIA.md,,,TBD,VERIFIED,NOT_STARTED
+HC-010,Address privacy PDP AI bias limitations and human role,SRC-COMP-002,SECURITY_PRIVACY_REQUIREMENTS.md,,,TBD,VERIFIED,NOT_STARTED
+HC-011,AI supports rather than replaces human decisions,SRC-COMP-002,HUMAN_IN_THE_LOOP_REQUIREMENTS.md,,,TBD,VERIFIED,NOT_STARTED
+HC-012,Team size 1-3 members,SRC-COMP-001,TEAM_WORK_ALLOCATION.md,Three-person workstream plan,SRC-COMP-001,TBD,VERIFIED,PLANNED

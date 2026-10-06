@@ -1,31 +1,46 @@
 ---
 project: JAGA-JKN
 competition: BPJS Kesehatan Healthkathon 2026
-status: DRAFT
-version: 0.1.0
-owner: TBD
-authority: TBD
+status: REVIEWED
+version: 0.2.0
+owner: Panji
+authority: Official Competition Registry
+authority_level: A0
 last_updated: 2026-10-07
 ---
 
-# COMPETITION RULES SUMMARY
+# Competition Rules Summary
 
-## Tujuan
-Dokumen ini menjadi artefak resmi untuk **JAGA-JKN** pada area terkait.
+## Source registry
 
-## Baseline proyek
-- Kategori: **Risiko Pemberi Kerja**
-- Produk: **web app internal BPJS Kesehatan, desktop-first responsive**
-- Konsep inti: rekonstruksi kondisi yang seharusnya → kondisi aktual → episode kepatuhan → intervensi → keputusan manusia → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML: mendukung deteksi, prioritisasi, penjelasan, dan rekomendasi; keputusan akhir tetap pada petugas BPJS.
+| Source ID | Source | Type | Observed/modified | Authority | Notes |
+|---|---|---|---|---|---|
+| SRC-COMP-001 | Participant Guide Healthkathon 2026 | Official PDF / Google Drive | modified 2026-09-28 | A0 | Primary static guide; registration date conflicts with newer T&C capture |
+| SRC-COMP-002 | Panduan Pembuatan Proposal Peserta Healthkathon 2026 | Official PDF / Google Drive | modified 2026-08-13 | A0 | Primary proposal-format and judging source |
+| SRC-COMP-003 | healthkathon.bpjs-kesehatan.go.id landing-page T&C | Official website capture | captured 2026-10-04 | A0 CURRENT CHANNEL | Later registration date: 11 Oct 2026; reverify before submission |
+| SRC-REG-001 | Perpres 82/2018 | JDIH BPK | current status page | A0 LAW | Base JKN regulation; amended subsequently |
+| SRC-REG-002 | Perpres 64/2020 | JDIH BPK | current status page | A0 LAW | Contribution provisions; not sufficient as consolidated policy alone |
+| SRC-BPJS-001 | BPJS Kesehatan official website | Official website | observed 2026-10-07 | A0 EXTERNAL CONTEXT | Confirms e-Dabu Badan Usaha / active employer-compliance domain |
 
-## Isi yang harus difinalkan
-- [ ] Scope dan batasan jelas.
-- [ ] Requirement memiliki ID unik bila relevan.
-- [ ] Dependency dan asumsi dicatat.
-- [ ] Acceptance criteria dapat diuji.
-- [ ] Traceability ke requirement/test/evidence tersedia.
+## Conflict precedence
 
-## Catatan
-Status awal **DRAFT**. Artefak menjadi authoritative hanya setelah review dan freeze eksplisit.
+For **mutable competition operations** such as registration dates:
+1. newest official website/participant-channel announcement;
+2. most recently modified official guide;
+3. older static guide.
+
+For **legal/domain policy**:
+1. currently effective law/regulation and amendments;
+2. official BPJS implementation rule/policy;
+3. project interpretation.
+
+A conflict is never resolved by convenience.
+
+## Current knowns
+
+- Registration deadline: **11 October 2026**, based on later official website T&C capture.
+- Proposal deadline: **UNKNOWN** in the two official PDFs reviewed.
+- Category selected: **Efisiensi Risiko pada Pemberi Kerja**.
+- Multiple related subcategories inside the selected category: **allowed**.
+- Synthetic/dummy/anonymized data: **allowed/required when real JKN data is not authorized**.
+- Real JKN participant data without authorization: **prohibited**.

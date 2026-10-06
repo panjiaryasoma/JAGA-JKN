@@ -1,210 +1,210 @@
-path,status,authority,notes
-00_PROJECT_GOVERNANCE/CHANGE_CONTROL_PROCESS.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/CHANGE_LOG.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/CHANGE_REQUEST_TEMPLATE.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/DECISION_LOG.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/DEFINITION_OF_DONE.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/DEFINITION_OF_READY.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/PROJECT_ACCEPTANCE_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/PROJECT_CHARTER.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/PROJECT_SCOPE_STATEMENT.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/RACI_MATRIX.csv,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/RAID_REGISTER.csv,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/README_PROJECT_GOVERNANCE.md,DRAFT,TBD,Scaffold baseline
-00_PROJECT_GOVERNANCE/STAKEHOLDER_REGISTER.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/ASSUMPTION_AND_HYPOTHESIS_REGISTER.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/BUSINESS_PROBLEM_STATEMENT.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/CURRENT_STATE_ANALYSIS.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/ROOT_CAUSE_ANALYSIS.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/TARGET_STATE.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/USER_AND_STAKEHOLDER_NEEDS.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/discovery_real_world_evidence.md,DRAFT,TBD,Scaffold baseline
-01_DISCOVERY_AND_PROBLEM/problem_brief.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BRD.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_ACCEPTANCE_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_OBJECTIVES.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_RULES.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/KAK_TOR.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRD.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRD_SCHEMA_ALIGNMENT_ADDENDUM.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRODUCT_ACCEPTANCE_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRODUCT_SCOPE.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/USER_JOURNEY.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/USER_STORIES.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/simple_prd.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/ACCESS_CONTROL_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/AUDITABILITY_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/FUNCTIONAL_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/NON_FUNCTIONAL_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/OBSERVABILITY_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/SECURITY_PRIVACY_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/SRS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/ABSTENTION_POLICY.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/BIAS_AND_FAIRNESS_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/HUMAN_IN_THE_LOOP_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/ML_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/ML_SUCCESS_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/MODEL_GOVERNANCE_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/CASE_LIFECYCLE_SPEC.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/DECISION_SUPPORT_SPEC.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/ESCALATION_POLICY.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/HUMAN_DECISION_AUTHORITY.md,DRAFT,TBD,Scaffold baseline
-02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/INTERVENTION_POLICY.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/BUSINESS_RULE_TRACEABILITY.csv,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/EXPECTED_STATE_RULES.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/INTERVENTION_RULES.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/POLICY_AS_CODE_SPEC.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/POLICY_VERSIONING_RULES.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/README_PREPRODUCTION_SECOND_BRAIN.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/RISK_EPISODE_TAXONOMY.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/SOURCE_EVALUATION_SUITE_001-030.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/SOURCE_SCHEMA.md,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/domain_rules_v1.0.yaml,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/evaluation_matrix_v1.0.csv,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/evaluation_spec_v1.0.yaml,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/feature_schema_v1.0.yaml,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/feature_traceability_v1.0.csv,DRAFT,TBD,Scaffold baseline
-03_EVALUATION_AND_DOMAIN_RULES/validation_report.txt,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/CALIBRATION_AND_UNCERTAINTY.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATASET_ACCEPTANCE_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATASET_STRATEGY.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATASET_VERSIONING_POLICY.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_CARD_TEMPLATE.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_GENERATION_MANIFEST_SPEC.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_LEAKAGE_RULES.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_LINEAGE_SPEC.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_PRIVACY_CLASSIFICATION.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_QUALITY_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_REQUIREMENTS_SPEC.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/DATA_RETENTION_POLICY.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/FEATURE_DEFINITION.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/LABEL_POLICY.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/SCENARIO_GENERATION_SPEC.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/SPLIT_STRATEGY.md,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/SYNTHETIC_DATA_GENERATION_SPEC.yaml,DRAFT,TBD,Scaffold baseline
-04_DATA_STRATEGY/SYNTHETIC_WORLD_MODEL.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/API_CONTRACT.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/BASELINE_CONTRACT.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/DATA_CONTRACT.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/DECISION_ENGINE_CONTRACT.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/FEATURE_SCHEMA_FINAL.yaml,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/INFERENCE_CONTRACT.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/MODEL_CONTRACT.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/README_PREPRODUCTION_CONTRACTS.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/SCHEMA_CHANGE_REQUEST_001.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/SCHEMA_FINALIZATION_DECISION.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/SCHEMA_SUPERSESSION_NOTICE.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/01_CONTRACTS_ACTIVE/TOOLCHAIN_DECISION.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/README_TRIAGE_EVALUATION_SUITE_SECOND_BRAIN.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/TRIAGE_EVALUATION_SUITE.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-001.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-002.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-003.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-004.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-005.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-006.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-007.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-008.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/03_INTEGRATION_001/EXPECTED_GATE_RESULTS.yaml,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/03_INTEGRATION_001/EXPECTED_SCORES.yaml,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/03_INTEGRATION_001/EXPECTED_TRIAGE_OUTPUT.yaml,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/03_INTEGRATION_001/INTEGRATION-001.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/03_INTEGRATION_001/POLICY_FIXTURE.yaml,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/03_INTEGRATION_001/README_INTEGRATION_001.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/03_INTEGRATION_001/fixtures/.gitkeep,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/04_CLOSURE/FINAL_PREPRODUCTION_CONSISTENCY_AUDIT.json,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/04_CLOSURE/FINAL_PREPRODUCTION_CONSISTENCY_AUDIT.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/04_CLOSURE/PREPRODUCTION_READINESS_GATE.md,DRAFT,TBD,Scaffold baseline
-05_PREPRODUCTION/04_CLOSURE/PREPRODUCTION_SIGNOFF.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/ADR/ADR-001.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/ADR/ADR-002.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/API_DESIGN.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/CASE_LIFECYCLE_STATE_MACHINE.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/COMPONENT_DESIGN.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/DATABASE_DESIGN.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/DATA_FLOW_DIAGRAM.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/DECISION_FLOW.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/DEPLOYMENT_ARCHITECTURE.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/END_TO_END_FLOW.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/ERD.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/FULL_TECHNICAL_ARCHITECTURE.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/README_ARCHITECTURE.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/RISK_EPISODE_STATE_MACHINE.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/SECURITY_ARCHITECTURE.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/SIMPLE_ARCHITECTURE.md,DRAFT,TBD,Scaffold baseline
-06_ARCHITECTURE_AND_DESIGN/SYSTEM_ARCHITECTURE.md,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/ACCEPTANCE_TRACEABILITY.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/COMPETITION_COMPLIANCE_MATRIX.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/DATA_TRACEABILITY.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/MODEL_TRACEABILITY.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/POLICY_TRACEABILITY.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/REQUIREMENTS_TRACEABILITY_MATRIX.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/REQUIREMENT_STATUS_REGISTER.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/TEST_TRACEABILITY.csv,DRAFT,TBD,Scaffold baseline
-07_TRACEABILITY_AND_CONTROL/TRACEABILITY_GUIDE.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/DEFECT_MANAGEMENT_PROCESS.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/MASTER_TEST_STRATEGY.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/TEST_DATA_STRATEGY.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/TEST_LEVELS_AND_SCOPE.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/02_UNIT_AND_COMPONENT/COMPONENT_TEST_PLAN.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/BIAS_SLICE_TESTS.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/CALIBRATION_TESTS.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/MODEL_EVALUATION_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/MODEL_VALIDATION_PLAN.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/SYNTHETIC_TO_REAL_LIMITATIONS.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_ENTRY_EXIT_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_PLAN.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_RESULT.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_TEST_CASES.csv,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_ENTRY_EXIT_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_PLAN.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_SCENARIOS.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_SIGNOFF.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_TEST_CASES.csv,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/06_SECURITY/SECURITY_TEST_PLAN.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/06_SECURITY/SECURITY_TEST_REPORT.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/07_FINAL_ACCEPTANCE/ACCEPTANCE_EVIDENCE_INDEX.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/07_FINAL_ACCEPTANCE/FINAL_ACCEPTANCE_CHECKLIST.md,DRAFT,TBD,Scaffold baseline
-08_TESTING_AND_ACCEPTANCE/07_FINAL_ACCEPTANCE/RELEASE_ACCEPTANCE.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/CONFIGURATION_MANAGEMENT.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/DEPLOYMENT_PLAN.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/ENVIRONMENT_STRATEGY.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/INCIDENT_RESPONSE_PLAN.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/OBSERVABILITY_PLAN.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/OPERATIONAL_READINESS_CHECKLIST.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/PILOT_READINESS_PLAN.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/RELEASE_CHECKLIST.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/RELEASE_PLAN.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/ROLLBACK_PLAN.md,DRAFT,TBD,Scaffold baseline
-09_RELEASE_AND_OPERATIONS/SECRET_MANAGEMENT.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/CLAIM_EVIDENCE_REGISTER.csv,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/COMPETITION_RULES_SUMMARY.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/DEMO_SCENARIO.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/DEMO_SCRIPT.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/HEALTHKATHON_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/JURY_QA_BANK.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/PROPOSAL_EVIDENCE_PLAN.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/PROPOSAL_OUTLINE.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/PROPOSAL_REQUIREMENT_MATRIX.csv,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/SCREENSHOT_EVIDENCE_INDEX.md,DRAFT,TBD,Scaffold baseline
-10_COMPETITION_AND_SUBMISSION/SUBMISSION_READINESS_GATE.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/COMMUNICATION_PLAN.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/DEPENDENCY_MAP.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/MILESTONE_PLAN.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/PROJECT_CLOSURE_REPORT.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/PROJECT_SCHEDULE.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/QUALITY_MANAGEMENT_PLAN.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/TEAM_WORK_ALLOCATION.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/WBS.md,DRAFT,TBD,Scaffold baseline
-11_PROJECT_MANAGEMENT/WEEKLY_STATUS_REPORT.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/OPERATIONAL_HANDOVER_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/PILOT_TO_PRODUCTION_PLAN.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/PRODUCTION_GAP_ANALYSIS.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/PRODUCTION_READINESS_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/RFP_SPECIFICATION.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/SCOPE_OF_WORK.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/SERVICE_ACCEPTANCE_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/TECHNICAL_REQUIREMENTS.md,DRAFT,TBD,Scaffold baseline
-12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/VENDOR_EVALUATION_CRITERIA.md,DRAFT,TBD,Scaffold baseline
-README.md,DRAFT,TBD,Scaffold baseline
+path,status,authority_level,authority,owner,notes
+00_PROJECT_GOVERNANCE/CHANGE_CONTROL_PROCESS.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/CHANGE_LOG.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/CHANGE_REQUEST_TEMPLATE.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/DECISION_LOG.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/DEFINITION_OF_DONE.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/DEFINITION_OF_READY.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/PROJECT_ACCEPTANCE_CRITERIA.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/PROJECT_CHARTER.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/PROJECT_SCOPE_STATEMENT.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/RACI_MATRIX.csv,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/RAID_REGISTER.csv,REVIEWED,A1,Project Governance,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+00_PROJECT_GOVERNANCE/README_PROJECT_GOVERNANCE.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/STAKEHOLDER_REGISTER.md,DRAFT,A1,Project Governance,Panji,Scaffold; not authoritative until reviewed/frozen
+01_DISCOVERY_AND_PROBLEM/ASSUMPTION_AND_HYPOTHESIS_REGISTER.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+01_DISCOVERY_AND_PROBLEM/BUSINESS_PROBLEM_STATEMENT.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+01_DISCOVERY_AND_PROBLEM/CURRENT_STATE_ANALYSIS.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+01_DISCOVERY_AND_PROBLEM/ROOT_CAUSE_ANALYSIS.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+01_DISCOVERY_AND_PROBLEM/TARGET_STATE.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+01_DISCOVERY_AND_PROBLEM/USER_AND_STAKEHOLDER_NEEDS.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+01_DISCOVERY_AND_PROBLEM/discovery_real_world_evidence.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+01_DISCOVERY_AND_PROBLEM/problem_brief.md,REVIEWED,A2,Discovery & Problem Evidence,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BRD.md,DRAFT,A3,Business Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_ACCEPTANCE_CRITERIA.md,DRAFT,A3,Business Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_OBJECTIVES.md,DRAFT,A3,Business Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_REQUIREMENTS.md,DRAFT,A3,Business Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/BUSINESS_RULES.md,DRAFT,A3,Business Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/KAK_TOR.md,DRAFT,A3,Business Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRD.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRD_SCHEMA_ALIGNMENT_ADDENDUM.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRODUCT_ACCEPTANCE_CRITERIA.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/PRODUCT_SCOPE.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/USER_JOURNEY.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/USER_STORIES.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/02_PRODUCT/simple_prd.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/ACCESS_CONTROL_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/AUDITABILITY_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/FUNCTIONAL_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/NON_FUNCTIONAL_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/OBSERVABILITY_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/SECURITY_PRIVACY_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/03_SYSTEM_REQUIREMENTS/SRS.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/ABSTENTION_POLICY.md,DRAFT,A4,Product/System Requirements,Haidir,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/BIAS_AND_FAIRNESS_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Haidir,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/HUMAN_IN_THE_LOOP_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Haidir,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/ML_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Haidir,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/ML_SUCCESS_CRITERIA.md,DRAFT,A4,Product/System Requirements,Haidir,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/04_AI_ML_REQUIREMENTS/MODEL_GOVERNANCE_REQUIREMENTS.md,DRAFT,A4,Product/System Requirements,Haidir,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/CASE_LIFECYCLE_SPEC.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/DECISION_SUPPORT_SPEC.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/ESCALATION_POLICY.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/HUMAN_DECISION_AUTHORITY.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+02_BUSINESS_AND_PRODUCT_REQUIREMENTS/05_DECISION_SUPPORT/INTERVENTION_POLICY.md,DRAFT,A4,Product/System Requirements,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/BUSINESS_RULE_TRACEABILITY.csv,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/EXPECTED_STATE_RULES.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/INTERVENTION_RULES.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/POLICY_AS_CODE_SPEC.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/POLICY_VERSIONING_RULES.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/README_PREPRODUCTION_SECOND_BRAIN.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/RISK_EPISODE_TAXONOMY.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/SOURCE_EVALUATION_SUITE_001-030.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/SOURCE_SCHEMA.md,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/domain_rules_v1.0.yaml,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/evaluation_matrix_v1.0.csv,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/evaluation_spec_v1.0.yaml,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/feature_schema_v1.0.yaml,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/feature_traceability_v1.0.csv,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+03_EVALUATION_AND_DOMAIN_RULES/validation_report.txt,DRAFT,A3,Domain & Evaluation Authority,Panji,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/CALIBRATION_AND_UNCERTAINTY.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATASET_ACCEPTANCE_CRITERIA.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATASET_STRATEGY.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATASET_VERSIONING_POLICY.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_CARD_TEMPLATE.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_GENERATION_MANIFEST_SPEC.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_LEAKAGE_RULES.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_LINEAGE_SPEC.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_PRIVACY_CLASSIFICATION.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_QUALITY_REQUIREMENTS.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_REQUIREMENTS_SPEC.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/DATA_RETENTION_POLICY.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/FEATURE_DEFINITION.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/LABEL_POLICY.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/SCENARIO_GENERATION_SPEC.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/SPLIT_STRATEGY.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/SYNTHETIC_DATA_GENERATION_SPEC.yaml,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+04_DATA_STRATEGY/SYNTHETIC_WORLD_MODEL.md,DRAFT,A4,Data Strategy,Lintang,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/API_CONTRACT.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/BASELINE_CONTRACT.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/DATA_CONTRACT.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/DECISION_ENGINE_CONTRACT.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/FEATURE_SCHEMA_FINAL.yaml,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/INFERENCE_CONTRACT.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/MODEL_CONTRACT.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/README_PREPRODUCTION_CONTRACTS.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/SCHEMA_CHANGE_REQUEST_001.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/SCHEMA_FINALIZATION_DECISION.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/SCHEMA_SUPERSESSION_NOTICE.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/01_CONTRACTS_ACTIVE/TOOLCHAIN_DECISION.md,DRAFT,A5,Preproduction Contract Layer,Panji,DRAFT placeholder despite path name; MUST NOT be treated as active until manifest status is FROZEN
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/README_TRIAGE_EVALUATION_SUITE_SECOND_BRAIN.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/TRIAGE_EVALUATION_SUITE.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-001.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-002.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-003.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-004.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-005.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-006.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-007.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/02_TRIAGE_ACCEPTANCE/fixtures/TRIAGE-008.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/03_INTEGRATION_001/EXPECTED_GATE_RESULTS.yaml,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/03_INTEGRATION_001/EXPECTED_SCORES.yaml,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/03_INTEGRATION_001/EXPECTED_TRIAGE_OUTPUT.yaml,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/03_INTEGRATION_001/INTEGRATION-001.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/03_INTEGRATION_001/POLICY_FIXTURE.yaml,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/03_INTEGRATION_001/README_INTEGRATION_001.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/03_INTEGRATION_001/fixtures/.gitkeep,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/04_CLOSURE/FINAL_PREPRODUCTION_CONSISTENCY_AUDIT.json,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/04_CLOSURE/FINAL_PREPRODUCTION_CONSISTENCY_AUDIT.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/04_CLOSURE/PREPRODUCTION_READINESS_GATE.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+05_PREPRODUCTION/04_CLOSURE/PREPRODUCTION_SIGNOFF.md,DRAFT,A5,Preproduction Contract Layer,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/ADR/ADR-001.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/ADR/ADR-002.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/API_DESIGN.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/CASE_LIFECYCLE_STATE_MACHINE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/COMPONENT_DESIGN.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/DATABASE_DESIGN.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/DATA_FLOW_DIAGRAM.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/DECISION_FLOW.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/DEPLOYMENT_ARCHITECTURE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/END_TO_END_FLOW.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/ERD.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/FULL_TECHNICAL_ARCHITECTURE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/README_ARCHITECTURE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/RISK_EPISODE_STATE_MACHINE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/SECURITY_ARCHITECTURE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/SIMPLE_ARCHITECTURE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+06_ARCHITECTURE_AND_DESIGN/SYSTEM_ARCHITECTURE.md,DRAFT,A4,Architecture & Design,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/ACCEPTANCE_TRACEABILITY.csv,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/COMPETITION_COMPLIANCE_MATRIX.csv,REVIEWED,A6,Traceability Control,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+07_TRACEABILITY_AND_CONTROL/DATA_TRACEABILITY.csv,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/MODEL_TRACEABILITY.csv,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/POLICY_TRACEABILITY.csv,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/REQUIREMENTS_TRACEABILITY_MATRIX.csv,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/REQUIREMENT_STATUS_REGISTER.csv,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/TEST_TRACEABILITY.csv,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+07_TRACEABILITY_AND_CONTROL/TRACEABILITY_GUIDE.md,DRAFT,A6,Traceability Control,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/DEFECT_MANAGEMENT_PROCESS.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/MASTER_TEST_STRATEGY.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/TEST_DATA_STRATEGY.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/01_TEST_STRATEGY/TEST_LEVELS_AND_SCOPE.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/02_UNIT_AND_COMPONENT/COMPONENT_TEST_PLAN.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/BIAS_SLICE_TESTS.md,DRAFT,A6,Verification & Acceptance,Haidir,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/CALIBRATION_TESTS.md,DRAFT,A6,Verification & Acceptance,Haidir,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/MODEL_EVALUATION_CRITERIA.md,DRAFT,A6,Verification & Acceptance,Haidir,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/MODEL_VALIDATION_PLAN.md,DRAFT,A6,Verification & Acceptance,Haidir,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/03_MODEL_VALIDATION/SYNTHETIC_TO_REAL_LIMITATIONS.md,DRAFT,A6,Verification & Acceptance,Haidir,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_ENTRY_EXIT_CRITERIA.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_PLAN.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_RESULT.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/04_SIT/SIT_TEST_CASES.csv,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_ENTRY_EXIT_CRITERIA.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_PLAN.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_SCENARIOS.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_SIGNOFF.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/05_UAT/UAT_TEST_CASES.csv,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/06_SECURITY/SECURITY_TEST_PLAN.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/06_SECURITY/SECURITY_TEST_REPORT.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/07_FINAL_ACCEPTANCE/ACCEPTANCE_EVIDENCE_INDEX.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/07_FINAL_ACCEPTANCE/FINAL_ACCEPTANCE_CHECKLIST.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+08_TESTING_AND_ACCEPTANCE/07_FINAL_ACCEPTANCE/RELEASE_ACCEPTANCE.md,DRAFT,A6,Verification & Acceptance,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/CONFIGURATION_MANAGEMENT.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/DEPLOYMENT_PLAN.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/ENVIRONMENT_STRATEGY.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/INCIDENT_RESPONSE_PLAN.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/OBSERVABILITY_PLAN.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/OPERATIONAL_READINESS_CHECKLIST.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/PILOT_READINESS_PLAN.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/RELEASE_CHECKLIST.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/RELEASE_PLAN.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/ROLLBACK_PLAN.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+09_RELEASE_AND_OPERATIONS/SECRET_MANAGEMENT.md,DRAFT,A6,Release & Operations,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/CLAIM_EVIDENCE_REGISTER.csv,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/COMPETITION_RULES_SUMMARY.md,REVIEWED,A0,Official Competition / Submission,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+10_COMPETITION_AND_SUBMISSION/DEMO_SCENARIO.md,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/DEMO_SCRIPT.md,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/HEALTHKATHON_REQUIREMENTS.md,REVIEWED,A0,Official Competition / Submission,Panji,Phase A evidence/authority remediation reviewed 2026-10-07
+10_COMPETITION_AND_SUBMISSION/JURY_QA_BANK.md,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/PROPOSAL_EVIDENCE_PLAN.md,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/PROPOSAL_OUTLINE.md,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/PROPOSAL_REQUIREMENT_MATRIX.csv,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/SCREENSHOT_EVIDENCE_INDEX.md,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+10_COMPETITION_AND_SUBMISSION/SUBMISSION_READINESS_GATE.md,DRAFT,A0,Official Competition / Submission,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/COMMUNICATION_PLAN.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/DEPENDENCY_MAP.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/MILESTONE_PLAN.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/PROJECT_CLOSURE_REPORT.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/PROJECT_SCHEDULE.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/QUALITY_MANAGEMENT_PLAN.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/TEAM_WORK_ALLOCATION.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/WBS.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+11_PROJECT_MANAGEMENT/WEEKLY_STATUS_REPORT.md,DRAFT,A1,Project Management,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/OPERATIONAL_HANDOVER_REQUIREMENTS.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/PILOT_TO_PRODUCTION_PLAN.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/PRODUCTION_GAP_ANALYSIS.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/PRODUCTION_READINESS_REQUIREMENTS.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/RFP_SPECIFICATION.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/SCOPE_OF_WORK.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/SERVICE_ACCEPTANCE_CRITERIA.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/TECHNICAL_REQUIREMENTS.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+12_FUTURE_PRODUCTION_AND_PROCUREMENT/RFP/VENDOR_EVALUATION_CRITERIA.md,DRAFT,A6,Future Production / Procurement,Panji,Scaffold; not authoritative until reviewed/frozen
+README.md,REVIEWED,A1,Documentation Governance,Panji,Phase A evidence/authority remediation reviewed 2026-10-07

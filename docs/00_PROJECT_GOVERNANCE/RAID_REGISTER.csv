@@ -1,4 +1,11 @@
 id,type,description,owner,probability,impact,mitigation,status
-R-001,RISK,Synthetic-to-real domain gap,TBD,MEDIUM,HIGH,Limit claims and require authorized real-data validation,OPEN
-R-002,RISK,Cross-source reference unavailable,TBD,MEDIUM,HIGH,ABSTAIN when evidence is insufficient,OPEN
-A-001,ASSUMPTION,Prototype uses synthetic data,TBD,,,Validate against competition rules,OPEN
+R-001,RISK,Synthetic-to-real domain gap,Panji,HIGH,HIGH,Limit claims and require authorized real-data validation,OPEN
+R-002,RISK,Cross-source reference data may be unavailable or unlawful in production,Panji,MEDIUM,CRITICAL,ABSTAIN when evidence is insufficient and block production assumptions,OPEN
+R-003,RISK,Competition schedule sources conflict,Panji,MEDIUM,MEDIUM,Newest official channel wins and conflict remains documented,OPEN
+R-004,RISK,Policy rules can drift as regulations are amended,Panji,HIGH,CRITICAL,Version rules by source and effective date and require legal/domain verification before freeze,OPEN
+R-005,RISK,Prototype may encode unsupported assumptions about BPJS internal workflow,Panji,HIGH,HIGH,Maintain explicit assumption register and prohibit unsupported current-state claims,OPEN
+A-001,ASSUMPTION,Prototype uses synthetic or dummy data,Panji,,,Supported by competition rules,ACCEPTED
+A-002,ASSUMPTION,A trustworthy production reference state exists for some employer-risk modes,Panji,,,Prototype simulates it; production remains blocked until verified,OPEN
+A-003,ASSUMPTION,Primary operational user is a BPJS employer-compliance or risk-review officer,Panji,,,Keep role generic until domain validation,OPEN
+D-001,DEPENDENCY,Current consolidated legal/domain rules are required before policy-as-code freeze,Panji,,,Resolve during Phase B domain authority work,OPEN
+D-002,DEPENDENCY,Operational data availability must be verified before production architecture claims,Panji,,,Keep adapters conceptual in prototype,OPEN
