@@ -1,31 +1,50 @@
 ---
 project: JAGA-JKN
-competition: BPJS Kesehatan Healthkathon 2026
-status: DRAFT
-version: 0.1.0
-owner: TBD
-authority: TBD
-last_updated: 2026-10-07
+status: TEMPLATE
+owner: Panji
+authority_level: A1
+authority: Project Governance
 ---
 
-# CHANGE REQUEST TEMPLATE
+# Change Request — CR-YYYY-NNN
 
-## Tujuan
-Dokumen ini menjadi artefak resmi untuk **JAGA-JKN** pada area terkait.
+## Metadata
+- CR ID:
+- Initiator:
+- Date:
+- Status: DRAFT
+- Decision: PENDING
+- Approver:
+- Decision date:
 
-## Baseline proyek
-- Kategori: **Risiko Pemberi Kerja**
-- Produk: **web app internal BPJS Kesehatan, desktop-first responsive**
-- Konsep inti: rekonstruksi kondisi yang seharusnya → kondisi aktual → episode kepatuhan → intervensi → keputusan manusia → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML: mendukung deteksi, prioritisasi, penjelasan, dan rekomendasi; keputusan akhir tetap pada petugas BPJS.
+## Requested change
 
-## Isi yang harus difinalkan
-- [ ] Scope dan batasan jelas.
-- [ ] Requirement memiliki ID unik bila relevan.
-- [ ] Dependency dan asumsi dicatat.
-- [ ] Acceptance criteria dapat diuji.
-- [ ] Traceability ke requirement/test/evidence tersedia.
+## Reason / triggering evidence
 
-## Catatan
-Status awal **DRAFT**. Artefak menjadi authoritative hanya setelah review dan freeze eksplisit.
+## Source authority
+- Source IDs:
+- Evidence state:
+
+## Impacted artifacts and IDs
+
+| Artifact | Requirement/Rule ID | Current state | Proposed state |
+|---|---|---|---|
+
+## Impact analysis
+- Scope:
+- Data:
+- ML:
+- Backend/API:
+- Frontend:
+- Tests/evaluation:
+- Security/privacy:
+- Proposal/demo:
+- Backward compatibility:
+
+## Risks
+
+## Validation plan
+
+## Decision rationale
+
+A CR is effective only after `Decision: APPROVE` and an authorized approver is recorded.

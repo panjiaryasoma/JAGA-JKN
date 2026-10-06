@@ -1,31 +1,21 @@
----
-project: JAGA-JKN
-competition: BPJS Kesehatan Healthkathon 2026
-status: DRAFT
-version: 0.1.0
-owner: TBD
-authority: TBD
-last_updated: 2026-10-07
----
+# Project Governance
 
-# README PROJECT GOVERNANCE
+## Current state
 
-## Tujuan
-Dokumen ini menjadi artefak resmi untuk **JAGA-JKN** pada area terkait.
+Change control is `REVIEWED`, not FROZEN.
 
-## Baseline proyek
-- Kategori: **Risiko Pemberi Kerja**
-- Produk: **web app internal BPJS Kesehatan, desktop-first responsive**
-- Konsep inti: rekonstruksi kondisi yang seharusnya → kondisi aktual → episode kepatuhan → intervensi → keputusan manusia → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML: mendukung deteksi, prioritisasi, penjelasan, dan rekomendasi; keputusan akhir tetap pada petugas BPJS.
+Phase B freeze remains blocked until repository-level prevention is verified, specifically required PR/status-check enforcement on `main`.
 
-## Isi yang harus difinalkan
-- [ ] Scope dan batasan jelas.
-- [ ] Requirement memiliki ID unik bila relevan.
-- [ ] Dependency dan asumsi dicatat.
-- [ ] Acceptance criteria dapat diuji.
-- [ ] Traceability ke requirement/test/evidence tersedia.
+## Controls in repository
 
-## Catatan
-Status awal **DRAFT**. Artefak menjadi authoritative hanya setelah review dan freeze eksplisit.
+- `DOCUMENT_MANIFEST.csv` is the project artifact control plane.
+- `CHANGE_CONTROL_PROCESS.md` defines semantic change classes.
+- `CHANGE_REQUEST_TEMPLATE.md` defines CR semantics.
+- `change_requests/` stores approved/rejected CR records when needed.
+- `.github/CODEOWNERS` routes review ownership.
+- `.github/workflows/governance.yml` validates manifest and frozen-change invariants.
+- `scripts/validate_governance.py` is the executable validator.
+
+## Important limitation
+
+A workflow that fails after a direct push is not branch protection. Before first freeze, GitHub must be configured so protected changes require pull request + required governance status check.

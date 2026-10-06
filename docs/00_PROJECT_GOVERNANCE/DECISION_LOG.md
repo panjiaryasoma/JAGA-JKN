@@ -1,31 +1,9 @@
----
-project: JAGA-JKN
-competition: BPJS Kesehatan Healthkathon 2026
-status: DRAFT
-version: 0.1.0
-owner: TBD
-authority: TBD
-last_updated: 2026-10-07
----
+# Decision Log
 
-# DECISION LOG
-
-## Tujuan
-Dokumen ini menjadi artefak resmi untuk **JAGA-JKN** pada area terkait.
-
-## Baseline proyek
-- Kategori: **Risiko Pemberi Kerja**
-- Produk: **web app internal BPJS Kesehatan, desktop-first responsive**
-- Konsep inti: rekonstruksi kondisi yang seharusnya → kondisi aktual → episode kepatuhan → intervensi → keputusan manusia → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML: mendukung deteksi, prioritisasi, penjelasan, dan rekomendasi; keputusan akhir tetap pada petugas BPJS.
-
-## Isi yang harus difinalkan
-- [ ] Scope dan batasan jelas.
-- [ ] Requirement memiliki ID unik bila relevan.
-- [ ] Dependency dan asumsi dicatat.
-- [ ] Acceptance criteria dapat diuji.
-- [ ] Traceability ke requirement/test/evidence tersedia.
-
-## Catatan
-Status awal **DRAFT**. Artefak menjadi authoritative hanya setelah review dan freeze eksplisit.
+| ID | Date | Decision | Status | Rationale |
+|---|---|---|---|---|
+| DEC-001 | 2026-10-07 | Authority precedence is A0 > A1 > A2 > A3 > A4 > A5 > A6; lower number is higher authority | REVIEWED | Removes ambiguous “higher authority level” wording |
+| DEC-002 | 2026-10-07 | A0 belongs to official external sources; repository summaries use source_authority=A0 and artifact_role=A0_DERIVED_REGISTRY | REVIEWED | Prevents authority laundering |
+| DEC-003 | 2026-10-07 | Taxonomy conflict for Kolusi/Surat Fiktif is OPEN_NON_BLOCKING_CURRENT_MVP | REVIEWED | Two official guides classify it differently |
+| DEC-004 | 2026-10-07 | Phase B work occurs on branch/PR before merge; no A1/A3 freeze yet | REVIEWED | Supports contradiction audit |
+| DEC-005 | 2026-10-07 | Branch protection verification is prerequisite to first FROZEN artifact | REVIEWED | CI-only detection cannot prevent direct-push bypass |
