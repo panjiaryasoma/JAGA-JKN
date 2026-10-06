@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.3.0
+version: 0.4.0
 owner: Panji
 artifact_authority_level: A3
 authority: Domain Rules
@@ -14,35 +14,45 @@ last_updated: 2026-10-07
 
 ### BPJS statutory basis
 - UU 24/2011 — BPJS;
-- UU 24/2011 has been amended through the Cipta Kerja chain; the currently relevant latest amendment identified in this review is **UU 6/2023**.
-- Before using a specific UU 24/2011 article as executable policy, confirm whether that article's wording was affected by the amendment chain.
+- UU 6/2023 — Cipta Kerja amendment chain relevant to UU 24/2011.
+
+Exact source:
+- https://peraturan.bpk.go.id/Details/246523/uu-no-6-tahun-2023
+
+Article-level impact still must be checked before an executable rule relies on a specific UU 24/2011 provision.
 
 ### Jaminan Kesehatan presidential regulation
 - Perpres 82/2018;
-- Perpres 75/2019 — first amendment;
-- Perpres 64/2020 — second amendment;
-- Perpres 59/2024 — third amendment.
+- Perpres 75/2019;
+- Perpres 64/2020;
+- Perpres 59/2024.
 
-As of the 2026-10-07 review, JDIH BPK identifies Perpres 59/2024 as the latest amendment found in this chain.
-
-### Employer registration / data correctness
-- PP 86/2013.
-- Pasal 3(2)(b) directly states that reported wage data must correspond to wages received by workers. This is a direct normative anchor for wage-reporting semantics.
+### Employer registration / wage correctness
+- PP 86/2013;
+- Pasal 3(2)(b) is a direct normative anchor that wage data reported by an employer must correspond to wage received by the worker.
 
 ### Contribution collection / payment / recording
-- Peraturan BPJS Kesehatan 5/2018 — base regulation;
-- Peraturan BPJS Kesehatan 3/2020 — first amendment;
-- Peraturan BPJS Kesehatan 2/2024 — second amendment, effective 2024-10-03.
+- PerBPJS Kesehatan 5/2018 — base;
+- PerBPJS Kesehatan 3/2020 — first amendment;
+- PerBPJS Kesehatan 2/2024 — second amendment.
 
-The 2/2024 official metadata explicitly identifies this amendment chain. Arrears/timing logic must be derived from the consolidated chain, not from the latest amendment in isolation.
+Exact base source:
+- https://peraturan.go.id/id/peraturan-bpjs-kesehatan-no-5-tahun-2018
+
+First amendment:
+- https://peraturan.go.id/id/peraturan-bpjs-kesehatan-no-3-tahun-2020
+
+Second amendment:
+- https://peraturan.bpk.go.id/Details/311192/peraturan-bpjs-kesehatan-no-2-tahun-2024
+
+The latest amendment is not a substitute for a consolidated rule text.
 
 ## Rules
 
-1. Never overwrite a historical policy value in place.
+1. Never overwrite historical policy values in place.
 2. Add a new policy version with explicit effective period.
 3. Historical evaluation selects the rule effective for the evaluated period.
-4. If authoritative sources conflict, mark `CONFLICT` and stop authoritative calculation.
-5. Project summaries are derived registries, not A0 source truth.
+4. Authoritative conflicts fail closed.
+5. Project summaries remain derived registries.
 6. A rule becomes executable only after domain/source verification and freeze.
-7. “Latest amendment” is not automatically a consolidated rule text.
-8. Every executable rule must record which base provision and amendments produced the final semantics.
+7. Every executable rule records the base provision plus amendments used to derive final semantics.

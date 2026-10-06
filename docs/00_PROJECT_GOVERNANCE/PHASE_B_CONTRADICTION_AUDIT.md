@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.3.0
+version: 0.4.0
 owner: Panji
 artifact_authority_level: A6
 authority: Verification & Governance Evidence
@@ -10,144 +10,91 @@ last_updated: 2026-10-07
 
 # Phase B Contradiction Audit
 
-## Governing verdict
+## Latest independent result
 
-The latest **independent** audit found H-B03, so the project does not self-promote that finding to CLOSED merely because its own regression tests pass.
+Independent Pass 2 result:
 
-Current state:
+- H-B03 original bypass: **CLOSED**
+- H-B06 CR authorization replay/scope binding: **OPEN HIGH**
+- Phase B content: **CONDITIONALLY PASS**
+- PR #1 merge: **HOLD**
+- B1 freeze: **HOLD**
+- B2 freeze: **HOLD**
+- implementation: **NOT AUTHORIZED**
 
-- Phase B content: `CONDITIONALLY PASS`
-- PR #1 merge: `HOLD`
-- B1 business/domain-boundary freeze: `HOLD`
-- B2 executable-policy freeze: `HOLD`
-- implementation: `NOT AUTHORIZED`
+## H-B06 remediation
 
-## H-B03 — change-control validator bypass
+The previous CR model approved path/ID scope but did not bind approval to one exact state transition. A valid historical CR could therefore become standing authorization.
 
-**Independent finding:** HIGH / BLOCKING.
+Remediation on this branch introduces **CR schema v2**.
 
-### Remediation now implemented
+Authorization is now bound to:
+- `authorized_base_sha`;
+- source blob SHA-256 for every protected target;
+- exact target blob SHA-256, or explicit DELETE;
+- approved path;
+- affected IDs as defense-in-depth;
+- valid approver;
+- parseable approval date;
+- non-empty validation plan.
 
-1. **Base + head manifest**
-   - protection derives from base state;
-   - a base-FROZEN artifact remains protected if head downgrades, supersedes, removes, or deletes it.
+### One-shot base binding
 
-2. **Pre-approved base CR**
-   - protected change is authorized only by an APPROVED CR already present in base;
-   - a CR created/edited in the same semantic-change PR cannot authorize that PR.
+A CR must be newly introduced in the semantic PR's base commit, whose first parent equals the CR's `authorized_base_sha`.
 
-3. **CR content validation**
-   - decision must equal APPROVE;
-   - approval date required;
-   - approver must be authorized by `APPROVAL_AUTHORITY.csv`;
-   - affected path must cover changed protected artifact;
-   - requirement/rule IDs found in changed lines must be covered;
-   - validation plan required.
+This solves the self-reference problem of trying to embed the CR-containing commit's own SHA in the CR while still ensuring the authorization expires when main advances.
 
-4. **Trusted-control self-protection**
-   - after bootstrap, validator/workflow/CODEOWNERS/manifest/change-control/approval registry are protected controls;
-   - changing them requires a pre-approved base CR.
+### Replay resistance
 
-5. **Trusted workflow design**
-   - `governance-trusted.yml` uses `pull_request_target`;
-   - workflow definition and validator are taken from trusted base;
-   - PR head is materialized as data;
-   - PR version of the validator is not executed by the trusted job.
+A→B approval cannot authorize B→C because:
+1. after A→B merges, the CR is no longer newly introduced in the current base;
+2. the current source blob is B, not approved source A;
+3. C cannot equal the approved B target hash.
 
-### Regression evidence
+### H-B06 adversarial regressions
 
-`scripts/test_governance_security.py` covers:
+The security suite now covers:
 
-- downgrade attack: **REJECTED**;
-- same-PR dummy/pending CR attack: **REJECTED**;
-- pre-approved base CR covering path/ID: **ACCEPTED**;
-- validator self-change without base CR: **REJECTED**.
+- old approved CR reused for a second different change → REJECT;
+- exact target hash mismatch → REJECT;
+- authorized base SHA mismatch → REJECT;
+- ID-scoped CR with semantic change lacking identifiable ID context → REJECT;
+- explicit DELETE target → ACCEPT deletion only;
+- same exact approved target → ACCEPT;
+- CR filename vs `cr_id` mismatch → REJECT;
+- malformed `approved_at` → REJECT;
+- original downgrade attack → REJECT;
+- same-PR dummy CR → REJECT;
+- trusted validator self-change without one-shot CR → REJECT.
 
-Latest `Governance Head Advisory` run on remediation head passed both:
-- `validate_governance.py`;
-- `test_governance_security.py`.
+**H-B06 status: REMEDIATED / PENDING INDEPENDENT PASS 3.**
 
-**H-B03 state: `REMEDIATED / PENDING INDEPENDENT PASS 2`.**
+The project does not self-close the HIGH until independent Pass 3 attempts to break the new authorization state.
 
-Reason for not self-closing: the trusted workflow does not yet exist on the base branch for PR #1 itself. It becomes independent of PR-controlled workflow content only after governance bootstrap lands on main. PR #1 therefore still requires independent review.
+## Other findings
 
-## M-B01 — repository enforcement
+### M-B01
+**OPEN.** Main remains unprotected; required checks are off; rulesets are empty. B1 freeze remains blocked.
 
-**VERIFIED OPEN / B1 FREEZE BLOCKER / PR MERGE CONTROL GAP**
+### M-B02
+**OPEN / B2 only.** Legal provenance improved further:
+- exact UU 6/2023 source URL added;
+- exact PerBPJS 5/2018 source URL added;
+- PP 86/2013 → WAGE-001 trace added;
+- 5/2018 → 3/2020 → 2/2024 → CONTRIB-001 trace added.
 
-Repository metadata on 2026-10-07 shows:
+Executable policy still requires consolidated article/effective-date/exception/timing semantics.
 
-- `main.protected = false`;
-- protection `enabled = false`;
-- required status check enforcement `off`;
-- repository rulesets = `[]`.
+### M-B03
+**CLOSED.**
 
-Therefore:
-- Head Advisory success is not a required check;
-- Trusted workflow is not yet enforceable as required;
-- direct-push bypass remains possible.
+### M-B04
+**CLOSED.**
 
-No artifact may be marked FROZEN while this remains true.
+### M-B05
+**PARTIAL**, largely constrained by M-B01.
 
-## M-B02 — legal/domain consolidation
-
-**OPEN / B2 EXECUTABLE-POLICY BLOCKER**
-
-Legal provenance has been expanded:
-
-- UU 24/2011 is recorded as amended through the Cipta Kerja chain, including UU 6/2023;
-- PP 86/2013 Pasal 3(2)(b) is a direct normative anchor for reported wage matching wage received;
-- contribution chain is explicit:
-  `PerBPJS 5/2018 → PerBPJS 3/2020 → PerBPJS 2/2024`.
-
-Remaining B2 work includes article-level consolidation, effective-date tables, exceptions, wage basis/caps, and arrears/timing semantics.
-
-This does **not** invalidate B1 high-level safety semantics.
-
-## M-B03 — manifest ↔ artifact metadata drift
-
-**REMEDIATED / CI PASS**
-
-- `A0_CONFLICT_REGISTER.md`: manifest and frontmatter now agree on REVIEWED, A6-derived registry, source A0.
-- `CHANGE_REQUEST_TEMPLATE.md`: lifecycle is REVIEWED; template-ness is represented separately as `artifact_kind=TEMPLATE`.
-- validator checks REVIEWED/FROZEN markdown frontmatter against canonical manifest for lifecycle/authority fields where duplicated.
-- manifest v1 is accepted **only as read-only base migration input**; head must use manifest v2.
-
-## M-B04 — acceptance/self-audit inconsistency
-
-**REMEDIATED**
-
-B1/B2 gates are separated:
-
-- **B1** freezes business/domain safety boundaries.
-- **B2** freezes executable consolidated policy.
-
-BAC-009 now refers to the latest independent audit. Since the latest independent audit still contains H-B03, B1 remains HOLD until Pass 2.
-
-## M-B05 — approval/ownership enforcement
-
-**PARTIALLY CLOSED / residual tied to M-B01**
-
-Implemented:
-- reviewed RACI;
-- machine-readable `APPROVAL_AUTHORITY.csv`;
-- approver validation by most-specific path prefix;
-- CODEOWNERS expanded across all documentation/control areas.
-
-Known limitation:
-- cross-workstream reviewer roles (Lintang/Haidir) are not machine-bound to GitHub identities;
-- CODEOWNERS/review requirements are routing only until branch/ruleset enforcement is enabled.
-
-## Additional remediation
-
-### BRD scope link
-Corrected to:
-`../../00_PROJECT_GOVERNANCE/PROJECT_SCOPE_STATEMENT.md`
-
-### Authority control
-Official A0 sources remain distinct from project-derived registries.
-
-## Gate after remediation
+## Gate
 
 ```text
 PHASE A
@@ -157,17 +104,17 @@ PHASE B CONTENT
 CONDITIONALLY PASS
         ↓
 H-B03
+CLOSED
+        ↓
+H-B06
 REMEDIATED
-PENDING INDEPENDENT PASS 2
+PENDING INDEPENDENT PASS 3
         ↓
-B1 BUSINESS / DOMAIN BOUNDARY FREEZE
+PR #1 MERGE / B1 FREEZE
 HOLD
-├── latest independent audit must clear HIGH
-└── M-B01 repository enforcement must be active
         ↓
-B2 EXECUTABLE POLICY FREEZE
+B2 EXECUTABLE POLICY
 HOLD
-└── M-B02 policy consolidation
         ↓
 A4 / IMPLEMENTATION
 NOT AUTHORIZED

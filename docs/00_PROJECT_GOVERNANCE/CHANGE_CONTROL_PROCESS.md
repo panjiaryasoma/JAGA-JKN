@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.3.0
+version: 0.4.0
 owner: Panji
 artifact_authority_level: A1
 authority: Project Governance
@@ -10,122 +10,122 @@ last_updated: 2026-10-07
 
 # Change Control Process
 
-## Purpose
+## Core invariant
 
-Control semantic changes to project truth, scope, requirements, policy, evaluation, contracts, and acceptance evidence.
+A protected change is authorized only when a human-approved CR is bound to the **specific source state and exact intended target state**.
 
-## Canonical state
+Approval of a path or requirement ID alone is never a standing authorization.
 
-`DOCUMENT_MANIFEST.csv` is the control plane for lifecycle state. Frontmatter in REVIEWED/FROZEN Markdown artifacts must agree with manifest metadata; CI validates the overlap.
+## Protected changes
 
-## Change classes
+Class 2 protection applies to:
+- any artifact that is `FROZEN` in the PR base;
+- lifecycle/authority metadata of a base-FROZEN artifact;
+- trusted governance controls after governance bootstrap.
 
-### Class 0 — editorial
-No semantic meaning changes.
+Base protection survives downgrade, supersession, manifest-row removal, and file deletion attempts.
 
-### Class 1 — non-frozen semantic
-Semantic change to DRAFT/REVIEWED artifacts. Normal review.
+## One-shot CR sequencing
 
-### Class 2 — protected semantic
-Any semantic change to:
-- an artifact that is `FROZEN` in the **base revision**;
-- the lifecycle/authority metadata of an artifact that is `FROZEN` in base;
-- trusted governance controls after governance bootstrap is established.
-
-Class 2 requires a pre-approved CR.
-
-## Anti-downgrade invariant
-
-A base artifact with `status=FROZEN` remains protected for the entire PR even if the head:
-- changes it to REVIEWED/DRAFT;
-- marks it SUPERSEDED/RETIRED;
-- removes its manifest row;
-- deletes the file.
-
-The validator compares **base manifest + head manifest**. Head cannot erase base protection.
-
-## CR sequencing
-
-A CR authorizing a Class 2 change MUST exist and be APPROVED in the **base branch before** the semantic-change PR begins.
-
-A CR added or edited in the same PR as the protected semantic change cannot authorize that change.
-
-Required flow:
+CR authorization is intentionally two-step:
 
 ```text
-CR PR
-→ review/approval
-→ CR merged to protected base
-→ semantic-change PR
-→ trusted validator verifies base CR
+B0 = current protected main
+        ↓
+CR-only approval PR
+CR declares authorized_base_sha = B0
+source hashes = state at B0
+target hashes = exact intended new content
+        ↓
+B1 = commit/merge that introduces approved CR directly on top of B0
+        ↓
+semantic-change PR MUST use B1 as its base
+        ↓
+validator checks exact target
+        ↓
+semantic change merges
+        ↓
+CR can no longer authorize another change
 ```
 
-## Machine-readable CR block
+Why `authorized_base_sha` refers to **B0**, not B1: B1 contains the CR itself, so making the CR contain B1's own commit SHA would be self-referential. The validator instead requires B1's first parent to equal `authorized_base_sha`, and requires the approved CR file to be newly introduced in B1.
 
-Approved CR records contain a JSON governance block:
+If main moves after CR approval and before the semantic PR, the authorization expires. Re-approval is required. Annoying, yes. Also substantially less exciting than reusable governance exploits.
 
-```text
-<!-- GOVERNANCE-CR
+## CR schema v2
+
+```json
 {
-  "cr_id": "CR-YYYY-NNN",
+  "schema_version": 2,
+  "cr_id": "CR-2026-001",
   "decision": "APPROVE",
-  "approver": "github-login",
-  "approved_at": "YYYY-MM-DD",
-  "affected_paths": ["docs/..."],
-  "affected_ids": ["BR-001"],
-  "validation_plan": "non-empty text"
+  "approver": "panjiaryasoma",
+  "approved_at": "2026-10-07",
+  "authorized_base_sha": "<B0 git sha>",
+  "targets": {
+    "docs/.../BRD.md": {
+      "source_sha256": "<sha256 of B0 blob>",
+      "target_state": "PRESENT",
+      "target_sha256": "<sha256 of exact approved target blob>",
+      "affected_ids": ["BR-001"]
+    }
+  },
+  "validation_plan": "Concrete non-empty validation plan."
 }
-GOVERNANCE-CR -->
 ```
 
-The human-readable body remains required for reasoning and impact analysis.
+For deletion:
 
-## Approval authority
+```json
+{
+  "source_sha256": "<current blob sha256>",
+  "target_state": "DELETE",
+  "affected_ids": ["BR-001"]
+}
+```
 
-Authorized approvers are defined in `APPROVAL_AUTHORITY.csv`.
+A DELETE target must not carry `target_sha256`.
 
-The validator resolves each affected path to the most specific registered path prefix and verifies the CR approver against that registry.
+## Validator requirements
 
-Cross-workstream human review requirements remain explicitly recorded in the registry. Where reviewer identities are not yet machine-bound, this is a known enforcement limitation and cannot be represented as automatically verified.
+For an approved CR to authorize a protected path:
 
-## CR validity requirements
+1. CR filename ID equals JSON `cr_id`;
+2. `approved_at` is a valid ISO `YYYY-MM-DD` date;
+3. approver is authorized for every target path;
+4. `authorized_base_sha` equals the first parent of the semantic PR base;
+5. CR did not exist at `authorized_base_sha`;
+6. source blob SHA-256 at authorized base equals `source_sha256`;
+7. the CR-approval commit itself did not alter the target;
+8. semantic PR head exactly equals `target_sha256`, or is absent for explicit DELETE;
+9. ID scope is checked as defense-in-depth;
+10. the CR record used for authorization is not edited in the semantic PR;
+11. `CHANGE_LOG.md` is updated.
 
-For a protected change the validator requires, from a CR already present in base:
-- decision exactly `APPROVE`;
-- non-empty approval date;
-- approver authorized for every affected path;
-- changed protected artifact included in `affected_paths`;
-- requirement/rule IDs visible in the diff included in `affected_ids`;
-- non-empty validation plan.
+## Replay rule
 
-Merely adding `CHANGE_LOG.md` or a dummy/pending CR does not authorize a protected change.
+An approved CR is deliberately retained forever as evidence, but is **not reusable**.
 
-## Trusted-control protection
+After A→B merges:
+- current base is no longer the commit that introduced the CR directly above its authorized base;
+- source blob no longer equals A;
+- a later B→C target cannot equal the previously approved B hash.
 
-Once the trusted governance workflow exists in the base branch, changes to:
-- trusted workflow;
-- CODEOWNERS;
-- validator;
-- manifest;
-- Change Control Process;
-- Approval Authority registry
+One approval therefore authorizes one exact state transition.
 
-are treated as protected-control changes and require a pre-approved base CR.
+## Trusted-control rule
+
+After bootstrap, modifications to the trusted workflow, validator, CODEOWNERS, manifest, Change Control Process, or Approval Authority registry require the same one-shot CR semantics.
+
+The trusted `pull_request_target` workflow uses the validator from trusted base and treats PR head as data.
 
 ## Freeze prerequisites
 
-Before first FROZEN artifact:
-1. artifact is REVIEWED;
-2. contradiction audit has no unresolved HIGH affecting it;
-3. provenance complete;
-4. owner/authority non-TBD;
-5. downstream impact known;
-6. manifest/frontmatter consistent;
-7. branch/ruleset enforcement requires PR + trusted Governance check;
-8. force-push/deletion bypass is constrained appropriately.
+No first FROZEN artifact until:
+- latest independent audit has no unresolved HIGH affecting B1;
+- repository protection requires PR + Governance Trusted;
+- force-push/deletion bypass is constrained;
+- manifest/frontmatter are consistent;
+- provenance/ownership are complete.
 
-## Repository enforcement reality
-
-CI without branch protection detects violations but cannot prevent direct push. Therefore successful CI is not equivalent to repository enforcement.
-
-As of the latest audit, `main` is unprotected and required checks are off. First freeze remains blocked until that external repository setting is changed and verified.
+CI success without branch/ruleset enforcement remains evidence, not prevention.

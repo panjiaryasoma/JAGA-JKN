@@ -1,5 +1,5 @@
 schema_version: "1.0"
-document_version: "0.3.0"
+document_version: "0.4.0"
 status: REVIEWED
 execution_authority: NONE
 freeze_ready: false
@@ -14,7 +14,7 @@ source_registry:
     title: "UU No. 6 Tahun 2023"
     authority: A0
     relationship: "amends UU 24/2011 among other laws"
-    url: "https://peraturan.bpk.go.id/"
+    url: "https://peraturan.bpk.go.id/Details/246523/uu-no-6-tahun-2023"
   SRC-LAW-002:
     title: "Perpres No. 82 Tahun 2018 tentang Jaminan Kesehatan"
     authority: A0
@@ -39,6 +39,7 @@ source_registry:
     authority: A0
     relationship: "base contribution collection/payment/recording regulation"
     consolidation_status: "must be read with 3/2020 and 2/2024"
+    url: "https://peraturan.go.id/id/peraturan-bpjs-kesehatan-no-5-tahun-2018"
   SRC-LAW-006B:
     title: "Peraturan BPJS Kesehatan No. 3 Tahun 2020"
     authority: A0
