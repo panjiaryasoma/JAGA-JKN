@@ -5,7 +5,9 @@ status: REVIEWED
 version: 0.2.0
 owner: Panji
 authority: Official Competition Registry
-authority_level: A0
+artifact_authority_level: A6
+source_authority: A0
+artifact_role: A0_DERIVED_REGISTRY
 last_updated: 2026-10-07
 ---
 
@@ -44,3 +46,7 @@ A conflict is never resolved by convenience.
 - Multiple related subcategories inside the selected category: **allowed**.
 - Synthetic/dummy/anonymized data: **allowed/required when real JKN data is not authorized**.
 - Real JKN participant data without authorization: **prohibited**.
+
+## A0 conflict reference
+
+See `A0_CONFLICT_REGISTER.md`. Taxonomy item #6 is not treated as unambiguously verified and is outside current MVP.

@@ -22,7 +22,7 @@ last_updated: 2026-10-07
 
 | ID | Status | Evidence | What it supports | What it does **not** prove |
 |---|---|---|---|---|
-| RWE-001 | VERIFIED | Participant Guide Healthkathon 2026 lists six employer-risk modes | Employer compliance/risk is an organizer-recognized problem class | Frequency or financial magnitude of each mode |
+| RWE-001 | VERIFIED_WITH_CONFLICT | Participant Guide lists six employer-risk modes; Proposal Guide conflicts on classification of item #6 | Employer compliance/risk is an organizer-recognized problem class; five core modes are consistent across both summaries | Item #6 taxonomy is not unambiguous; frequency/magnitude not proven |
 | RWE-002 | VERIFIED | Participant Guide permits one or more subcategories inside one selected category | One JAGA-JKN solution may cover multiple related employer-risk modes | That all six should be MVP scope |
 | RWE-003 | VERIFIED | Participant Guide confidentiality section requires dummy/anonymized data when real JKN data is not authorized | Synthetic prototype strategy is competition-compatible | Synthetic performance transfers to production |
 | RWE-004 | VERIFIED | Proposal Guide requires credible problem evidence, technical/data flow, measurable impact, privacy, AI limitations, and human role | Evidence-first and human-in-the-loop proposal design | Any specific internal BPJS workflow |
@@ -74,4 +74,4 @@ These gaps become explicit assumptions or validation questions. They must not si
 
 ## Discovery conclusion
 
-The evidence is sufficient to validate **the problem category and legal/normative basis** for a prototype. It is not sufficient to claim we understand BPJS's internal operations. Therefore Phase A closes as `PASS_WITH_CONSTRAINTS`, not unconditional validation.
+The evidence is sufficient to validate **the problem category and legal/normative basis** for a prototype. Taxonomy item #6 remains an explicit non-blocking A0 conflict. It is not sufficient to claim we understand BPJS's internal operations. Therefore Phase A closes as `PASS_WITH_CONSTRAINTS`, not unconditional validation.

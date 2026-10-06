@@ -13,7 +13,7 @@ last_updated: 2026-10-07
 
 | ID | Type | Statement | Evidence state | Impact if false | Treatment |
 |---|---|---|---|---|---|
-| A-001 | ASSUMPTION | Prototype will use synthetic/dummy data | VERIFIED allowed; chosen strategy | LOW | Keep |
+| A-001 | DECISION | Prototype uses synthetic/dummy data | Competition compatibility: VERIFIED; project choice: ADOPTED | LOW | Keep |
 | A-002 | ASSUMPTION | BPJS can define or obtain a trustworthy reference state for at least some employer-risk modes | UNKNOWN | CRITICAL | Production blocker; prototype simulates reference world |
 | A-003 | ASSUMPTION | Employer review has finite capacity and benefits from prioritization | UNKNOWN | HIGH | Do not optimize capacity until evidence exists |
 | A-004 | ASSUMPTION | Temporal persistence is useful for separating transient discrepancies from sustained risk | UNKNOWN | HIGH | Test in synthetic scenarios; require domain validation |

@@ -1,31 +1,25 @@
 ---
 project: JAGA-JKN
-competition: BPJS Kesehatan Healthkathon 2026
-status: DRAFT
-version: 0.1.0
-owner: TBD
-authority: TBD
-last_updated: 2026-10-07
+status: REVIEWED
+version: 0.2.0
+owner: Panji
+authority_level: A3
+authority: Business Requirements
 ---
 
-# BUSINESS ACCEPTANCE CRITERIA
+# Business Acceptance Criteria
 
-## Tujuan
-Dokumen ini menjadi artefak resmi untuk **JAGA-JKN** pada area terkait.
+Phase B business requirements are ready for freeze review only if all conditions below are true:
 
-## Baseline proyek
-- Kategori: **Risiko Pemberi Kerja**
-- Produk: **web app internal BPJS Kesehatan, desktop-first responsive**
-- Konsep inti: rekonstruksi kondisi yang seharusnya → kondisi aktual → episode kepatuhan → intervensi → keputusan manusia → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML: mendukung deteksi, prioritisasi, penjelasan, dan rekomendasi; keputusan akhir tetap pada petugas BPJS.
+- BAC-001: every BR has provenance and epistemic state;
+- BAC-002: no UNKNOWN is expressed as a BPJS operational fact;
+- BAC-003: selected MVP modes are within organizer-defined employer risk;
+- BAC-004: disputed A0 taxonomy item is excluded from current MVP;
+- BAC-005: human-decision boundary is explicit;
+- BAC-006: real-data restriction is explicit;
+- BAC-007: policy-dependent requirements require source/version/effective period;
+- BAC-008: no production threshold is invented;
+- BAC-009: Phase B contradiction audit reports zero HIGH;
+- BAC-010: repository enforcement prerequisite for first freeze is verified.
 
-## Isi yang harus difinalkan
-- [ ] Scope dan batasan jelas.
-- [ ] Requirement memiliki ID unik bila relevan.
-- [ ] Dependency dan asumsi dicatat.
-- [ ] Acceptance criteria dapat diuji.
-- [ ] Traceability ke requirement/test/evidence tersedia.
-
-## Catatan
-Status awal **DRAFT**. Artefak menjadi authoritative hanya setelah review dan freeze eksplisit.
+Current result: **NOT FREEZE READY** because BAC-009 and BAC-010 are not yet satisfied.

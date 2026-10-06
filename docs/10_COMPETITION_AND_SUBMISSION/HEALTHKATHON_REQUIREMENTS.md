@@ -5,7 +5,9 @@ status: REVIEWED
 version: 0.2.0
 owner: Panji
 authority: Official Competition / Submission
-authority_level: A0
+artifact_authority_level: A6
+source_authority: A0
+artifact_role: A0_DERIVED_REGISTRY
 last_updated: 2026-10-07
 ---
 
@@ -41,7 +43,7 @@ last_updated: 2026-10-07
 3. Penggelapan atau Penundaan Setoran Iuran Pekerja.
 4. Misklasifikasi Status Hubungan Kerja.
 5. Manipulasi Data Mutasi Karyawan.
-6. Kolusi Fasilitas Kesehatan / Surat Keterangan Fiktif.
+6. Kolusi Fasilitas Kesehatan / Surat Keterangan Fiktif — **CONFLICTING_A0**: Participant Guide places it under Pemberi Kerja, while Proposal Guide summary places Kolusi & Surat Fiktif under Peserta JKN. Excluded from current MVP.
 
 ## Schedule conflict
 

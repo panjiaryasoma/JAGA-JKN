@@ -13,7 +13,7 @@ last_updated: 2026-10-07
 
 ## Validated problem class
 
-Healthkathon 2026 secara eksplisit menetapkan **Efisiensi Risiko pada Pemberi Kerja** sebagai satu dari tiga kategori kompetisi. Participant Guide resmi mendefinisikan enam modus pada kategori tersebut:
+Healthkathon 2026 secara eksplisit menetapkan **Efisiensi Risiko pada Pemberi Kerja** sebagai satu dari tiga kategori kompetisi. Participant Guide resmi mendefinisikan enam modus pada kategori tersebut, tetapi Proposal Guide mengklasifikasikan item #6 secara berbeda:
 
 1. pendaftaran pekerja sebagian (PDUK);
 2. pelaporan upah lebih rendah;
@@ -22,7 +22,7 @@ Healthkathon 2026 secara eksplisit menetapkan **Efisiensi Risiko pada Pemberi Ke
 5. manipulasi data mutasi karyawan;
 6. kolusi fasilitas kesehatan / surat keterangan fiktif.
 
-Dengan demikian, keberadaan **problem class** employer-compliance risk adalah `VERIFIED` dari authority kompetisi. Yang belum verified adalah frekuensi, nilai kerugian, workflow internal, serta data operasional yang tersedia untuk mendeteksi setiap modus.
+Dengan demikian, keberadaan **problem class** employer-compliance risk adalah `VERIFIED`; klasifikasi item #6 berstatus `CONFLICTING_A0` dan tidak dipakai dalam MVP. Yang belum verified adalah frekuensi, nilai kerugian, workflow internal, serta data operasional yang tersedia untuk mendeteksi setiap modus.
 
 ## Problem statement
 
