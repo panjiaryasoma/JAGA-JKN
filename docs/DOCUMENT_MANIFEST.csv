@@ -210,3 +210,4 @@ path,status,artifact_authority_level,source_authority,artifact_role,authority,ow
 README.md,REVIEWED,A1,,PROJECT_GOVERNANCE,Project Governance,Panji,Reviewed governance baseline; not FROZEN unless explicitly stated
 10_COMPETITION_AND_SUBMISSION/A0_CONFLICT_REGISTER.md,DRAFT,A6,,SUPPORTING,Supporting Artifact,Panji,Not authoritative until reviewed/frozen
 00_PROJECT_GOVERNANCE/change_requests/README.md,DRAFT,A6,,SUPPORTING,Supporting Artifact,Panji,Not authoritative until reviewed/frozen
+00_PROJECT_GOVERNANCE/PHASE_B_CONTRADICTION_AUDIT.md,REVIEWED,A6,,VERIFICATION_EVIDENCE,Verification & Governance Evidence,Panji,Phase B contradiction audit; freeze remains HOLD
