@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.1.0
+version: 0.2.0
 owner: Panji
 artifact_authority_level: A6
 authority: Verification & Governance Evidence
@@ -10,140 +10,101 @@ last_updated: 2026-10-07
 
 # Phase B Contradiction Audit
 
-## Audit target
+## Independent re-audit supersession notice
 
-Branch: `phase-b-governance-domain`
+The prior claim **“No HIGH contradiction was found” is superseded** by independent audit finding **H-B03**.
 
-Scope:
-- authority semantics;
-- A0 source/derived-artifact separation;
-- A0 conflicts;
-- Project Charter;
-- Project Scope;
-- BRD/business requirements;
-- business/domain rules;
-- expected-state semantics;
-- policy versioning;
-- partial A3 traceability;
-- change control and governance CI.
+Until remediation is re-tested, the valid state is:
 
-PRD, SRS, ML contracts, application architecture, and implementation are explicitly outside this audit.
+- Phase B content review: `CONDITIONALLY PASS`
+- PR #1 merge: `HOLD`
+- B1 freeze: `HOLD`
+- B2 executable-policy freeze: `HOLD`
+- implementation: `NOT AUTHORIZED`
 
-## Verdict
+## Findings under remediation
 
-**PHASE B DRAFT/REVIEW: PASS**
+### H-B03 — change-control validator bypass
+Severity: **HIGH / BLOCKING**
 
-**PHASE B FREEZE: HOLD**
+Independent audit demonstrated:
+1. base-FROZEN artifact could be changed while head downgraded manifest state;
+2. same-PR dummy/pending CR could satisfy the old existence-only check;
+3. governance control could inspect itself using the PR-modified validator/workflow.
 
-**IMPLEMENTATION: NOT AUTHORIZED**
+### Remediation implemented on branch
 
-No HIGH contradiction was found in the reviewed Phase B draft.
+- validator loads **base + head manifest**;
+- base `FROZEN` remains protected even if head downgrades/removes/deletes it;
+- protected semantic changes require an **APPROVED CR already present in base**;
+- CR JSON is parsed and validated for decision, approver, approval date, affected path, changed IDs, and validation plan;
+- approver is resolved through `APPROVAL_AUTHORITY.csv`;
+- trusted-control paths become protected once trusted governance is bootstrapped;
+- `governance-trusted.yml` uses `pull_request_target`, preserves the validator from trusted base, materializes PR head as data, and runs the base validator;
+- downgrade, dummy-CR, valid-CR, and validator-self-change attack regressions are encoded in `scripts/test_governance_security.py`.
 
-## Previous residual findings
+**Closure state:** `PENDING VERIFICATION` until CI and attack regressions pass on the remediation head.
 
-### M-A01 — authority precedence ambiguity
-**CLOSED**
+### M-B01 — repository enforcement
+**VERIFIED OPEN / B1 FREEZE BLOCKER**
 
-Precedence is explicit:
+Repository metadata confirms:
+- `main.protected=false`;
+- protection disabled;
+- required status checks enforcement off;
+- repository rulesets empty.
 
-`A0 > A1 > A2 > A3 > A4 > A5 > A6`
+Successful workflow checks are not required checks.
 
-Lower numeric index means higher authority.
+### M-B02 — legal/domain consolidation
+**OPEN / B2 BLOCKER**
 
-### M-A02 — authority laundering
-**CLOSED**
+Remediation extends provenance:
+- UU 24/2011 amendment chain now notes UU 6/2023;
+- PP 86/2013 Pasal 3(2)(b) is a direct WAGE-001 anchor;
+- contribution chain is explicitly 5/2018 → 3/2020 → 2/2024.
 
-Official external sources own A0. Project-maintained competition registries use:
-- `artifact_authority_level=A6`;
-- `source_authority=A0`;
-- `artifact_role=A0_DERIVED_REGISTRY`.
+Executable consolidation remains incomplete by design.
 
-### M-A03 — A0 taxonomy conflict
-**CLOSED AS CONTROL / OPEN AS SOURCE CONFLICT**
+### M-B03 — manifest/frontmatter drift
+**REMEDIATED / PENDING CI**
 
-`A0-C002` records the inconsistent classification of Kolusi / Surat Keterangan Fiktif.
+- A0 conflict registry manifest row now matches REVIEWED/A0-derived metadata.
+- CR template lifecycle status now REVIEWED; `artifact_kind=TEMPLATE`.
+- validator compares lifecycle/authority metadata for REVIEWED/FROZEN markdown artifacts against manifest canonical state.
 
-It is explicitly excluded from the current MVP and therefore non-blocking.
+### M-B04 — acceptance/audit contradiction
+**REMEDIATED**
 
-### M-A04 — freeze governance / repository enforcement
-**PARTIALLY CLOSED — FREEZE BLOCKER REMAINS**
+Acceptance criteria now reference the latest independent audit and no longer claim zero HIGH until the remediation audit closes H-B03.
 
-Implemented:
-- Change Control Process;
-- Change Request semantics;
-- CODEOWNERS;
-- governance CI;
-- manifest invariants;
-- FROZEN-artifact change detection.
+### M-B05 — approval/ownership gap
+**PARTIALLY CLOSED**
 
-Governance workflow has passed on the Phase B PR.
-
-Remaining:
-- branch protection / required status check on `main` could not be verified or configured through the available GitHub integration because branch-protection administration is not accessible.
-
-Therefore no project artifact is marked FROZEN.
-
-## Phase B contradiction checks
-
-| Check | Result |
-|---|---|
-| Charter contradicts A0 competition category | PASS |
-| Scope includes disputed A0 taxonomy item | PASS — excluded |
-| BRD claims verified internal BPJS workflow | PASS — does not |
-| BRD promotes production data availability to fact | PASS — remains UNKNOWN |
-| Human authority boundary preserved | PASS |
-| Synthetic-data restriction preserved | PASS |
-| Automated signal equated to confirmed violation | PASS — prohibited |
-| Expected-state calculation permits missing authority | PASS — ABSTAIN |
-| Domain rules contain invented production thresholds | PASS — thresholds remain TBD |
-| Domain rules executable before policy consolidation | PASS — execution_authority=NONE |
-| Perpres 64 contribution value treated as timeless constant | PASS — explicit version guard |
-| A0 derived registry represented as official A0 artifact | PASS |
-| A-001 mixes evidence and project decision | PASS — separated |
-| RTM pretends A4/A5 trace exists | PASS — downstream fields intentionally blank |
-
-## Residual freeze blockers
-
-### M-B01 — repository prevention not verified
-Severity: MEDIUM / FREEZE BLOCKER.
-
-Governance CI detects invalid changes, but without verified branch protection it cannot guarantee prevention of direct-push bypass.
-
-Required before first freeze:
-- PR required for `main`;
-- Governance check required;
-- ideally restrict force push and deletion.
-
-### M-B02 — production domain policy consolidation incomplete
-Severity: MEDIUM / DOMAIN FREEZE BLOCKER.
-
-The reviewed sources establish legal anchors and amendment history, but Phase B has not produced a fully consolidated production policy for:
-- wage-basis limits/exceptions;
-- timing/grace/arrears semantics;
-- all lawful exceptions;
-- historical effective-date transitions.
-
-Current mitigation:
-- rules are `NON_EXECUTABLE`;
-- thresholds remain `TBD_DOMAIN_VALIDATION`;
-- missing/ambiguous policy => `ABSTAIN`.
-
-This does not block BRD review but blocks frozen executable domain policy.
+- `APPROVAL_AUTHORITY.csv` defines machine-valid approver scope.
+- RACI is reviewed.
+- CODEOWNERS covers all docs areas, manifest, workflow, and validator.
+- cross-workstream reviewer identities remain human-role requirements where GitHub identities are not registered.
+- enforcement remains limited by M-B01 until branch protection/rulesets are active.
 
 ## Gate
 
 ```text
 PHASE A
 PASS_WITH_CONSTRAINTS
-    ↓
-PHASE B DRAFT + REVIEW
-PASS
-    ↓
-PHASE B FREEZE
-HOLD
-    ├── M-B01 branch protection / required checks
-    └── M-B02 consolidated domain policy
-    ↓
-PRD / SRS / ML / IMPLEMENTATION
+        ↓
+PHASE B CONTENT
+CONDITIONALLY PASS
+        ↓
+H-B03 REMEDIATION
+PENDING CI / ATTACK REGRESSION
+        ↓
+B1 BUSINESS/DOMAIN BOUNDARY FREEZE
+HOLD on H-B03 closure + M-B01
+        ↓
+B2 EXECUTABLE POLICY FREEZE
+HOLD on M-B02
+        ↓
+A4 / IMPLEMENTATION
 NOT AUTHORIZED
 ```

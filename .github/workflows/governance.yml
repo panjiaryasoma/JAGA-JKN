@@ -19,3 +19,4 @@ jobs:
         with:
           python-version: "3.12"
       - run: python scripts/validate_governance.py
+      - run: python scripts/test_governance_security.py

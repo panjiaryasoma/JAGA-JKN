@@ -1,25 +1,51 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.2.0
+version: 0.3.0
 owner: Panji
-authority_level: A3
+artifact_authority_level: A3
 authority: Business Requirements
+last_updated: 2026-10-07
 ---
 
 # Business Acceptance Criteria
 
-Phase B business requirements are ready for freeze review only if all conditions below are true:
+## B1 — Business / Domain Boundary Freeze
+
+B1 covers Charter, Scope, BRD, business safety rules, and non-executable expected-state semantics.
+
+B1 is freeze-ready only if:
 
 - BAC-001: every BR has provenance and epistemic state;
 - BAC-002: no UNKNOWN is expressed as a BPJS operational fact;
-- BAC-003: selected MVP modes are within organizer-defined employer risk;
+- BAC-003: selected MVP modes are organizer-recognized employer risks;
 - BAC-004: disputed A0 taxonomy item is excluded from current MVP;
 - BAC-005: human-decision boundary is explicit;
 - BAC-006: real-data restriction is explicit;
-- BAC-007: policy-dependent requirements require source/version/effective period;
+- BAC-007: policy-dependent semantics require source/version/effective period;
 - BAC-008: no production threshold is invented;
-- BAC-009: Phase B contradiction audit reports zero HIGH;
-- BAC-010: repository enforcement prerequisite for first freeze is verified.
+- BAC-009: latest independent contradiction audit has zero unresolved HIGH affecting B1;
+- BAC-010: repository enforcement requires PR + **Governance Trusted** check and prevents accidental direct-push bypass.
 
-Current result: **NOT FREEZE READY** because BAC-009 and BAC-010 are not yet satisfied.
+**Current B1 result: HOLD.**
+
+At the start of remediation, H-B03 was OPEN. The audit must be rerun after hardened-validator tests pass. BAC-010 is also currently false because `main` is unprotected.
+
+## B2 — Executable Policy Freeze
+
+B2 additionally requires consolidated executable policy, including:
+- article-level amendment impact;
+- effective-date table;
+- lawful exceptions;
+- wage basis/caps where relevant;
+- payment timing/grace/arrears semantics;
+- consolidated PerBPJS 5/2018 → 3/2020 → 2/2024 chain.
+
+**Current B2 result: HOLD.**
+
+Incomplete B2 policy does not invalidate reviewed B1 safety semantics such as:
+`signal != violation`, `missing authority => ABSTAIN`, and human final authority.
+
+## A4 entry
+
+PRD/SRS drafting remains NOT AUTHORIZED in the current project state. A later governance decision may permit A4 drafting after B1 freeze while keeping executable policy-dependent implementation blocked on B2.

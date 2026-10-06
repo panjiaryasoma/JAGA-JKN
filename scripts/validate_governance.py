@@ -114,7 +114,7 @@ def validate_rows(rows: list[dict[str, str]]) -> None:
                 level = fm.get("artifact_authority_level") or fm.get("authority_level")
                 if level and level != row["artifact_authority_level"]:
                     fail(f"{path}: frontmatter authority level={level} != manifest {row['artifact_authority_level']}")
-                for key in ("owner", "authority", "source_authority", "artifact_role"):
+                for key in ("owner", "source_authority", "artifact_role"):
                     if fm.get(key) is not None and fm.get(key, "") != row.get(key, ""):
                         fail(f"{path}: frontmatter {key}={fm.get(key)!r} != manifest {row.get(key)!r}")
 

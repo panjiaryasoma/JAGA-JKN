@@ -46,7 +46,7 @@ See `BUSINESS_RULES.md`.
 
 ## 7. Scope
 
-See `../../../00_PROJECT_GOVERNANCE/PROJECT_SCOPE_STATEMENT.md`.
+See `../../00_PROJECT_GOVERNANCE/PROJECT_SCOPE_STATEMENT.md`.
 
 ## 8. Data constraints
 
