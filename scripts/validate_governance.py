@@ -43,17 +43,33 @@ def git_exists(ref: str, path: str) -> bool:
 def git_text(ref: str, path: str) -> str:
     return git("show", f"{ref}:{path}")
 
-def load_manifest_text(text: str, label: str) -> list[dict[str, str]]:
+def load_manifest_text(text: str, label: str, allow_legacy: bool = False) -> list[dict[str, str]]:
     rows = list(csv.DictReader(text.splitlines()))
     required = {
         "path", "status", "artifact_authority_level", "source_authority",
         "artifact_role", "authority", "owner", "notes",
     }
+    legacy = {"path", "status", "authority_level", "authority", "owner", "notes"}
     if not rows:
         fail(f"{label}: manifest is empty")
-    if set(rows[0]) != required:
-        fail(f"{label}: manifest columns mismatch: {set(rows[0])} != {required}")
-    return rows
+    fields = set(rows[0])
+    if fields == required:
+        return rows
+    if allow_legacy and fields == legacy:
+        normalized = []
+        for row in rows:
+            normalized.append({
+                "path": row["path"],
+                "status": row["status"],
+                "artifact_authority_level": row["authority_level"],
+                "source_authority": "",
+                "artifact_role": "LEGACY_UNCLASSIFIED",
+                "authority": row["authority"],
+                "owner": row["owner"],
+                "notes": row["notes"],
+            })
+        return normalized
+    fail(f"{label}: manifest columns mismatch: {fields} != {required}")
 
 def load_head_manifest() -> list[dict[str, str]]:
     return load_manifest_text(MANIFEST.read_text(encoding="utf-8"), "head")
@@ -61,7 +77,7 @@ def load_head_manifest() -> list[dict[str, str]]:
 def load_base_manifest(base: str) -> list[dict[str, str]]:
     if not git_exists(base, MANIFEST_REL):
         return []
-    return load_manifest_text(git_text(base, MANIFEST_REL), "base")
+    return load_manifest_text(git_text(base, MANIFEST_REL), "base", allow_legacy=True)
 
 def manifest_map(rows: list[dict[str, str]]) -> dict[str, dict[str, str]]:
     return {r["path"]: r for r in rows}
