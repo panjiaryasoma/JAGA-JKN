@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Build / coverage
+build/
+dist/
+htmlcov/
+.coverage
+coverage.xml
+
+# Data/model artifacts
+artifacts/
+models/artifacts/
+data/generated/
+data/processed/
+*.pkl
+*.joblib
+*.onnx
+
+# Frontend
+node_modules/
+.next/
+dist-web/
+
+# Logs
+*.log

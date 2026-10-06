@@ -1,0 +1,4 @@
+id,type,description,owner,probability,impact,mitigation,status
+R-001,RISK,Synthetic-to-real domain gap,TBD,MEDIUM,HIGH,Limit claims and require authorized real-data validation,OPEN
+R-002,RISK,Cross-source reference unavailable,TBD,MEDIUM,HIGH,ABSTAIN when evidence is insufficient,OPEN
+A-001,ASSUMPTION,Prototype uses synthetic data,TBD,,,Validate against competition rules,OPEN

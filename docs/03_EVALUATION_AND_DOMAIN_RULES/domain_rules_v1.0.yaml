@@ -1,0 +1,20 @@
+version: 1.0.0
+status: DRAFT
+rules:
+  - rule_id: REG-001
+    name: registration_gap_signal
+    effective_from: null
+    effective_until: null
+    inputs: [reference_worker_count, registered_worker_count]
+    output: registration_gap_signal
+    source_reference: TBD
+  - rule_id: WAGE-001
+    name: wage_divergence_signal
+    inputs: [reference_wage, reported_wage]
+    output: wage_divergence_signal
+    source_reference: TBD
+  - rule_id: CONTRIB-001
+    name: contribution_gap_signal
+    inputs: [expected_contribution, paid_contribution]
+    output: contribution_gap_signal
+    source_reference: TBD

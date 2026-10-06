@@ -1,0 +1,6 @@
+competition_id,requirement,artifact,implementation,evidence,proposal_slide,status
+HC-01,Relevansi masalah JKN,BRD,,,TBD,DRAFT
+HC-02,AI tepat guna,ML_REQUIREMENTS,,,TBD,DRAFT
+HC-03,Human-in-the-loop,HUMAN_IN_THE_LOOP_REQUIREMENTS,,,TBD,DRAFT
+HC-04,Privasi dan keamanan,SECURITY_PRIVACY_REQUIREMENTS,,,TBD,DRAFT
+HC-05,Dampak terukur,ML_SUCCESS_CRITERIA,,,TBD,DRAFT

@@ -1,0 +1,14 @@
+[project]
+name = "jaga-jkn"
+version = "0.1.0"
+description = "AI/ML-assisted employer compliance decision-support platform for JKN"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100

@@ -1,0 +1,2 @@
+JAGA-JKN validation report
+status: NOT_RUN
