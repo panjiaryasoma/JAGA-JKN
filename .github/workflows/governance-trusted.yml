@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   governance-trusted:
@@ -37,4 +38,7 @@ jobs:
           GOV_REPO_ROOT: /tmp/pr-head
           GOV_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           GOV_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GOV_PR_NUMBER: ${{ github.event.pull_request.number }}
+          GOV_GITHUB_REPOSITORY: ${{ github.repository }}
+          GOV_GITHUB_TOKEN: ${{ github.token }}
         run: python /tmp/trusted_validate_governance.py

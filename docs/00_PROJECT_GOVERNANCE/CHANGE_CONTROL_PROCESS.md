@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.5.0
+version: 0.6.0
 owner: Panji
 artifact_authority_level: A1
 authority: Project Governance
@@ -53,7 +53,7 @@ Why `authorized_base_sha` refers to **B0**, not B1: B1 contains the CR itself, s
 
 If main moves after CR approval and before the semantic PR, the authorization expires. Re-approval is required. Repository enforcement must therefore require the Governance Trusted check in **strict / branch-up-to-date mode**, so a stale green check cannot survive a base movement. Annoying, yes. Also substantially less exciting than reusable governance exploits.
 
-## CR schema v2
+## CR schema v3
 
 ```json
 {
@@ -62,6 +62,7 @@ If main moves after CR approval and before the semantic PR, the authorization ex
   "decision": "APPROVE",
   "approver": "panjiaryasoma",
   "approved_at": "2026-10-07",
+  "approval_pr_number": 42,
   "authorized_base_sha": "<B0 git sha>",
   "targets": {
     "docs/.../BRD.md": {
@@ -93,16 +94,18 @@ For an approved CR to authorize a protected path:
 
 1. CR filename ID equals JSON `cr_id`;
 2. `approved_at` is a valid ISO `YYYY-MM-DD` date;
-3. approver is authorized for every target path;
-4. `authorized_base_sha` equals the first parent of the semantic PR base;
-5. CR did not exist at `authorized_base_sha`;
-6. source blob SHA-256 at authorized base equals `source_sha256`;
-7. the CR-approval commit changes **exactly one path: that CR file itself**;
-8. therefore the approval commit cannot alter the target, manifest, CHANGE_LOG, unrelated context, or introduce a second CR;
-9. semantic PR head exactly equals `target_sha256`, or is absent for explicit DELETE;
-10. ID scope is checked as defense-in-depth;
-11. the CR record used for authorization is not edited in the semantic PR;
-12. `CHANGE_LOG.md` is updated.
+3. `approval_pr_number` binds the CR to the exact CR-only approval PR;
+4. approver is authorized for every target path;
+5. `authorized_base_sha` equals the first parent of the semantic PR base;
+6. CR did not exist at `authorized_base_sha`;
+7. source blob SHA-256 at authorized base equals `source_sha256`;
+8. the CR-approval commit changes **exactly one path: that CR file itself**;
+9. the trusted validator queries GitHub and requires approval PR `merged=true`, `merge_commit_sha == approval_base`, and authenticated `merged_by.login == CR.approver`;
+10. therefore the approval commit cannot alter target/context and the approver identity cannot be self-asserted;
+11. semantic PR head exactly equals `target_sha256`, or is absent for explicit DELETE;
+12. ID scope is checked as defense-in-depth;
+13. the CR record is immutable after entering base;
+14. `CHANGE_LOG.md` is updated by the later semantic-change PR.
 
 ## Replay rule
 
@@ -132,3 +135,41 @@ No first FROZEN artifact until:
 - provenance/ownership are complete.
 
 CI success without branch/ruleset enforcement remains evidence, not prevention.
+
+
+## CR evidence ledger
+
+`change_requests/CR-*.md` is append-only evidence.
+
+At CR ingest time the trusted validator requires:
+- exactly one new CR file and no other changed path;
+- schema parse succeeds immediately;
+- filename equals `cr_id`;
+- decision is `APPROVE`;
+- valid ISO approval date;
+- positive `approval_pr_number`, equal to the current approval PR number;
+- authorized approver;
+- `authorized_base_sha` equals current PR base;
+- every source hash matches the current base.
+
+Once a CR exists in base:
+- modification → REJECT;
+- deletion → REJECT;
+- rename/copy used to rewrite identity → REJECT.
+
+Historical corrections must be new records. Existing evidence is never rewritten.
+
+## Approval identity binding
+
+The CR field `approver` is a claim until the CR-only approval PR is merged.
+
+When a later protected semantic change attempts to consume the CR, Governance Trusted queries the GitHub Pull Request API using a read-only token and requires:
+
+```text
+approval PR is merged
+AND approval PR merge_commit_sha == semantic PR base
+AND approval PR merged_by.login == CR.approver
+AND CR.approver is authorized for every target
+```
+
+For the current single accountable approver model, the authenticated merge actor is the approval ceremony. This avoids relying on self-asserted text and avoids a sole-CODEOWNER self-review deadlock.

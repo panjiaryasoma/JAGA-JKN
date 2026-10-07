@@ -6,6 +6,8 @@ import json
 import os
 import re
 import subprocess
+import urllib.error
+import urllib.request
 from datetime import date
 from pathlib import Path
 
@@ -13,6 +15,7 @@ ROOT = Path(os.environ.get("GOV_REPO_ROOT", Path(__file__).resolve().parents[1])
 MANIFEST_REL = "docs/DOCUMENT_MANIFEST.csv"
 MANIFEST = ROOT / MANIFEST_REL
 APPROVAL_REL = "docs/00_PROJECT_GOVERNANCE/APPROVAL_AUTHORITY.csv"
+CR_DIR = "docs/00_PROJECT_GOVERNANCE/change_requests"
 
 ALLOWED_LEVELS = {"A1", "A2", "A3", "A4", "A5", "A6"}
 ALLOWED_STATUS = {
@@ -254,12 +257,12 @@ def parse_cr(text: str, path: str) -> dict:
 
     required = {
         "schema_version", "cr_id", "decision", "approver", "approved_at",
-        "authorized_base_sha", "targets", "validation_plan",
+        "approval_pr_number", "authorized_base_sha", "targets", "validation_plan",
     }
     missing = required - set(data)
     if missing:
         fail(f"{path}: CR block missing fields {sorted(missing)}")
-    if data["schema_version"] != 2:
+    if data["schema_version"] != 3:
         fail(f"{path}: unsupported CR schema_version {data['schema_version']}")
 
     filename = CR_PATH_RE.fullmatch(path)
@@ -277,6 +280,8 @@ def parse_cr(text: str, path: str) -> dict:
             fail(f"{path}: approved CR requires approver")
         if not isinstance(data["validation_plan"], str) or not data["validation_plan"].strip():
             fail(f"{path}: approved CR requires validation_plan")
+        if not isinstance(data["approval_pr_number"], int) or data["approval_pr_number"] <= 0:
+            fail(f"{path}: approval_pr_number must be a positive integer")
         if not isinstance(data["authorized_base_sha"], str) or not SHA_RE.fullmatch(data["authorized_base_sha"]):
             fail(f"{path}: authorized_base_sha must be a Git SHA")
 
@@ -304,6 +309,127 @@ def parse_cr(text: str, path: str) -> dict:
         elif spec.get("target_sha256") not in {None, ""}:
             fail(f"{path}: DELETE target {target_path} must not declare target_sha256")
     return data
+
+def github_pull_request(number: int) -> dict:
+    fixture_raw = os.getenv("GOV_TEST_PR_FIXTURES_JSON")
+    if fixture_raw:
+        fixtures = json.loads(fixture_raw)
+        item = fixtures.get(str(number))
+        if item is None:
+            fail(f"approval PR #{number}: missing test fixture")
+        return item
+
+    repository = os.getenv("GOV_GITHUB_REPOSITORY")
+    token = os.getenv("GOV_GITHUB_TOKEN")
+    if not repository or not token:
+        fail(
+            f"approval PR #{number}: authenticated GitHub lookup unavailable; "
+            "GOV_GITHUB_REPOSITORY/GOV_GITHUB_TOKEN required"
+        )
+
+    request = urllib.request.Request(
+        f"https://api.github.com/repos/{repository}/pulls/{number}",
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "JAGA-JKN-governance-validator",
+        },
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=10) as response:
+            return json.load(response)
+    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as exc:
+        fail(f"approval PR #{number}: GitHub lookup failed: {exc}")
+
+def authenticate_approval_pr(data: dict, approval_base: str, cr_path: str) -> None:
+    pr = github_pull_request(data["approval_pr_number"])
+    if not pr.get("merged"):
+        fail(f"{cr_path}: approval PR #{data['approval_pr_number']} is not merged")
+    if pr.get("merge_commit_sha") != approval_base:
+        fail(
+            f"{cr_path}: approval PR merge_commit_sha={pr.get('merge_commit_sha')} "
+            f"!= approval base {approval_base}"
+        )
+    merged_by = (pr.get("merged_by") or {}).get("login")
+    if merged_by != data["approver"]:
+        fail(
+            f"{cr_path}: self-asserted approver {data['approver']} "
+            f"!= authenticated GitHub merged_by {merged_by}"
+        )
+
+def cr_diff_entries(base: str, head: str) -> list[tuple[str, list[str]]]:
+    try:
+        raw = git("diff", "--name-status", "-M", f"{base}...{head}", "--", CR_DIR)
+    except subprocess.CalledProcessError:
+        return []
+    entries: list[tuple[str, list[str]]] = []
+    for line in raw.splitlines():
+        parts = line.split("\t")
+        if len(parts) >= 2:
+            entries.append((parts[0], parts[1:]))
+    return entries
+
+def validate_cr_ledger_changes(base: str, head: str) -> None:
+    entries = cr_diff_entries(base, head)
+    new_crs: list[str] = []
+
+    for status, paths in entries:
+        relevant = [p for p in paths if CR_PATH_RE.fullmatch(p)]
+        if not relevant:
+            continue
+
+        if status == "A" and len(relevant) == 1:
+            new_crs.append(relevant[0])
+            continue
+
+        # Existing CR records are immutable and append-only. Rename/copy is also
+        # a historical rewrite because it changes record identity.
+        fail(
+            "CR evidence ledger is append-only; existing CR modified/deleted/"
+            f"renamed/copied: status={status} paths={paths}"
+        )
+
+    if not new_crs:
+        return
+    if len(new_crs) != 1:
+        fail(f"CR approval PR must introduce exactly one CR; found {new_crs}")
+
+    cr_path = new_crs[0]
+    all_changed = changed_files(base, head)
+    if all_changed != {cr_path}:
+        fail(
+            f"{cr_path}: CR ingest must be CR-only; changed paths={sorted(all_changed)}"
+        )
+
+    data = parse_cr(git_text(head, cr_path), cr_path)
+    if data["decision"] != "APPROVE":
+        fail(f"{cr_path}: repository CR records must enter as APPROVE, not {data['decision']}")
+    if data["authorized_base_sha"] != base:
+        fail(
+            f"{cr_path}: authorized_base_sha={data['authorized_base_sha']} "
+            f"!= current PR base {base}"
+        )
+
+    current_pr = os.getenv("GOV_PR_NUMBER")
+    if current_pr:
+        try:
+            current_pr_number = int(current_pr)
+        except ValueError:
+            fail(f"GOV_PR_NUMBER must be an integer, got {current_pr!r}")
+        if data["approval_pr_number"] != current_pr_number:
+            fail(
+                f"{cr_path}: approval_pr_number={data['approval_pr_number']} "
+                f"!= current CR approval PR #{current_pr_number}"
+            )
+
+    registry = load_approval_registry(base)
+    for target_path, spec in data["targets"].items():
+        if not authorized_for(target_path, data["approver"], registry):
+            fail(f"{cr_path}: approver {data['approver']} not authorized for {target_path}")
+        source_hash = blob_sha256(base, target_path)
+        if source_hash != spec["source_sha256"]:
+            fail(f"{cr_path}: source hash mismatch for {target_path} at current base")
 
 def approved_base_crs(base: str, registry: list[dict[str, str]]) -> list[tuple[str, dict]]:
     try:
@@ -344,6 +470,8 @@ def approved_base_crs(base: str, registry: list[dict[str, str]]) -> list[tuple[s
                 f"{path}: CR approval commit must be CR-only; "
                 f"changed paths={sorted(approval_changed)}"
             )
+
+        authenticate_approval_pr(data, base, path)
 
         for target_path, spec in data["targets"].items():
             if not authorized_for(target_path, data["approver"], registry):
@@ -439,6 +567,7 @@ def main() -> None:
     validate_rows(rows)
     base, head = event_refs()
     if base and head:
+        validate_cr_ledger_changes(base, head)
         validate_protected_changes(rows, base, head)
     print(f"governance ok: {len(rows)} manifest entries")
 

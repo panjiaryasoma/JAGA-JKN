@@ -5,8 +5,10 @@
 - Phase B content: `CONDITIONALLY PASS`
 - H-B03: `CLOSED`
 - H-B06: `CLOSED`
-- M-B06: `REMEDIATED / PENDING INDEPENDENT PASS 4`
-- PR #1: `HOLD`
+- M-B06: `CLOSED`
+- M-B07: `REMEDIATED / PENDING INDEPENDENT PASS 5`
+- M-B08: `REMEDIATED / PENDING INDEPENDENT PASS 5`
+- PR #1: `HOLD pending Independent Pass 5`; if cleared, it may become `BOOTSTRAP MERGE READY` subject to explicit ACC
 - B1 freeze: `HOLD`
 - B2 executable-policy freeze: `HOLD`
 - implementation: `NOT AUTHORIZED`

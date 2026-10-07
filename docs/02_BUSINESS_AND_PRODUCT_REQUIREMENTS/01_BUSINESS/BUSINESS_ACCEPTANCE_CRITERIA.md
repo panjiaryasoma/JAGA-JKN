@@ -29,7 +29,7 @@ B1 is freeze-ready only if:
 
 **Current B1 result: HOLD.**
 
-Independent Pass 3 closed H-B03 and H-B06. M-B06 remediation still requires independent Pass 4. BAC-010 remains false because `main` is unprotected and strict required-check enforcement is not active.
+Independent Pass 4 closed H-B03, H-B06, and M-B06. M-B07/M-B08 remediation requires Independent Pass 5. BAC-010 remains false because `main` is unprotected and strict required-check enforcement is not active.
 
 ## B2 — Executable Policy Freeze
 

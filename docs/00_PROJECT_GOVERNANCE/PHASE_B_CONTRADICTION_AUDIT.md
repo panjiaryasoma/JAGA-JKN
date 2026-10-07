@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.5.0
+version: 0.6.0
 owner: Panji
 artifact_authority_level: A6
 authority: Verification & Governance Evidence
@@ -12,141 +12,144 @@ last_updated: 2026-10-07
 
 ## Latest independent result
 
-Independent Pass 3 against head `29bc20d10dc00544b24743ed6fb9acc2831f2230` concluded:
+Independent Pass 4 against head `fdc32aaeab6d28d77e1b25e66ac35a8ae356ff9e` concluded:
 
 - H-B03: **CLOSED**
 - H-B06: **CLOSED**
-- no unresolved HIGH finding
-- Phase B content: **CONDITIONALLY PASS**
+- M-B06: **CLOSED**
 - M-B01: **OPEN**
 - M-B02: **OPEN — B2 ONLY**
 - M-B03: **CLOSED**
 - M-B04: **CLOSED**
 - M-B05: **PARTIAL**
-- M-B06: **OPEN — CR approval commit isolation**
+- M-B07: **OPEN — approver identity binding**
+- M-B08: **OPEN — CR evidence immutability / ingest validation**
 
-PR #1 merge, B1 freeze, B2 freeze, A4, and implementation remain blocked according to their respective gates.
+No new HIGH was found.
 
-## M-B06 — CR approval commit isolation
+## M-B07 — authenticated approval identity
 
 ### Independent finding
 
-CR schema v2 correctly binds one-shot authorization to source/base/target state, but the validator did not require the CR approval commit itself to be isolated. The approval base could introduce the CR while changing unrelated context.
-
-That did not break exact target authorization, but weakened snapshot isolation.
+The previous validator proved that the CR *claimed* an authorized login, but did not prove that GitHub authenticated that user as the approval actor.
 
 ### Remediation
 
-For an approved CR to be eligible, the validator now requires:
+CR schema v3 adds `approval_pr_number`.
+
+When a protected semantic PR consumes an approved CR, Governance Trusted now queries the GitHub Pull Request API using read-only `pull-requests: read` permission and requires:
 
 ```text
-diff(authorized_base_sha, approval_base)
-==
-{ exact CR file path }
+approval PR merged == true
+approval PR merge_commit_sha == semantic PR base
+approval PR merged_by.login == CR.approver
+CR.approver authorized for all targets
 ```
 
-Nothing else may ride with the approval commit:
+Therefore `approver=panjiaryasoma` is no longer accepted merely because those bytes exist in a Markdown file.
 
-- no CHANGE_LOG update;
-- no manifest edit;
-- no unrelated REVIEWED/DRAFT artifact;
-- no second CR;
-- no target change.
+This deliberately binds approval to the authenticated account that merges the isolated CR approval PR. It avoids the self-review deadlock created by a sole CODEOWNER being unable to approve their own PR.
 
-The approval commit therefore has one epistemic meaning only: **introduce this exact approval envelope against an unchanged referenced world**.
+**M-B07 status: `REMEDIATED / PENDING INDEPENDENT PASS 5`.**
 
-### Regression coverage added
+## M-B08 — append-only CR evidence + ingest validation
 
-- approved CR commit + unrelated reviewed artifact → **REJECT**
-- approved CR commit + second CR → **REJECT**
-- normal single-CR approval path remains covered by exact-target acceptance tests
+### Independent finding
 
-**M-B06 state: `REMEDIATED / PENDING INDEPENDENT PASS 4`.**
+Historical CR files could be edited/deleted after use, and malformed CRs could enter base before being parsed.
 
-It is not self-closed.
+### Remediation
 
-## Closed HIGH findings
+The validator now treats `change_requests/CR-*.md` as an append-only evidence ledger.
 
-### H-B03
-**CLOSED by Independent Pass 2.**
+New CR ingest requires:
+- exactly one new CR file;
+- no unrelated changed path;
+- schema v3 parses immediately;
+- filename equals `cr_id`;
+- `decision=APPROVE`;
+- valid approval date;
+- approval PR number matches current CR-only PR;
+- authorized approver;
+- authorized base equals current PR base;
+- source hashes match the current base.
 
-Base/head protection, same-PR dummy CR rejection, and trusted-base validation survived adversarial review.
+Existing CR:
+- modify → REJECT;
+- delete → REJECT;
+- rename/copy rewrite → REJECT.
 
-### H-B06
-**CLOSED by Independent Pass 3.**
+Corrections require a new evidence record.
 
-One-shot CR binding survived replay, wrong-target, wrong-base, deletion, ID-context, filename/date, downgrade, and trusted-control attacks.
+**M-B08 status: `REMEDIATED / PENDING INDEPENDENT PASS 5`.**
+
+## Regression additions
+
+Added adversarial coverage for:
+- valid isolated new CR ingest → ACCEPT;
+- malformed new CR → REJECT;
+- unauthorized approver → REJECT;
+- existing approved CR edited → REJECT;
+- existing approved CR deleted → REJECT;
+- self-asserted approver != authenticated GitHub merge actor → REJECT;
+- authenticated authorized merge actor → ACCEPT;
+- approval PR merge SHA mismatch → REJECT;
+- CR approval PR-number mismatch → REJECT.
+
+Existing downgrade, replay, target/base mismatch, DELETE, ID-context, snapshot-isolation, and trusted-control regressions remain.
 
 ## M-B01 — repository enforcement
 
-**OPEN / B1 FREEZE BLOCKER.**
+**OPEN / B1 BLOCKER, not bootstrap-merge blocker once M-B07/M-B08 pass independent review.**
 
-Verified repository state remains unprotected. Final enforcement acceptance requires all of:
+Required final configuration after governance bootstrap reaches main:
 
 ```text
-Pull request required
-+
+PR required
 Governance Trusted required
-+
-strict / branch must be up to date before merge
-+
+strict / branch up-to-date required
 force push blocked
-+
 branch deletion blocked
-+
 bypass constrained
 ```
 
-Strict latest-base revalidation is mandatory because CR authorization intentionally expires when main moves. A loose required check would leave a TOCTOU gap between validation and merge.
+Then run an adversarial canary PR against the trusted-base controls. Only verified enforcement closes M-B01 and permits B1 freeze.
 
-## M-B02 — executable policy consolidation
+## M-B02
 
-**OPEN / B2 ONLY.**
+**OPEN — B2 ONLY.**
 
-Source URLs and traceability have improved, but executable article/effective-period/exception/wage-basis/timing semantics remain intentionally incomplete.
+Executable policy consolidation remains separate from B1.
 
-This does not invalidate B1 safety boundaries.
-
-## M-B03
-**CLOSED.**
-
-## M-B04
-**CLOSED.**
-
-## M-B05
-**PARTIAL**, with most residual enforcement dependent on M-B01.
-
-## Gate
+## Bootstrap gate
 
 ```text
-PHASE A
-PASS_WITH_CONSTRAINTS
-        ↓
 PHASE B CONTENT
 CONDITIONALLY PASS
         ↓
-H-B03
+H-B03 / H-B06 / M-B06
 CLOSED
         ↓
-H-B06
-CLOSED
-        ↓
-M-B06
+M-B07 + M-B08
 REMEDIATED
-PENDING INDEPENDENT PASS 4
+PENDING INDEPENDENT PASS 5
         ↓
-PR #1 MERGE
-HOLD
+PR #1
+HOLD pending Pass 5
         ↓
-B1 FREEZE
-HOLD on M-B01
+if Pass 5 clears correctness blockers:
+BOOTSTRAP MERGE READY
+SUBJECT TO EXPLICIT ACC
         ↓
-B2 FREEZE
-HOLD on M-B01 + M-B02
+merge governance to main
         ↓
-A4 / PRD / SRS
-NOT AUTHORIZED
+configure strict repository enforcement
         ↓
-IMPLEMENTATION
-NOT AUTHORIZED
+adversarial canary PR
+        ↓
+M-B01 CLOSED
+        ↓
+B1 FREEZE READY
 ```
+
+A4 / PRD / SRS and implementation remain NOT AUTHORIZED.

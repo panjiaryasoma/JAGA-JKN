@@ -102,11 +102,12 @@ def cr_text(
     if target is not None:
         spec["target_sha256"] = sha256_text(target)
     data = {
-        "schema_version": 2,
+        "schema_version": 3,
         "cr_id": filename_id or cr_id,
         "decision": decision,
         "approver": "panjiaryasoma" if decision == "APPROVE" else "",
         "approved_at": approved_at if decision == "APPROVE" else "",
+        "approval_pr_number": 101,
         "authorized_base_sha": authorized_base,
         "targets": {BRD_PATH: spec},
         "validation_plan": "Run governance security regression tests.",
@@ -155,9 +156,23 @@ class GovernanceSecurityTests(unittest.TestCase):
         )
         return self.commit(root, "approve change request")
 
-    def validator(self, root, base, head):
+    def validator(self, root, base, head, *, merged_by="panjiaryasoma",
+                  merge_commit_sha=None, current_pr_number=101):
         env = os.environ.copy()
-        env.update({"GOV_REPO_ROOT": str(root), "GOV_BASE_SHA": base, "GOV_HEAD_SHA": head})
+        fixture = {
+            "101": {
+                "merged": True,
+                "merge_commit_sha": merge_commit_sha or base,
+                "merged_by": {"login": merged_by},
+            }
+        }
+        env.update({
+            "GOV_REPO_ROOT": str(root),
+            "GOV_BASE_SHA": base,
+            "GOV_HEAD_SHA": head,
+            "GOV_PR_NUMBER": str(current_pr_number),
+            "GOV_TEST_PR_FIXTURES_JSON": json.dumps(fixture),
+        })
         return subprocess.run(
             ["python", str(VALIDATOR)], cwd=root, env=env, text=True, capture_output=True
         )
@@ -320,6 +335,97 @@ class GovernanceSecurityTests(unittest.TestCase):
         self.assert_rejected(
             self.validator(root, approval_base, head),
             "CR approval commit must be CR-only",
+        )
+
+    def test_valid_isolated_new_cr_ingest_accepts(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        write(root, f"{CR_DIR}/CR-TEST-001.md", cr_text("CR-TEST-001", pre, BRD_A, BRD_B))
+        approval_head = self.commit(root, "valid isolated cr")
+        p = self.validator(root, pre, approval_head)
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+
+    def test_new_malformed_cr_ingest_rejected(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        write(root, f"{CR_DIR}/CR-TEST-001.md", "# malformed CR without governance block\n")
+        approval_head = self.commit(root, "malformed cr")
+        self.assert_rejected(self.validator(root, pre, approval_head), "missing GOVERNANCE-CR")
+
+    def test_new_cr_unauthorized_approver_rejected(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        text = cr_text("CR-TEST-001", pre, BRD_A, BRD_B).replace(
+            '"approver": "panjiaryasoma"',
+            '"approver": "unauthorized-user"',
+        )
+        write(root, f"{CR_DIR}/CR-TEST-001.md", text)
+        approval_head = self.commit(root, "unauthorized cr")
+        self.assert_rejected(
+            self.validator(root, pre, approval_head),
+            "not authorized",
+        )
+
+    def test_existing_approved_cr_edit_rejected(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        approval_base = self.approve(root, pre, BRD_A, BRD_B)
+        path = f"{CR_DIR}/CR-TEST-001.md"
+        original = (root / path).read_text(encoding="utf-8")
+        write(root, path, original + "\nrewritten history\n")
+        head = self.commit(root, "rewrite approved cr")
+        self.assert_rejected(self.validator(root, approval_base, head), "append-only")
+
+    def test_existing_approved_cr_delete_rejected(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        approval_base = self.approve(root, pre, BRD_A, BRD_B)
+        (root / f"{CR_DIR}/CR-TEST-001.md").unlink()
+        head = self.commit(root, "delete approved cr")
+        self.assert_rejected(self.validator(root, approval_base, head), "append-only")
+
+    def test_self_asserted_approver_must_match_authenticated_merge_actor(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        approval_base = self.approve(root, pre, BRD_A, BRD_B)
+        write(root, BRD_PATH, BRD_B)
+        write(root, "docs/00_PROJECT_GOVERNANCE/CHANGE_LOG.md", "# log\nactor mismatch\n")
+        head = self.commit(root, "semantic change")
+        self.assert_rejected(
+            self.validator(root, approval_base, head, merged_by="someone-else"),
+            "authenticated GitHub merged_by",
+        )
+
+    def test_authenticated_authorized_merge_actor_accepts(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        approval_base = self.approve(root, pre, BRD_A, BRD_B)
+        write(root, BRD_PATH, BRD_B)
+        write(root, "docs/00_PROJECT_GOVERNANCE/CHANGE_LOG.md", "# log\nauthenticated actor\n")
+        head = self.commit(root, "semantic change")
+        p = self.validator(root, approval_base, head, merged_by="panjiaryasoma")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
+
+    def test_approval_pr_merge_sha_must_equal_approval_base(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        approval_base = self.approve(root, pre, BRD_A, BRD_B)
+        write(root, BRD_PATH, BRD_B)
+        write(root, "docs/00_PROJECT_GOVERNANCE/CHANGE_LOG.md", "# log\nwrong merge sha\n")
+        head = self.commit(root, "semantic change")
+        self.assert_rejected(
+            self.validator(root, approval_base, head, merge_commit_sha="0" * 40),
+            "merge_commit_sha",
+        )
+
+    def test_cr_approval_pr_number_must_match_current_ingest_pr(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        write(root, f"{CR_DIR}/CR-TEST-001.md", cr_text("CR-TEST-001", pre, BRD_A, BRD_B))
+        approval_head = self.commit(root, "wrong approval pr binding")
+        self.assert_rejected(
+            self.validator(root, pre, approval_head, current_pr_number=999),
+            "approval_pr_number",
         )
 
     def test_trusted_control_self_change_fails_without_one_shot_cr(self):
