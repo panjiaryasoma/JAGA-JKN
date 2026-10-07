@@ -1,20 +1,130 @@
-version: 1.0.0
-status: DRAFT
+schema_version: "1.0"
+document_version: "0.4.0"
+status: REVIEWED
+execution_authority: NONE
+freeze_ready: false
+
+source_registry:
+  SRC-LAW-001:
+    title: "UU No. 24 Tahun 2011 tentang BPJS"
+    authority: A0
+    amendment_note: "Amended through Cipta Kerja chain; latest relevant amendment identified here: UU 6/2023. Article-level impact must be checked before execution."
+    url: "https://peraturan.bpk.go.id/Details/39268/uu-no-24-tahun-2011"
+  SRC-LAW-001A:
+    title: "UU No. 6 Tahun 2023"
+    authority: A0
+    relationship: "amends UU 24/2011 among other laws"
+    url: "https://peraturan.bpk.go.id/Details/246523/uu-no-6-tahun-2023"
+  SRC-LAW-002:
+    title: "Perpres No. 82 Tahun 2018 tentang Jaminan Kesehatan"
+    authority: A0
+    url: "https://peraturan.bpk.go.id/Details/94711/perpres-no-82-tahun-2018"
+  SRC-LAW-003:
+    title: "Perpres No. 64 Tahun 2020"
+    authority: A0
+    relationship: "second amendment to Perpres 82/2018"
+    url: "https://peraturan.bpk.go.id/Details/136650/perpres-no-64-tahun-2020"
+  SRC-LAW-004:
+    title: "Perpres No. 59 Tahun 2024"
+    authority: A0
+    relationship: "third amendment to Perpres 82/2018"
+    url: "https://peraturan.bpk.go.id/details/285181/perpres-no-59-tahun-2024"
+  SRC-LAW-005:
+    title: "PP No. 86 Tahun 2013"
+    authority: A0
+    direct_wage_anchor: "Pasal 3(2)(b): wage data reported must correspond to wage received by worker"
+    url: "https://peraturan.bpk.go.id/Details/5421/pp-no-86-tahun-2013"
+  SRC-LAW-006A:
+    title: "Peraturan BPJS Kesehatan No. 5 Tahun 2018"
+    authority: A0
+    relationship: "base contribution collection/payment/recording regulation"
+    consolidation_status: "must be read with 3/2020 and 2/2024"
+    url: "https://peraturan.go.id/id/peraturan-bpjs-kesehatan-no-5-tahun-2018"
+  SRC-LAW-006B:
+    title: "Peraturan BPJS Kesehatan No. 3 Tahun 2020"
+    authority: A0
+    relationship: "first amendment to 5/2018"
+    url: "https://peraturan.go.id/id/peraturan-bpjs-kesehatan-no-3-tahun-2020"
+  SRC-LAW-006:
+    title: "Peraturan BPJS Kesehatan No. 2 Tahun 2024"
+    authority: A0
+    relationship: "second amendment to 5/2018; official metadata references prior 3/2020 amendment"
+    effective_from: "2024-10-03"
+    url: "https://peraturan.bpk.go.id/Details/311192/peraturan-bpjs-kesehatan-no-2-tahun-2024"
+
 rules:
   - rule_id: REG-001
     name: registration_gap_signal
-    effective_from: null
-    effective_until: null
-    inputs: [reference_worker_count, registered_worker_count]
-    output: registration_gap_signal
-    source_reference: TBD
+    rule_type: detection
+    normative_anchor:
+      - SRC-LAW-001
+      - SRC-LAW-001A
+      - SRC-LAW-005
+    required_inputs:
+      - reference_worker_set
+      - observed_registered_worker_set
+    preconditions:
+      - reference_source_authority_known
+      - reference_evidence_sufficient
+      - applicable_article_version_verified
+    output:
+      allowed: [CONSISTENT, POTENTIAL_REGISTRATION_GAP, ABSTAIN]
+      prohibited_semantics: [CONFIRMED_VIOLATION, FRAUD]
+    missing_data_behavior: ABSTAIN
+    temporal_threshold: TBD_DOMAIN_VALIDATION
+    execution_status: NON_EXECUTABLE
+
   - rule_id: WAGE-001
     name: wage_divergence_signal
-    inputs: [reference_wage, reported_wage]
-    output: wage_divergence_signal
-    source_reference: TBD
+    rule_type: detection
+    normative_anchor:
+      - SRC-LAW-001
+      - SRC-LAW-001A
+      - SRC-LAW-005
+      - SRC-LAW-002
+      - SRC-LAW-003
+      - SRC-LAW-004
+    direct_semantic_anchor: SRC-LAW-005
+    required_inputs:
+      - reference_wage
+      - observed_reported_wage
+      - applicable_policy_version
+    output:
+      allowed: [CONSISTENT, POTENTIAL_WAGE_DIVERGENCE, ABSTAIN]
+    tolerance: TBD_DOMAIN_VALIDATION
+    missing_data_behavior: ABSTAIN
+    execution_status: NON_EXECUTABLE
+
   - rule_id: CONTRIB-001
-    name: contribution_gap_signal
-    inputs: [expected_contribution, paid_contribution]
-    output: contribution_gap_signal
-    source_reference: TBD
+    name: contribution_irregularity_signal
+    rule_type: detection
+    normative_anchor:
+      - SRC-LAW-003
+      - SRC-LAW-004
+      - SRC-LAW-006A
+      - SRC-LAW-006B
+      - SRC-LAW-006
+    verified_anchor:
+      ppu_rate_perpres_64_2020:
+        total_rate: 0.05
+        employer_rate: 0.04
+        participant_rate: 0.01
+        note: "Historical/legal anchor; not a timeless constant without applicable-policy verification."
+    required_inputs:
+      - contribution_wage_basis
+      - observed_payment
+      - applicable_policy_version
+    preconditions:
+      - contribution_regulation_chain_consolidated_for_period
+    output:
+      allowed: [CONSISTENT, POTENTIAL_CONTRIBUTION_IRREGULARITY, ABSTAIN]
+    payment_timing_threshold: TBD_DOMAIN_VALIDATION
+    missing_data_behavior: ABSTAIN
+    execution_status: NON_EXECUTABLE
+
+global_invariants:
+  - automated_signal_is_not_confirmed_violation
+  - policy_source_and_effective_period_required
+  - conflicting_authority_fails_closed
+  - unknown_reference_data_causes_abstention
+  - latest_amendment_is_not_assumed_to_be_consolidated_text

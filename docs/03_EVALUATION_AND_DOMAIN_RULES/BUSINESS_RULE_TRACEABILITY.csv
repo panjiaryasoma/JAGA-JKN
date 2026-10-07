@@ -1,1 +1,18 @@
 source_id,target_id,relationship,status,notes
+SRC-COMP-001,BR-001,supports selected employer-risk problem,VERIFIED,PDUK under-reporting wage contribution risk listed
+SRC-COMP-002,BR-003,requires responsible AI framing,VERIFIED,AI must support not replace human decision
+SRC-COMP-002,BR-004,supports human decision authority,VERIFIED,Exact operational BPJS role remains unknown
+SRC-COMP-001,BR-005,restricts real JKN data,VERIFIED,Dummy/anonymized required when unauthorized
+SRC-COMP-002,BR-012,requires measurable impact without overclaim,VERIFIED,Proposal requirement
+SRC-LAW-001,LAW-REG-001,legal anchor,VERIFIED,Employer registration and complete/correct data
+SRC-LAW-001A,LAW-REG-001,amendment provenance,VERIFIED,UU 6/2023 modifies UU 24/2011; article-level impact still requires consolidation
+SRC-LAW-003,LAW-CONTRIB-001,legal anchor,VERIFIED,PPU 5 percent 4 plus 1 and employer pays BPJS
+SRC-LAW-002,LAW-VERSION-001,base regulation,VERIFIED,Amendment chain required
+SRC-LAW-004,LAW-VERSION-001,latest Perpres amendment found in review,VERIFIED,Effective 2024-05-08
+SRC-LAW-005,LAW-COMPLY-001,administrative compliance anchor,VERIFIED,Sanction and employer-data framework
+SRC-LAW-005,WAGE-001,direct normative wage-reporting anchor,VERIFIED,PP 86/2013 Pasal 3(2)(b) requires reported wage to match wage received
+SRC-LAW-006A,CONTRIB-001,base contribution collection regulation,VERIFIED,PerBPJS 5/2018 base
+SRC-LAW-006B,CONTRIB-001,first amendment provenance,VERIFIED,PerBPJS 3/2020 first amendment to 5/2018
+SRC-LAW-006,CONTRIB-001,second amendment provenance,VERIFIED,PerBPJS 2/2024 second amendment to 5/2018
+SRC-LAW-006,LAW-IURAN-001,contribution compliance anchor,VERIFIED,Collection arrears supervision
+A0-C002,SCOPE-MVP,excludes disputed taxonomy item,REVIEWED,Non-blocking current MVP

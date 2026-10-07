@@ -1,31 +1,46 @@
 ---
 project: JAGA-JKN
-competition: BPJS Kesehatan Healthkathon 2026
-status: DRAFT
-version: 0.1.0
-owner: TBD
-authority: TBD
-last_updated: 2026-10-07
+status: REVIEWED
+version: 0.2.0
+owner: Panji
+authority_level: A3
+authority: Domain Rules
 ---
 
-# POLICY AS CODE SPEC
+# Policy-as-Code Specification
 
-## Tujuan
-Dokumen ini menjadi artefak resmi untuk **JAGA-JKN** pada area terkait.
+## Required policy record
 
-## Baseline proyek
-- Kategori: **Risiko Pemberi Kerja**
-- Produk: **web app internal BPJS Kesehatan, desktop-first responsive**
-- Konsep inti: rekonstruksi kondisi yang seharusnya → kondisi aktual → episode kepatuhan → intervensi → keputusan manusia → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML: mendukung deteksi, prioritisasi, penjelasan, dan rekomendasi; keputusan akhir tetap pada petugas BPJS.
+Every executable policy rule must carry:
 
-## Isi yang harus difinalkan
-- [ ] Scope dan batasan jelas.
-- [ ] Requirement memiliki ID unik bila relevan.
-- [ ] Dependency dan asumsi dicatat.
-- [ ] Acceptance criteria dapat diuji.
-- [ ] Traceability ke requirement/test/evidence tersedia.
+- `rule_id`
+- `source_id`
+- `source_title`
+- `source_authority`
+- `effective_from`
+- `effective_until`
+- `policy_version`
+- `jurisdiction/scope`
+- `inputs`
+- `calculation/condition`
+- `exceptions`
+- `missing_data_behavior`
+- `output_semantics`
+- `verification_status`
 
-## Catatan
-Status awal **DRAFT**. Artefak menjadi authoritative hanya setelah review dan freeze eksplisit.
+## Fail-closed rule
+
+A rule with unresolved source conflict, unknown effective date, unverified exception, or missing required input is not executable for an authoritative expected-state calculation.
+
+## Separation
+
+- normative policy rule: what the applicable obligation says;
+- detection rule: how the prototype recognizes a possible discrepancy;
+- prioritization rule/model: how review order is suggested;
+- human decision: authoritative operational conclusion.
+
+These layers must not share semantics implicitly.
+
+## Current status
+
+Phase B defines schema and boundaries only. Production policy consolidation is not complete.

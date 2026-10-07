@@ -1,0 +1,44 @@
+name: Governance Trusted
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  governance-trusted:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trusted base
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Preserve trusted validator
+        run: cp scripts/validate_governance.py /tmp/trusted_validate_governance.py
+
+      - name: Materialize PR head as data
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch origin "$HEAD_SHA"
+          git worktree add --detach /tmp/pr-head "$HEAD_SHA"
+
+      - name: Run base-trusted governance validator
+        env:
+          GOV_REPO_ROOT: /tmp/pr-head
+          GOV_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          GOV_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GOV_PR_NUMBER: ${{ github.event.pull_request.number }}
+          GOV_GITHUB_REPOSITORY: ${{ github.repository }}
+          GOV_GITHUB_TOKEN: ${{ github.token }}
+        run: python /tmp/trusted_validate_governance.py

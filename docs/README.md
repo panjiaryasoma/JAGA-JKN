@@ -1,59 +1,55 @@
 # JAGA-JKN Documentation Hub
 
-**Sistem Intelijen Kepatuhan Pemberi Kerja JKN** untuk **BPJS Kesehatan Healthkathon 2026**.
+## Current gate
+- Phase A: `PASS_WITH_CONSTRAINTS`
+- Phase B: `DRAFT + REVIEW AUTHORIZED`
+- Phase B freeze: `HOLD`
+- Product implementation: `NOT AUTHORIZED`
 
-## Status proyek
+## Authority semantics
 
-- Repository scaffold: `ACCEPTED`
-- Phase A — authority + discovery: `PASS_WITH_CONSTRAINTS`
-- Business freeze: `NOT_STARTED`
-- Preproduction: `HOLD`
-- Implementation: `NOT_AUTHORIZED`
+**Authority precedence is: `A0 > A1 > A2 > A3 > A4 > A5 > A6`. Lower numeric index means higher authority.**
 
-Phase A memvalidasi bahwa kategori **Efisiensi Risiko Pemberi Kerja** dan modus risikonya memang ditetapkan oleh penyelenggara, serta bahwa kewajiban pemberi kerja memiliki dasar regulasi. Phase A **tidak** membuktikan workflow internal BPJS, availability sumber data operasional, prevalence tiap modus, atau threshold domain produksi.
+A0 is reserved for **external official sources** such as applicable law/regulation and official Healthkathon/BPJS channels. A repository artifact MUST NOT become A0 merely because it transcribes an A0 source.
 
-## Baseline konseptual
+Project files therefore distinguish:
 
-- Kategori: **Risiko Pemberi Kerja**
-- Kandidat produk: **web decision-support internal BPJS Kesehatan, desktop-first responsive**
-- Hipotesis solusi: expected/reference state → observed state → discrepancy → temporal episode → review/intervention → human decision → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML tidak boleh menetapkan fraud, pelanggaran, utang, atau sanksi secara otomatis.
+- `artifact_authority_level`: authority of the repository artifact itself;
+- `source_authority`: authority of the source material it derives from;
+- `artifact_role`: e.g. `A0_DERIVED_REGISTRY`.
 
-## Authority model
+Example: `HEALTHKATHON_REQUIREMENTS.md` is a project-maintained derived registry. Its source authority is A0, but the file itself is not official source truth.
 
-Status dokumen dan authority adalah dua hal berbeda. Folder atau nama file **tidak pernah** membuat sebuah artefak otomatis authoritative.
+## Conflict rule
 
-| Level | Authority | Contoh |
-|---|---|---|
-| A0 | Official competition / applicable law & regulation | Guide resmi, T&C resmi, peraturan |
-| A1 | Approved project governance | Charter, scope, change control |
-| A2 | Reviewed discovery / problem evidence | problem brief, discovery evidence |
-| A3 | Frozen business/domain authority | BRD, business rules, domain policy |
-| A4 | Frozen product/system/data architecture | PRD, SRS, data/ML requirements, architecture |
-| A5 | Frozen implementation contracts | API/data/model/inference contracts |
-| A6 | Verification/evidence/supporting artifacts | RTM, tests, acceptance evidence, submission mapping |
-
-### Conflict rule
-
-1. Higher authority level wins unless a formally approved change supersedes it.
-2. A `DRAFT` document never overrides a `FROZEN` parent authority.
-3. If two A0 sources conflict on mutable competition information such as dates, the newest official channel wins; the conflict must remain recorded.
-4. If an implementation contract conflicts with a higher-level requirement, implementation is considered wrong until an approved change updates the higher-level authority.
-5. Unknown facts remain `UNKNOWN`; they are not filled by assumption.
-
-## DOCUMENT_MANIFEST.csv = control plane
-
-`DOCUMENT_MANIFEST.csv` is the machine-readable registry for status, authority level, owner, and state. Metadata inside individual files must converge to the manifest before freeze.
-
-The path `05_PREPRODUCTION/01_CONTRACTS_ACTIVE/` is legacy naming from the scaffold. Files inside it remain **inactive** while their manifest status is `DRAFT`. Path semantics do not override manifest state.
+1. A0 source overrides project interpretation.
+2. A1 overrides A2..A6 when it does not conflict with A0.
+3. A DRAFT artifact never overrides a REVIEWED/FROZEN artifact of equal or higher precedence.
+4. A downstream contract that conflicts with an upstream frozen requirement is invalid until an approved Change Request changes the upstream authority.
+5. Conflicting A0 sources are recorded in `10_COMPETITION_AND_SUBMISSION/A0_CONFLICT_REGISTER.md`; they are not silently reconciled.
+6. UNKNOWN stays UNKNOWN. A downstream design need does not create evidence.
 
 ## Lifecycle
 
 `DRAFT → REVIEWED → FROZEN → IMPLEMENTED → VERIFIED → ACCEPTED`
 
-`SUPERSEDED` and `RETIRED` are terminal governance states for documents that no longer carry active authority.
+Additional terminal states: `SUPERSEDED`, `RETIRED`.
 
-## Next dependency
+## Freeze gate
 
-Phase B may now draft and review Charter → Scope → BRD → domain authority, but none may be frozen unless every material claim traces to Phase A evidence or is explicitly marked as an assumption.
+No first project artifact may become FROZEN until:
+- contradiction audit passes;
+- no unresolved HIGH finding affects it;
+- provenance and ownership are complete;
+- change-control process is reviewed and repository enforcement is active enough to prevent accidental bypass;
+- any A0 conflicts relevant to the artifact are resolved or explicitly non-blocking.
+
+## Repository enforcement state
+
+This branch introduces:
+- CODEOWNERS;
+- governance CI validation;
+- change-control semantics;
+- frozen-artifact change detection.
+
+**Branch protection / required status checks are still an external repository setting. Until that setting is verified active, Phase B freeze remains HOLD.**

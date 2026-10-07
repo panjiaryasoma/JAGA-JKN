@@ -1,0 +1,18 @@
+# JAGA-JKN review routing. Enforcement requires branch/ruleset protection.
+/docs/00_PROJECT_GOVERNANCE/ @panjiaryasoma
+/docs/00_PROJECT_GOVERNANCE/change_requests/ @panjiaryasoma
+/docs/01_DISCOVERY_AND_PROBLEM/ @panjiaryasoma
+/docs/02_BUSINESS_AND_PRODUCT_REQUIREMENTS/ @panjiaryasoma
+/docs/03_EVALUATION_AND_DOMAIN_RULES/ @panjiaryasoma
+/docs/04_DATA_STRATEGY/ @panjiaryasoma
+/docs/05_PREPRODUCTION/ @panjiaryasoma
+/docs/06_ARCHITECTURE_AND_DESIGN/ @panjiaryasoma
+/docs/07_TRACEABILITY_AND_CONTROL/ @panjiaryasoma
+/docs/08_TESTING_AND_ACCEPTANCE/ @panjiaryasoma
+/docs/09_RELEASE_AND_OPERATIONS/ @panjiaryasoma
+/docs/10_COMPETITION_AND_SUBMISSION/ @panjiaryasoma
+/docs/11_PROJECT_MANAGEMENT/ @panjiaryasoma
+/docs/12_FUTURE_PRODUCTION_AND_PROCUREMENT/ @panjiaryasoma
+/docs/DOCUMENT_MANIFEST.csv @panjiaryasoma
+/.github/ @panjiaryasoma
+/scripts/validate_governance.py @panjiaryasoma

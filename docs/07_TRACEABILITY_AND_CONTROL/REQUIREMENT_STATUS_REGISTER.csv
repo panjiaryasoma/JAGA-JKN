@@ -1,1 +1,13 @@
-requirement_id,title,owner,status,version,notes
+requirement_id,title,owner,status,freeze_ready,provenance_state,notes
+BR-001,Identify potential employer-risk discrepancies,Panji,REVIEWED,false,VERIFIED_BASIS,Downstream PRD not authorized
+BR-002,Preserve evidence provenance,Panji,REVIEWED,false,SUPPORTED,Needs Phase B contradiction audit
+BR-003,Do not equate automation with confirmed violation,Panji,REVIEWED,false,VERIFIED_BASIS,Hard governance boundary
+BR-004,Human final decision authority,Panji,REVIEWED,false,VERIFIED_BASIS_ROLE_UNKNOWN,Exact BPJS role unknown
+BR-005,Synthetic or authorized data only,Panji,REVIEWED,false,VERIFIED,Competition constraint
+BR-006,Abstain on insufficient authority/evidence,Panji,REVIEWED,false,DECIDED,Project governance
+BR-007,Version policy by source/effective period,Panji,REVIEWED,false,VERIFIED_BASIS,Legal amendment chain
+BR-008,Separate risk strength from evidence quality,Panji,REVIEWED,false,ASSUMED_REVIEWED,Needs evaluation later
+BR-009,Preserve temporal context,Panji,REVIEWED,false,ASSUMED_REVIEWED,Threshold not defined
+BR-010,Represent resolution and recurrence,Panji,REVIEWED,false,ASSUMED_REVIEWED,Does not claim current BPJS workflow
+BR-011,No unsupported prevalence/loss/workflow claims,Panji,REVIEWED,false,VERIFIED_GOVERNANCE,Non-claim boundary
+BR-012,Trace impact claims to evidence,Panji,REVIEWED,false,VERIFIED_BASIS,Proposal requirement
