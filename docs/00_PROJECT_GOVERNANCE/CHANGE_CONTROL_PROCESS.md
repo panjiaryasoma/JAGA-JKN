@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.6.0
+version: 0.7.0
 owner: Panji
 artifact_authority_level: A1
 authority: Project Governance
@@ -57,7 +57,7 @@ If main moves after CR approval and before the semantic PR, the authorization ex
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "cr_id": "CR-2026-001",
   "decision": "APPROVE",
   "approver": "panjiaryasoma",
@@ -173,3 +173,12 @@ AND CR.approver is authorized for every target
 ```
 
 For the current single accountable approver model, the authenticated merge actor is the approval ceremony. This avoids relying on self-asserted text and avoids a sole-CODEOWNER self-review deadlock.
+
+
+## Authorization ledger contract
+
+`change_requests/` is the **approved authorization ledger only**.
+
+Drafting may use `PENDING` in a working copy/template, but a record may enter the repository ledger only with `decision=APPROVE`.
+
+`REJECT` and `DEFER` are not authorization records and therefore do not enter this ledger. Their evidence remains in the GitHub PR/issue discussion or other separately governed decision evidence. Historical approved CR records are immutable.

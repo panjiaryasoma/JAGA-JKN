@@ -10,3 +10,4 @@ docs/07_TRACEABILITY_AND_CONTROL/,A6,panjiaryasoma,Project/Product Accountable,,
 docs/10_COMPETITION_AND_SUBMISSION/,A6,panjiaryasoma,Project/Product Accountable,,Machine-valid approver
 .github/,CONTROL,panjiaryasoma,Project/Product Accountable,,Trusted-control change requires pre-approved CR once bootstrap is established
 scripts/validate_governance.py,CONTROL,panjiaryasoma,Project/Product Accountable,,Trusted-control change requires pre-approved CR once bootstrap is established
+docs/DOCUMENT_MANIFEST.csv,CONTROL,panjiaryasoma,Project/Product Accountable,,Trusted lifecycle control-plane change requires authenticated one-shot CR after bootstrap

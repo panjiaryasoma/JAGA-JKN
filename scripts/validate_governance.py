@@ -224,13 +224,32 @@ def load_approval_registry(ref: str) -> list[dict[str, str]]:
         fail(f"{ref}: approval authority registry empty")
     return rows
 
-def authorized_for(path: str, approver: str, registry: list[dict[str, str]]) -> bool:
+def authorized_logins_for(path: str, registry: list[dict[str, str]]) -> set[str]:
     candidates = [row for row in registry if path.startswith(row["path_prefix"])]
     if not candidates:
-        return False
+        return set()
     row = max(candidates, key=lambda r: len(r["path_prefix"]))
-    allowed = {x.strip() for x in row["authorized_approver_login"].split("|") if x.strip()}
-    return approver in allowed
+    return {x.strip() for x in row["authorized_approver_login"].split("|") if x.strip()}
+
+def authorized_for(path: str, approver: str, registry: list[dict[str, str]]) -> bool:
+    return approver in authorized_logins_for(path, registry)
+
+def load_head_approval_registry() -> list[dict[str, str]]:
+    path = ROOT / APPROVAL_REL
+    if not path.exists():
+        fail("head: approval authority registry missing")
+    rows = list(csv.DictReader(path.read_text(encoding="utf-8").splitlines()))
+    if not rows:
+        fail("head: approval authority registry empty")
+    return rows
+
+def validate_trusted_control_authority_coverage(registry: list[dict[str, str]]) -> None:
+    missing = [
+        path for path in sorted(TRUSTED_CONTROL_PATHS)
+        if not authorized_logins_for(path, registry)
+    ]
+    if missing:
+        fail(f"trusted controls lack authorized approver coverage: {missing}")
 
 def valid_iso_date(value: object) -> bool:
     if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
@@ -565,6 +584,8 @@ def validate_protected_changes(head_rows: list[dict[str, str]], base: str, head:
 def main() -> None:
     rows = load_head_manifest()
     validate_rows(rows)
+    head_registry = load_head_approval_registry()
+    validate_trusted_control_authority_coverage(head_registry)
     base, head = event_refs()
     if base and head:
         validate_cr_ledger_changes(base, head)

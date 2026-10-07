@@ -1,16 +1,15 @@
 # Change Log
 
-## 2026-10-07 — M-B07 / M-B08 governance evidence hardening
+## 2026-10-07 — M-B09 / M-B10 consistency closure
 
-- accepted Independent Pass 4 closure of M-B06;
-- added authenticated GitHub merge-actor binding for CR approver identity;
-- CR schema v3 adds approval_pr_number;
-- Governance Trusted now has read-only pull-request permission and queries approval PR metadata;
-- approval PR must be merged, merge to the exact approval base, and merged_by must equal CR.approver;
-- added append-only CR evidence ledger rules;
-- new CRs are parsed and validated at ingest rather than first use;
-- existing CR modification/deletion/identity rewrite is rejected;
-- added adversarial tests for malformed/unauthorized CR ingest, historical rewrite, authenticated actor mismatch, merge-SHA mismatch, and PR-number mismatch;
-- clarified M-B01 is a post-bootstrap enforcement gate rather than a circular bootstrap blocker.
+- accepted Independent Pass 5 closure of M-B07 and M-B08;
+- added exact CONTROL authority for docs/DOCUMENT_MANIFEST.csv;
+- added validator invariant requiring authorized approver coverage for every trusted control;
+- added positive authenticated one-shot manifest-change regression;
+- added negative trusted-control authority-coverage regression;
+- corrected Change Control Process schema example from v2 to v3;
+- defined change_requests/ as the approved authorization ledger only;
+- removed the contradictory rejected/deferred-ledger lifecycle claim;
+- synchronized governance bootstrap language to Independent Pass 6.
 
 No merge, freeze, A4 drafting, or implementation was authorized.

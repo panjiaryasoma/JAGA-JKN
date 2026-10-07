@@ -77,7 +77,10 @@ BRD_NO_ID_CONTEXT_CHANGED = BRD_NO_ID_CONTEXT.replace(
 )
 
 APPROVAL = """path_prefix,authority_scope,authorized_approver_login,accountable_role,required_human_review_role,enforcement_note
+docs/00_PROJECT_GOVERNANCE/,CONTROL,panjiaryasoma,Project/Product Accountable,,test
+docs/DOCUMENT_MANIFEST.csv,CONTROL,panjiaryasoma,Project/Product Accountable,,test
 docs/02_BUSINESS_AND_PRODUCT_REQUIREMENTS/01_BUSINESS/,A3,panjiaryasoma,Project/Product Accountable,,test
+.github/,CONTROL,panjiaryasoma,Project/Product Accountable,,test
 scripts/validate_governance.py,CONTROL,panjiaryasoma,Project/Product Accountable,,test
 """
 
@@ -91,6 +94,7 @@ def cr_text(
     decision="APPROVE",
     approved_at="2026-10-07",
     filename_id=None,
+    target_path=BRD_PATH,
 ):
     if affected_ids is None:
         affected_ids = ["BR-001"]
@@ -109,7 +113,7 @@ def cr_text(
         "approved_at": approved_at if decision == "APPROVE" else "",
         "approval_pr_number": 101,
         "authorized_base_sha": authorized_base,
-        "targets": {BRD_PATH: spec},
+        "targets": {target_path: spec},
         "validation_plan": "Run governance security regression tests.",
     }
     return "# CR\n<!-- GOVERNANCE-CR\n" + json.dumps(data, indent=2) + "\nGOVERNANCE-CR -->\n"
@@ -140,7 +144,8 @@ class GovernanceSecurityTests(unittest.TestCase):
         return run(["git", "rev-parse", "HEAD"], root).stdout.strip()
 
     def approve(self, root, authorized_base, source, target, *, cr_id="CR-TEST-001", affected_ids=None,
-                authorized_base_override=None, approved_at="2026-10-07", filename_id=None):
+                authorized_base_override=None, approved_at="2026-10-07", filename_id=None,
+                target_path=BRD_PATH):
         path = f"{CR_DIR}/{cr_id}.md"
         write(
             root, path,
@@ -152,6 +157,7 @@ class GovernanceSecurityTests(unittest.TestCase):
                 affected_ids=affected_ids,
                 approved_at=approved_at,
                 filename_id=filename_id,
+                target_path=target_path,
             ),
         )
         return self.commit(root, "approve change request")
@@ -427,6 +433,42 @@ class GovernanceSecurityTests(unittest.TestCase):
             self.validator(root, pre, approval_head, current_pr_number=999),
             "approval_pr_number",
         )
+
+    def test_trusted_control_authority_coverage_is_complete(self):
+        td, root, base = self.repo()
+        self.addCleanup(td.cleanup)
+        broken = APPROVAL.replace(
+            "docs/DOCUMENT_MANIFEST.csv,CONTROL,panjiaryasoma,Project/Product Accountable,,test\n",
+            "",
+        )
+        write(root, "docs/00_PROJECT_GOVERNANCE/APPROVAL_AUTHORITY.csv", broken)
+        head = self.commit(root, "remove manifest authority coverage")
+        self.assert_rejected(
+            self.validator(root, base, head),
+            "trusted controls lack authorized approver coverage",
+        )
+
+    def test_authenticated_one_shot_manifest_change_accepts(self):
+        td, root, pre = self.repo(trusted=True)
+        self.addCleanup(td.cleanup)
+        source_manifest = manifest()
+        target_manifest = source_manifest.replace(
+            "protected fixture",
+            "protected fixture updated",
+        )
+        approval_base = self.approve(
+            root,
+            pre,
+            source_manifest,
+            target_manifest,
+            affected_ids=[],
+            target_path="docs/DOCUMENT_MANIFEST.csv",
+        )
+        write(root, "docs/DOCUMENT_MANIFEST.csv", target_manifest)
+        write(root, "docs/00_PROJECT_GOVERNANCE/CHANGE_LOG.md", "# log\nmanifest update\n")
+        head = self.commit(root, "authorized manifest update")
+        p = self.validator(root, approval_base, head, merged_by="panjiaryasoma")
+        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
 
     def test_trusted_control_self_change_fails_without_one_shot_cr(self):
         td, root, base = self.repo(trusted=True)

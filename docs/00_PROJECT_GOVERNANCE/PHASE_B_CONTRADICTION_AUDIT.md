@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.6.0
+version: 0.7.0
 owner: Panji
 artifact_authority_level: A6
 authority: Verification & Governance Evidence
@@ -12,114 +12,68 @@ last_updated: 2026-10-07
 
 ## Latest independent result
 
-Independent Pass 4 against head `fdc32aaeab6d28d77e1b25e66ac35a8ae356ff9e` concluded:
+Independent Pass 5 against head `a49e07abaae0aff49cbbdb969140180acd43dc39` concluded:
 
 - H-B03: **CLOSED**
 - H-B06: **CLOSED**
 - M-B06: **CLOSED**
+- M-B07: **CLOSED**
+- M-B08: **CLOSED**
+- M-B09: **OPEN — trusted-control authority coverage**
+- M-B10: **OPEN — governance contract/document drift**
 - M-B01: **OPEN**
 - M-B02: **OPEN — B2 ONLY**
-- M-B03: **CLOSED**
-- M-B04: **CLOSED**
 - M-B05: **PARTIAL**
-- M-B07: **OPEN — approver identity binding**
-- M-B08: **OPEN — CR evidence immutability / ingest validation**
 
 No new HIGH was found.
 
-## M-B07 — authenticated approval identity
+## M-B09 — trusted-control authority coverage
 
 ### Independent finding
 
-The previous validator proved that the CR *claimed* an authorized login, but did not prove that GitHub authenticated that user as the approval actor.
+`docs/DOCUMENT_MANIFEST.csv` is a trusted control but had no matching entry in `APPROVAL_AUTHORITY.csv`. Legitimate post-bootstrap manifest changes would therefore fail closed with no authorized path.
 
 ### Remediation
 
-CR schema v3 adds `approval_pr_number`.
+Added an exact CONTROL authority entry for:
 
-When a protected semantic PR consumes an approved CR, Governance Trusted now queries the GitHub Pull Request API using read-only `pull-requests: read` permission and requires:
+`docs/DOCUMENT_MANIFEST.csv`
+
+The validator now also enforces a meta-invariant:
 
 ```text
-approval PR merged == true
-approval PR merge_commit_sha == semantic PR base
-approval PR merged_by.login == CR.approver
-CR.approver authorized for all targets
+for every TRUSTED_CONTROL_PATH:
+    authorized approver resolution must be non-empty
 ```
 
-Therefore `approver=panjiaryasoma` is no longer accepted merely because those bytes exist in a Markdown file.
+This is evaluated against the head approval registry on every governance run, so adding a future trusted control without authority coverage fails immediately.
 
-This deliberately binds approval to the authenticated account that merges the isolated CR approval PR. It avoids the self-review deadlock created by a sole CODEOWNER being unable to approve their own PR.
+Regression coverage added:
+- remove manifest authority coverage → **REJECT**
+- authenticated one-shot exact manifest change → **ACCEPT**
 
-**M-B07 status: `REMEDIATED / PENDING INDEPENDENT PASS 5`.**
+**M-B09 status: `REMEDIATED / PENDING INDEPENDENT PASS 6`.**
 
-## M-B08 — append-only CR evidence + ingest validation
+## M-B10 — governance contract consistency
 
 ### Independent finding
 
-Historical CR files could be edited/deleted after use, and malformed CRs could enter base before being parsed.
+Two machine/document contradictions existed:
+
+1. `CHANGE_CONTROL_PROCESS.md` said CR schema v3 while its JSON example still declared schema 2.
+2. `change_requests/README.md` claimed rejected/deferred CRs remain in the ledger, while ingest accepts only APPROVE and records are immutable.
+
+A stale bootstrap sentence also still referenced Independent Pass 2.
 
 ### Remediation
 
-The validator now treats `change_requests/CR-*.md` as an append-only evidence ledger.
+- Change Control Process example now declares `schema_version: 3`.
+- `change_requests/` is explicitly defined as the **approved authorization ledger only**.
+- PENDING may exist while drafting, but ledger ingest requires APPROVE.
+- REJECT/DEFER do not enter the authorization ledger; their evidence remains in GitHub PR/issue history or another separately governed decision record.
+- governance README now references Independent Pass 6.
 
-New CR ingest requires:
-- exactly one new CR file;
-- no unrelated changed path;
-- schema v3 parses immediately;
-- filename equals `cr_id`;
-- `decision=APPROVE`;
-- valid approval date;
-- approval PR number matches current CR-only PR;
-- authorized approver;
-- authorized base equals current PR base;
-- source hashes match the current base.
-
-Existing CR:
-- modify → REJECT;
-- delete → REJECT;
-- rename/copy rewrite → REJECT.
-
-Corrections require a new evidence record.
-
-**M-B08 status: `REMEDIATED / PENDING INDEPENDENT PASS 5`.**
-
-## Regression additions
-
-Added adversarial coverage for:
-- valid isolated new CR ingest → ACCEPT;
-- malformed new CR → REJECT;
-- unauthorized approver → REJECT;
-- existing approved CR edited → REJECT;
-- existing approved CR deleted → REJECT;
-- self-asserted approver != authenticated GitHub merge actor → REJECT;
-- authenticated authorized merge actor → ACCEPT;
-- approval PR merge SHA mismatch → REJECT;
-- CR approval PR-number mismatch → REJECT.
-
-Existing downgrade, replay, target/base mismatch, DELETE, ID-context, snapshot-isolation, and trusted-control regressions remain.
-
-## M-B01 — repository enforcement
-
-**OPEN / B1 BLOCKER, not bootstrap-merge blocker once M-B07/M-B08 pass independent review.**
-
-Required final configuration after governance bootstrap reaches main:
-
-```text
-PR required
-Governance Trusted required
-strict / branch up-to-date required
-force push blocked
-branch deletion blocked
-bypass constrained
-```
-
-Then run an adversarial canary PR against the trusted-base controls. Only verified enforcement closes M-B01 and permits B1 freeze.
-
-## M-B02
-
-**OPEN — B2 ONLY.**
-
-Executable policy consolidation remains separate from B1.
+**M-B10 status: `REMEDIATED / PENDING INDEPENDENT PASS 6`.**
 
 ## Bootstrap gate
 
@@ -127,17 +81,20 @@ Executable policy consolidation remains separate from B1.
 PHASE B CONTENT
 CONDITIONALLY PASS
         ↓
-H-B03 / H-B06 / M-B06
+H-B03 / H-B06
 CLOSED
         ↓
-M-B07 + M-B08
+M-B06 / M-B07 / M-B08
+CLOSED
+        ↓
+M-B09 / M-B10
 REMEDIATED
-PENDING INDEPENDENT PASS 5
+PENDING INDEPENDENT PASS 6
         ↓
 PR #1
-HOLD pending Pass 5
+HOLD pending Pass 6
         ↓
-if Pass 5 clears correctness blockers:
+if Pass 6 finds no HIGH/MEDIUM bootstrap blocker:
 BOOTSTRAP MERGE READY
 SUBJECT TO EXPLICIT ACC
         ↓
@@ -149,7 +106,7 @@ adversarial canary PR
         ↓
 M-B01 CLOSED
         ↓
-B1 FREEZE READY
+B1 FREEZE REVIEW
 ```
 
-A4 / PRD / SRS and implementation remain NOT AUTHORIZED.
+M-B02 remains B2-only. A4 / PRD / SRS and implementation remain NOT AUTHORIZED.
