@@ -8,12 +8,18 @@
 - M-B06: `CLOSED`
 - M-B07: `CLOSED`
 - M-B08: `CLOSED`
-- M-B09: `REMEDIATED / PENDING INDEPENDENT PASS 6`
-- M-B10: `REMEDIATED / PENDING INDEPENDENT PASS 6`
-- PR #1: `HOLD pending Independent Pass 6`; if cleared, it may become `BOOTSTRAP MERGE READY` subject to explicit ACC
+- M-B09: `CLOSED`
+- M-B10: `CLOSED`
+- PR #1: `BOOTSTRAP MERGE READY` — **subject to separate explicit ACC**
+- M-B01: `OPEN` — post-bootstrap repository enforcement
+- M-B02: `OPEN — B2 ONLY`
+- M-B05: `PARTIAL`
 - B1 freeze: `HOLD on M-B01`
 - B2 executable-policy freeze: `HOLD on M-B01 + M-B02`
+- A4 / PRD / SRS: `NOT AUTHORIZED`
 - implementation: `NOT AUTHORIZED`
+
+Independent Pass 6 found **0 new HIGH** and **0 new MEDIUM bootstrap blockers**.
 
 ## Controls
 
@@ -31,14 +37,32 @@
 ## Repository enforcement
 
 Verified repository metadata currently says:
+
 - main unprotected;
 - required status checks off;
 - no repository rulesets.
 
-Therefore successful CI is evidence that checks ran, not proof they are mandatory.
+This is tracked by **M-B01** and blocks B1 freeze, but no longer blocks the bootstrap merge itself.
 
-Before first freeze, configure repository protection so changes to main require PR + successful **Governance Trusted** check in **strict / branch-up-to-date mode**, block force-push and branch deletion, and constrain bypass.
+After bootstrap reaches `main`, repository protection must require:
 
-## Bootstrap caveat
+- pull request;
+- successful **Governance Trusted** check;
+- strict / branch-must-be-up-to-date mode;
+- force-push blocked;
+- branch deletion blocked;
+- constrained bypass.
 
-PR #1 introduces the trusted mechanism, so it cannot use `Governance Trusted` from its own base as independent proof. It remains subject to **Independent Pass 6** after M-B09/M-B10 remediation. If that pass clears all bootstrap correctness blockers, PR #1 may be classified `BOOTSTRAP MERGE READY`, still requiring explicit ACC before merge.
+An adversarial canary PR must then prove the trusted-base controls are actually enforced before M-B01 can close.
+
+## Bootstrap verdict
+
+PR #1 introduces the trusted mechanism and has now completed Independent Pass 6 with no HIGH or MEDIUM bootstrap blocker.
+
+```text
+PR #1
+BOOTSTRAP MERGE READY
+SUBJECT TO SEPARATE EXPLICIT ACC
+```
+
+This classification does not authorize merge, freeze, A4 drafting, or implementation.

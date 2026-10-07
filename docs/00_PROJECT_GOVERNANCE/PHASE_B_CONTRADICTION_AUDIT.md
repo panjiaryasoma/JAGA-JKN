@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.7.0
+version: 0.8.0
 owner: Panji
 artifact_authority_level: A6
 authority: Verification & Governance Evidence
@@ -12,101 +12,118 @@ last_updated: 2026-10-07
 
 ## Latest independent result
 
-Independent Pass 5 against head `a49e07abaae0aff49cbbdb969140180acd43dc39` concluded:
+Independent Pass 6 against head `cf1cdd73dc0bf5de8b22488691d8ed972d724ff6` concluded:
 
 - H-B03: **CLOSED**
 - H-B06: **CLOSED**
 - M-B06: **CLOSED**
 - M-B07: **CLOSED**
 - M-B08: **CLOSED**
-- M-B09: **OPEN — trusted-control authority coverage**
-- M-B10: **OPEN — governance contract/document drift**
-- M-B01: **OPEN**
+- M-B09: **CLOSED**
+- M-B10: **CLOSED**
+- M-B01: **OPEN — post-bootstrap repository enforcement**
 - M-B02: **OPEN — B2 ONLY**
-- M-B05: **PARTIAL**
+- M-B05: **PARTIAL — largely dependent on M-B01**
+- new HIGH findings: **0**
+- new MEDIUM bootstrap blockers: **0**
 
-No new HIGH was found.
+Phase B content remains **CONDITIONALLY PASS** because repository enforcement and executable-policy gates intentionally remain downstream.
 
 ## M-B09 — trusted-control authority coverage
 
-### Independent finding
+**CLOSED by Independent Pass 6.**
 
-`docs/DOCUMENT_MANIFEST.csv` is a trusted control but had no matching entry in `APPROVAL_AUTHORITY.csv`. Legitimate post-bootstrap manifest changes would therefore fail closed with no authorized path.
+Independent review verified:
 
-### Remediation
+- `docs/DOCUMENT_MANIFEST.csv` has exact CONTROL authority for `panjiaryasoma`;
+- every trusted control is checked for non-empty authorized approver resolution;
+- the meta-invariant is invoked on every governance run;
+- authenticated one-shot manifest modification succeeds through the legitimate path.
 
-Added an exact CONTROL authority entry for:
-
-`docs/DOCUMENT_MANIFEST.csv`
-
-The validator now also enforces a meta-invariant:
-
-```text
-for every TRUSTED_CONTROL_PATH:
-    authorized approver resolution must be non-empty
-```
-
-This is evaluated against the head approval registry on every governance run, so adding a future trusted control without authority coverage fails immediately.
-
-Regression coverage added:
-- remove manifest authority coverage → **REJECT**
-- authenticated one-shot exact manifest change → **ACCEPT**
-
-**M-B09 status: `REMEDIATED / PENDING INDEPENDENT PASS 6`.**
+The lifecycle control plane therefore has both protection and a valid authorized mutation path.
 
 ## M-B10 — governance contract consistency
 
-### Independent finding
+**CLOSED by Independent Pass 6.**
 
-Two machine/document contradictions existed:
-
-1. `CHANGE_CONTROL_PROCESS.md` said CR schema v3 while its JSON example still declared schema 2.
-2. `change_requests/README.md` claimed rejected/deferred CRs remain in the ledger, while ingest accepts only APPROVE and records are immutable.
-
-A stale bootstrap sentence also still referenced Independent Pass 2.
-
-### Remediation
-
-- Change Control Process example now declares `schema_version: 3`.
-- `change_requests/` is explicitly defined as the **approved authorization ledger only**.
-- PENDING may exist while drafting, but ledger ingest requires APPROVE.
-- REJECT/DEFER do not enter the authorization ledger; their evidence remains in GitHub PR/issue history or another separately governed decision record.
-- governance README now references Independent Pass 6.
-
-**M-B10 status: `REMEDIATED / PENDING INDEPENDENT PASS 6`.**
-
-## Bootstrap gate
+Independent review verified consistency across:
 
 ```text
-PHASE B CONTENT
-CONDITIONALLY PASS
-        ↓
-H-B03 / H-B06
-CLOSED
-        ↓
-M-B06 / M-B07 / M-B08
-CLOSED
-        ↓
-M-B09 / M-B10
-REMEDIATED
-PENDING INDEPENDENT PASS 6
-        ↓
-PR #1
-HOLD pending Pass 6
-        ↓
-if Pass 6 finds no HIGH/MEDIUM bootstrap blocker:
-BOOTSTRAP MERGE READY
-SUBJECT TO EXPLICIT ACC
-        ↓
-merge governance to main
-        ↓
-configure strict repository enforcement
-        ↓
-adversarial canary PR
-        ↓
-M-B01 CLOSED
-        ↓
-B1 FREEZE REVIEW
+machine validator
+↕
+Change Control Process
+↕
+change_requests README
 ```
 
-M-B02 remains B2-only. A4 / PRD / SRS and implementation remain NOT AUTHORIZED.
+Current contract:
+
+- CR schema is v3;
+- PENDING is drafting-only;
+- only APPROVE records may enter the immutable authorization ledger;
+- REJECT/DEFER are not authorization-ledger records;
+- historical approved CR evidence remains append-only.
+
+## Premature-completion check
+
+Independent Pass 6 identified the remaining realistic risk as **post-bootstrap runtime enforcement**, not a bootstrap validator bypass.
+
+That risk is tracked by M-B01 and cannot be fully proven until the trusted mechanism exists in `main`.
+
+M-B01 is therefore a post-bootstrap enforcement blocker, not a bootstrap-merge blocker.
+
+## Bootstrap verdict
+
+```text
+PR #1
+BOOTSTRAP MERGE READY
+SUBJECT TO SEPARATE EXPLICIT ACC
+```
+
+This status is **not merge authorization**.
+
+Required post-bootstrap sequence:
+
+```text
+merge governance to main
+        ↓
+Governance Trusted exists in trusted base
+        ↓
+configure repository protection
+        ↓
+PR required
+Governance Trusted required
+strict / branch up-to-date required
+force push blocked
+branch deletion blocked
+bypass constrained
+        ↓
+run adversarial canary PR
+        ↓
+verify live GitHub API identity binding
+        ↓
+M-B01 closure audit
+        ↓
+B1 freeze review
+```
+
+## Remaining gates
+
+```text
+B1 FREEZE
+HOLD
+└── M-B01
+
+B2 FREEZE
+HOLD
+├── M-B01
+└── M-B02
+
+A4 / PRD / SRS
+NOT AUTHORIZED
+
+IMPLEMENTATION
+NOT AUTHORIZED
+```
+
+No freeze, A4 drafting, or implementation is authorized by the bootstrap-ready verdict.
