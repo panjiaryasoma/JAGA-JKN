@@ -1,7 +1,11 @@
 """Curate raw synthetic evidence with fail-closed per-signal semantics.
 
-Evidence validity is evaluated before discrepancy. Registration, wage, and
-contribution maintain isolated evidence quality, state, rule identity, and lineage.
+Invariants:
+- evidence and provenance validity are checked before any NORMAL state;
+- WAGE-001 and CONTRIB-001 cannot emit NORMAL while trusted B2 policy is unresolved;
+- source metadata is required evidence, not decorative lineage;
+- wage/payment fields are validated for cross-field semantic consistency;
+- registration, wage, and contribution retain isolated quality/state/provenance.
 """
 
 from __future__ import annotations
@@ -11,12 +15,14 @@ import math
 import re
 from typing import Iterable
 
+import numpy as np
 import pandas as pd
 
 from paths import CURATED_DIR, RAW_DIR, ensure_output_dirs
 
 UNSCORED = "UNSCORED__THRESHOLDS_NOT_AUTHORIZED"
 VALID_EVIDENCE_QUALITIES = {"HIGH", "MEDIUM", "LOW"}
+VALID_SOURCE_FRESHNESS = {"CURRENT", "STALE"}
 TRUSTED_B2_POLICY_CONTEXT_AUTHORIZED = False
 
 REGISTRATION_RULE_ID = "REG-001"
@@ -29,6 +35,12 @@ VALID_BANK_STATES = {
     "POSTED_NEXT_DAY",
     "SETTLEMENT_PENDING",
     "NO_PAYMENT_EVIDENCE",
+}
+ALLOWED_PAYMENT_COMBINATIONS = {
+    ("PAID_ON_TIME", "POSTED_ON_TIME", False),
+    ("PAID_ON_TIME", "POSTED_NEXT_DAY", True),
+    ("PAYMENT_PENDING", "SETTLEMENT_PENDING", False),
+    ("UNPAID", "NO_PAYMENT_EVIDENCE", False),
 }
 
 
@@ -90,6 +102,46 @@ def reconcile_worker_sets(
     }
 
 
+def _strict_bool(value: object) -> bool | None:
+    if isinstance(value, (bool, np.bool_)):
+        return bool(value)
+    return None
+
+
+def _valid_source_id(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def validate_source_metadata(
+    *,
+    source_ids: Iterable[object],
+    freshness: object,
+    conflict: object,
+) -> dict[str, object]:
+    ids = list(source_ids)
+    ids_valid = bool(ids) and all(_valid_source_id(value) for value in ids)
+    freshness_valid = isinstance(freshness, str) and freshness in VALID_SOURCE_FRESHNESS
+    conflict_value = _strict_bool(conflict)
+    conflict_valid = conflict_value is not None
+    valid = ids_valid and freshness_valid and conflict_valid
+
+    reasons: list[str] = []
+    if not ids_valid:
+        reasons.append("MISSING_OR_INVALID_SOURCE_ID")
+    if not freshness_valid:
+        reasons.append("MISSING_OR_INVALID_SOURCE_FRESHNESS")
+    if not conflict_valid:
+        reasons.append("MISSING_OR_INVALID_SOURCE_CONFLICT_STATE")
+
+    return {
+        "valid": valid,
+        "source_ids": [str(value) for value in ids if _valid_source_id(value)],
+        "source_stale": freshness == "STALE" if freshness_valid else False,
+        "source_conflict": bool(conflict_value) if conflict_valid else False,
+        "reasons": reasons,
+    }
+
+
 def _validate_evidence_quality(value: object) -> str | None:
     if not isinstance(value, str) or value not in VALID_EVIDENCE_QUALITIES:
         return None
@@ -101,10 +153,11 @@ def _quality_from_domain_flags(
     evidence_valid: bool,
     source_stale: bool,
     source_conflict: bool,
+    validity_reasons: Iterable[str] = (),
     extra_low_reason: str | None = None,
 ) -> tuple[str, list[str]]:
-    reasons: list[str] = []
-    if not evidence_valid:
+    reasons = list(validity_reasons)
+    if not evidence_valid and "INVALID_OR_MISSING_EVIDENCE" not in reasons:
         reasons.append("INVALID_OR_MISSING_EVIDENCE")
     if source_conflict:
         reasons.append("CONFLICTING_SOURCE")
@@ -122,46 +175,52 @@ def _quality_from_domain_flags(
 
 def registration_evidence_quality(
     *,
-    worker_set_evidence_valid: bool,
+    evidence_valid: bool,
     source_stale: bool,
     source_conflict: bool,
+    validity_reasons: Iterable[str] = (),
 ) -> tuple[str, list[str]]:
     return _quality_from_domain_flags(
-        evidence_valid=worker_set_evidence_valid,
+        evidence_valid=evidence_valid,
         source_stale=source_stale,
         source_conflict=source_conflict,
+        validity_reasons=validity_reasons,
     )
 
 
 def wage_evidence_quality(
     *,
-    wage_evidence_valid: bool,
+    evidence_valid: bool,
     source_stale: bool,
     source_conflict: bool,
+    validity_reasons: Iterable[str] = (),
 ) -> tuple[str, list[str]]:
     return _quality_from_domain_flags(
-        evidence_valid=wage_evidence_valid,
+        evidence_valid=evidence_valid,
         source_stale=source_stale,
         source_conflict=source_conflict,
+        validity_reasons=validity_reasons,
     )
 
 
 def contribution_evidence_quality(
     *,
-    payment_evidence_valid: bool,
+    evidence_valid: bool,
     source_stale: bool,
     source_conflict: bool,
     settlement_pending: bool,
+    validity_reasons: Iterable[str] = (),
 ) -> tuple[str, list[str]]:
     return _quality_from_domain_flags(
-        evidence_valid=payment_evidence_valid,
+        evidence_valid=evidence_valid,
         source_stale=source_stale,
         source_conflict=source_conflict,
+        validity_reasons=validity_reasons,
         extra_low_reason="PAYMENT_SETTLEMENT_PENDING" if settlement_pending else None,
     )
 
 
-def _evidence_gate(
+def _invalid_evidence_gate(
     *,
     evidence_valid: bool,
     evidence_quality: object,
@@ -169,9 +228,13 @@ def _evidence_gate(
 ) -> tuple[str, str] | None:
     if not evidence_valid:
         return "ABSTAIN", invalid_reason
-    quality = _validate_evidence_quality(evidence_quality)
-    if quality is None:
+    if _validate_evidence_quality(evidence_quality) is None:
         return "ABSTAIN", "INVALID_OR_UNKNOWN_EVIDENCE_QUALITY"
+    return None
+
+
+def _quality_gate(evidence_quality: object) -> tuple[str, str] | None:
+    quality = _validate_evidence_quality(evidence_quality)
     if quality == "LOW":
         return "ABSTAIN", "INSUFFICIENT_OR_CONFLICTING_EVIDENCE"
     if quality == "MEDIUM":
@@ -187,13 +250,16 @@ def derive_registration_state(
     evidence_quality: object,
     explanation_present: bool,
 ) -> tuple[str, str]:
-    gated = _evidence_gate(
+    invalid = _invalid_evidence_gate(
         evidence_valid=evidence_valid,
         evidence_quality=evidence_quality,
         invalid_reason="INVALID_OR_MISSING_REGISTRATION_EVIDENCE",
     )
-    if gated is not None:
-        return gated
+    if invalid is not None:
+        return invalid
+    quality_gate = _quality_gate(evidence_quality)
+    if quality_gate is not None:
+        return quality_gate
     if explanation_present:
         return "NEEDS_ENRICHMENT", "EVIDENCE_ENRICHMENT_REQUIRED"
     if missing_worker_count <= 0 and unexpected_worker_count <= 0:
@@ -207,18 +273,24 @@ def derive_wage_state(
     evidence_valid: bool,
     evidence_quality: object,
 ) -> tuple[str, str]:
-    gated = _evidence_gate(
+    invalid = _invalid_evidence_gate(
         evidence_valid=evidence_valid,
         evidence_quality=evidence_quality,
         invalid_reason="INVALID_OR_MISSING_WAGE_EVIDENCE",
     )
-    if gated is not None:
-        return gated
-    if wage_discrepancy_signal_rp <= 0:
-        return "NORMAL", "NO_WAGE_DISCREPANCY"
+    if invalid is not None:
+        return invalid
+
+    # WAGE-001 requires trusted applicable-policy context even to conclude NORMAL.
     if not TRUSTED_B2_POLICY_CONTEXT_AUTHORIZED:
         return "ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"
-    raise RuntimeError("authorized B2 policy path is intentionally not implemented in this sandbox")
+
+    quality_gate = _quality_gate(evidence_quality)
+    if quality_gate is not None:
+        return quality_gate
+    if wage_discrepancy_signal_rp <= 0:
+        return "NORMAL", "NO_WAGE_DISCREPANCY"
+    raise RuntimeError("authorized B2 wage evaluation path is intentionally not implemented")
 
 
 def derive_contribution_state(
@@ -227,18 +299,24 @@ def derive_contribution_state(
     evidence_valid: bool,
     evidence_quality: object,
 ) -> tuple[str, str]:
-    gated = _evidence_gate(
+    invalid = _invalid_evidence_gate(
         evidence_valid=evidence_valid,
         evidence_quality=evidence_quality,
         invalid_reason="INVALID_OR_MISSING_CONTRIBUTION_EVIDENCE",
     )
-    if gated is not None:
-        return gated
-    if not contribution_payment_evidence_gap:
-        return "NORMAL", "NO_CONTRIBUTION_PAYMENT_EVIDENCE_GAP"
+    if invalid is not None:
+        return invalid
+
+    # CONTRIB-001 needs applicable contribution policy before NORMAL is knowable.
     if not TRUSTED_B2_POLICY_CONTEXT_AUTHORIZED:
         return "ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"
-    raise RuntimeError("authorized B2 policy path is intentionally not implemented in this sandbox")
+
+    quality_gate = _quality_gate(evidence_quality)
+    if quality_gate is not None:
+        return quality_gate
+    if not contribution_payment_evidence_gap:
+        return "NORMAL", "NO_CONTRIBUTION_PAYMENT_EVIDENCE_GAP"
+    raise RuntimeError("authorized B2 contribution evaluation path is intentionally not implemented")
 
 
 def derive_overall_review_state(*states: str) -> str:
@@ -262,7 +340,7 @@ def overall_recommendation(state: str) -> str:
 
 
 def _valid_nonnegative_number(value: object) -> bool:
-    if isinstance(value, bool):
+    if isinstance(value, (bool, np.bool_)):
         return False
     try:
         number = float(value)
@@ -271,9 +349,131 @@ def _valid_nonnegative_number(value: object) -> bool:
     return math.isfinite(number) and number >= 0
 
 
-def _source_ids(*values: object) -> str:
-    valid = [str(value) for value in values if isinstance(value, str) and value]
-    return json.dumps(valid, separators=(",", ":"))
+def validate_wage_semantics(
+    *,
+    reference_wage: object,
+    observed_wage: object,
+    supplied_discrepancy: object,
+) -> dict[str, object]:
+    values_valid = all(
+        _valid_nonnegative_number(value)
+        for value in (reference_wage, observed_wage, supplied_discrepancy)
+    )
+    if not values_valid:
+        return {
+            "valid": False,
+            "derived_discrepancy": None,
+            "reason": "INVALID_WAGE_NUMERIC_EVIDENCE",
+        }
+
+    reference = float(reference_wage)
+    observed = float(observed_wage)
+    supplied = float(supplied_discrepancy)
+    derived = max(0.0, reference - observed)
+    consistent = math.isclose(supplied, derived, rel_tol=0.0, abs_tol=0.5)
+
+    return {
+        "valid": consistent,
+        "derived_discrepancy": int(round(derived)),
+        "reason": "NONE" if consistent else "INCONSISTENT_WAGE_DISCREPANCY",
+    }
+
+
+def _is_present(value: object) -> bool:
+    if value is None:
+        return False
+    try:
+        missing = pd.isna(value)
+    except (TypeError, ValueError):
+        return True
+    return bool(not missing)
+
+
+def validate_payment_semantics(
+    *,
+    payment_state: object,
+    bank_state: object,
+    settlement_delay_flag: object,
+    payer_timestamp: object,
+    bank_timestamp: object,
+) -> dict[str, object]:
+    flag = _strict_bool(settlement_delay_flag)
+    enum_valid = (
+        payment_state in VALID_PAYMENT_STATES
+        and bank_state in VALID_BANK_STATES
+        and flag is not None
+    )
+    if not enum_valid:
+        return {
+            "valid": False,
+            "settlement_pending": False,
+            "validated_payment_state": "UNKNOWN",
+            "reason": "INVALID_PAYMENT_ENUM_OR_FLAG",
+        }
+
+    combination = (payment_state, bank_state, flag)
+    if combination not in ALLOWED_PAYMENT_COMBINATIONS:
+        return {
+            "valid": False,
+            "settlement_pending": bank_state == "SETTLEMENT_PENDING",
+            "validated_payment_state": "UNKNOWN",
+            "reason": "INCONSISTENT_PAYMENT_STATE_COMBINATION",
+        }
+
+    payer_present = _is_present(payer_timestamp)
+    bank_present = _is_present(bank_timestamp)
+
+    timestamp_valid = (
+        (
+            combination in {
+                ("PAID_ON_TIME", "POSTED_ON_TIME", False),
+                ("PAID_ON_TIME", "POSTED_NEXT_DAY", True),
+            }
+            and payer_present
+            and bank_present
+        )
+        or (
+            combination == ("PAYMENT_PENDING", "SETTLEMENT_PENDING", False)
+            and payer_present
+            and not bank_present
+        )
+        or (
+            combination == ("UNPAID", "NO_PAYMENT_EVIDENCE", False)
+            and not payer_present
+            and not bank_present
+        )
+    )
+    if not timestamp_valid:
+        return {
+            "valid": False,
+            "settlement_pending": bank_state == "SETTLEMENT_PENDING",
+            "validated_payment_state": "UNKNOWN",
+            "reason": "INCONSISTENT_PAYMENT_TIMESTAMPS",
+        }
+
+    if payment_state == "PAID_ON_TIME":
+        validated = "PAID_ON_TIME"
+    elif payment_state == "PAYMENT_PENDING":
+        validated = "UNKNOWN"
+    else:
+        validated = "UNPAID"
+
+    return {
+        "valid": True,
+        "settlement_pending": bank_state == "SETTLEMENT_PENDING",
+        "validated_payment_state": validated,
+        "reason": (
+            "BANK_SETTLEMENT_DELAY_VERIFIED_SYNTHETIC"
+            if combination == ("PAID_ON_TIME", "POSTED_NEXT_DAY", True)
+            else "SETTLEMENT_PENDING__DO_NOT_ESCALATE"
+            if combination == ("PAYMENT_PENDING", "SETTLEMENT_PENDING", False)
+            else "NO_SETTLEMENT_EXCEPTION"
+        ),
+    }
+
+
+def _source_ids_json(source_metadata: dict[str, object]) -> str:
+    return json.dumps(source_metadata["source_ids"], separators=(",", ":"))
 
 
 def curate() -> dict[str, pd.DataFrame]:
@@ -290,10 +490,21 @@ def curate() -> dict[str, pd.DataFrame]:
 
     rows: list[dict] = []
     for _, row in raw.iterrows():
-        reference_verified = bool(row.get("reference_worker_set_verified", False))
-        observed_verified = bool(row.get("observed_worker_set_verified", False))
-        worker_set_valid = reference_verified and observed_verified
+        registration_source = validate_source_metadata(
+            source_ids=(
+                row.get("registration_reference_source_id"),
+                row.get("registration_observed_source_id"),
+            ),
+            freshness=row.get("registration_source_freshness"),
+            conflict=row.get("registration_source_conflict"),
+        )
+
+        reference_verified = _strict_bool(row.get("reference_worker_set_verified"))
+        observed_verified = _strict_bool(row.get("observed_worker_set_verified"))
+        worker_verification_valid = reference_verified is True and observed_verified is True
+        worker_set_valid = worker_verification_valid
         worker_set_error = "NONE"
+        reconciliation = None
 
         try:
             reference_set = parse_worker_set(
@@ -302,65 +513,98 @@ def curate() -> dict[str, pd.DataFrame]:
             )
             observed_set = parse_worker_set(
                 row.get("observed_registered_worker_set_json"),
-                allow_empty=observed_verified,
+                allow_empty=observed_verified is True,
             )
             reconciliation = reconcile_worker_sets(reference_set, observed_set)
         except (ValueError, json.JSONDecodeError, TypeError) as exc:
             worker_set_valid = False
             worker_set_error = type(exc).__name__
-            reconciliation = None
+
+        registration_evidence_valid = worker_set_valid and bool(registration_source["valid"])
+        registration_validity_reasons = list(registration_source["reasons"])
+        if not worker_verification_valid:
+            registration_validity_reasons.append("INVALID_WORKER_SET_VERIFICATION_STATE")
+        if not worker_set_valid:
+            registration_validity_reasons.append("INVALID_WORKER_SET_EVIDENCE")
 
         registration_quality, registration_quality_reasons = registration_evidence_quality(
-            worker_set_evidence_valid=worker_set_valid,
-            source_stale=row.get("registration_source_freshness") == "STALE",
-            source_conflict=bool(row.get("registration_source_conflict", False)),
+            evidence_valid=registration_evidence_valid,
+            source_stale=bool(registration_source["source_stale"]),
+            source_conflict=bool(registration_source["source_conflict"]),
+            validity_reasons=registration_validity_reasons,
         )
 
-        wage_evidence_valid = all(
-            _valid_nonnegative_number(row.get(column))
-            for column in (
-                "reference_wage_signal_rp",
-                "observed_wage_signal_rp",
-                "wage_discrepancy_raw_rp",
-            )
+        wage_source = validate_source_metadata(
+            source_ids=(
+                row.get("wage_reference_source_id"),
+                row.get("wage_observed_source_id"),
+            ),
+            freshness=row.get("wage_source_freshness"),
+            conflict=row.get("wage_source_conflict"),
         )
+        wage_semantics = validate_wage_semantics(
+            reference_wage=row.get("reference_wage_signal_rp"),
+            observed_wage=row.get("observed_wage_signal_rp"),
+            supplied_discrepancy=row.get("wage_discrepancy_raw_rp"),
+        )
+        wage_evidence_valid = bool(wage_source["valid"]) and bool(wage_semantics["valid"])
+        wage_validity_reasons = list(wage_source["reasons"])
+        if wage_semantics["reason"] != "NONE":
+            wage_validity_reasons.append(str(wage_semantics["reason"]))
+
         wage_quality, wage_quality_reasons = wage_evidence_quality(
-            wage_evidence_valid=wage_evidence_valid,
-            source_stale=row.get("wage_source_freshness") == "STALE",
-            source_conflict=bool(row.get("wage_source_conflict", False)),
+            evidence_valid=wage_evidence_valid,
+            source_stale=bool(wage_source["source_stale"]),
+            source_conflict=bool(wage_source["source_conflict"]),
+            validity_reasons=wage_validity_reasons,
         )
-        wage_gap = int(row["wage_discrepancy_raw_rp"]) if wage_evidence_valid else 0
+        wage_gap = (
+            int(wage_semantics["derived_discrepancy"])
+            if wage_semantics["derived_discrepancy"] is not None
+            else 0
+        )
 
-        payment_state = row.get("payment_state_observed")
-        bank_state = row.get("bank_observed_state")
-        payment_evidence_valid = (
-            payment_state in VALID_PAYMENT_STATES
-            and bank_state in VALID_BANK_STATES
+        contribution_source = validate_source_metadata(
+            source_ids=(
+                row.get("contribution_expected_source_id"),
+                row.get("contribution_payment_source_id"),
+            ),
+            freshness=row.get("contribution_source_freshness"),
+            conflict=row.get("contribution_source_conflict"),
         )
-        settlement_pending = bank_state == "SETTLEMENT_PENDING"
+        payment_semantics = validate_payment_semantics(
+            payment_state=row.get("payment_state_observed"),
+            bank_state=row.get("bank_observed_state"),
+            settlement_delay_flag=row.get("flag_bank_settlement_delay"),
+            payer_timestamp=row.get("payer_timestamp_synthetic"),
+            bank_timestamp=row.get("bank_posting_timestamp_synthetic"),
+        )
+        contribution_evidence_valid = (
+            bool(contribution_source["valid"])
+            and bool(payment_semantics["valid"])
+        )
+        contribution_validity_reasons = list(contribution_source["reasons"])
+        if payment_semantics["reason"] in {
+            "INVALID_PAYMENT_ENUM_OR_FLAG",
+            "INCONSISTENT_PAYMENT_STATE_COMBINATION",
+            "INCONSISTENT_PAYMENT_TIMESTAMPS",
+        }:
+            contribution_validity_reasons.append(str(payment_semantics["reason"]))
+
+        settlement_pending = bool(payment_semantics["settlement_pending"])
         contribution_quality, contribution_quality_reasons = contribution_evidence_quality(
-            payment_evidence_valid=payment_evidence_valid,
-            source_stale=row.get("contribution_source_freshness") == "STALE",
-            source_conflict=bool(row.get("contribution_source_conflict", False)),
+            evidence_valid=contribution_evidence_valid,
+            source_stale=bool(contribution_source["source_stale"]),
+            source_conflict=bool(contribution_source["source_conflict"]),
             settlement_pending=settlement_pending,
+            validity_reasons=contribution_validity_reasons,
         )
 
-        if payment_evidence_valid and bool(row.get("flag_bank_settlement_delay", False)):
-            validated_payment_state = "PAID_ON_TIME"
-            payment_reason = "BANK_SETTLEMENT_DELAY_VERIFIED_SYNTHETIC"
-        elif payment_evidence_valid and settlement_pending:
-            validated_payment_state = "UNKNOWN"
-            payment_reason = "SETTLEMENT_PENDING__DO_NOT_ESCALATE"
-        elif payment_evidence_valid:
-            validated_payment_state = payment_state
-            payment_reason = "NO_SETTLEMENT_EXCEPTION"
-        else:
-            validated_payment_state = "UNKNOWN"
-            payment_reason = "INVALID_OR_MISSING_PAYMENT_EVIDENCE"
-
+        validated_payment_state = str(payment_semantics["validated_payment_state"])
+        payment_reason = str(payment_semantics["reason"])
         contribution_gap = (
-            validated_payment_state in {"UNPAID", "PAYMENT_PENDING", "UNKNOWN"}
-            if payment_evidence_valid
+            validated_payment_state in {"UNPAID", "UNKNOWN"}
+            if contribution_evidence_valid
             else False
         )
 
@@ -376,7 +620,7 @@ def curate() -> dict[str, pd.DataFrame]:
         registration_state, registration_reason = derive_registration_state(
             missing_worker_count=missing_count,
             unexpected_worker_count=unexpected_count,
-            evidence_valid=worker_set_valid,
+            evidence_valid=registration_evidence_valid,
             evidence_quality=registration_quality,
             explanation_present=explanation != "NONE",
         )
@@ -387,7 +631,7 @@ def curate() -> dict[str, pd.DataFrame]:
         )
         contribution_state, contribution_reason = derive_contribution_state(
             contribution_payment_evidence_gap=contribution_gap,
-            evidence_valid=payment_evidence_valid,
+            evidence_valid=contribution_evidence_valid,
             evidence_quality=contribution_quality,
         )
         overall_state = derive_overall_review_state(
@@ -397,11 +641,11 @@ def curate() -> dict[str, pd.DataFrame]:
         )
 
         signal_types: list[str] = []
-        if worker_set_valid and (missing_count > 0 or unexpected_count > 0):
+        if registration_evidence_valid and (missing_count > 0 or unexpected_count > 0):
             signal_types.append("WORKER_REGISTRATION_SET_DISCREPANCY")
         if wage_evidence_valid and wage_gap > 0:
             signal_types.append("WAGE_REPORTING_DISCREPANCY")
-        if payment_evidence_valid and contribution_gap:
+        if contribution_evidence_valid and contribution_gap:
             signal_types.append("CONTRIBUTION_PAYMENT_EVIDENCE_GAP")
 
         reference_count = int(reconciliation["reference_count"]) if reconciliation else None
@@ -410,18 +654,9 @@ def curate() -> dict[str, pd.DataFrame]:
         unexpected_ids = reconciliation["unexpected_worker_ids"] if reconciliation else None
         sets_equal = bool(reconciliation["sets_equal"]) if reconciliation else None
 
-        registration_source_ids = _source_ids(
-            row.get("registration_reference_source_id"),
-            row.get("registration_observed_source_id"),
-        )
-        wage_source_ids = _source_ids(
-            row.get("wage_reference_source_id"),
-            row.get("wage_observed_source_id"),
-        )
-        contribution_source_ids = _source_ids(
-            row.get("contribution_expected_source_id"),
-            row.get("contribution_payment_source_id"),
-        )
+        registration_source_ids = _source_ids_json(registration_source)
+        wage_source_ids = _source_ids_json(wage_source)
+        contribution_source_ids = _source_ids_json(contribution_source)
 
         rows.append({
             "id_badan_usaha": row["id_badan_usaha"],
@@ -430,8 +665,8 @@ def curate() -> dict[str, pd.DataFrame]:
 
             "reference_worker_count": reference_count,
             "observed_registered_worker_count": observed_count,
-            "missing_worker_count": missing_count if worker_set_valid else None,
-            "unexpected_worker_count": unexpected_count if worker_set_valid else None,
+            "missing_worker_count": missing_count if registration_evidence_valid else None,
+            "unexpected_worker_count": unexpected_count if registration_evidence_valid else None,
             "missing_worker_ids_json": (
                 json.dumps(missing_ids, separators=(",", ":")) if missing_ids is not None else None
             ),
@@ -440,6 +675,8 @@ def curate() -> dict[str, pd.DataFrame]:
             ),
             "worker_sets_equal": sets_equal,
             "worker_set_evidence_valid": worker_set_valid,
+            "registration_source_metadata_valid": bool(registration_source["valid"]),
+            "registration_evidence_valid": registration_evidence_valid,
             "worker_set_evidence_error": worker_set_error,
             "worker_discrepancy_explanation": explanation,
             "registration_evidence_quality": registration_quality,
@@ -457,12 +694,18 @@ def curate() -> dict[str, pd.DataFrame]:
             ),
 
             "reference_wage_signal_rp": (
-                int(row["reference_wage_signal_rp"]) if wage_evidence_valid else None
+                int(row["reference_wage_signal_rp"])
+                if wage_semantics["derived_discrepancy"] is not None else None
             ),
             "observed_wage_signal_rp": (
-                int(row["observed_wage_signal_rp"]) if wage_evidence_valid else None
+                int(row["observed_wage_signal_rp"])
+                if wage_semantics["derived_discrepancy"] is not None else None
             ),
-            "wage_discrepancy_signal_rp": wage_gap if wage_evidence_valid else None,
+            "wage_discrepancy_signal_rp": (
+                wage_gap if wage_semantics["derived_discrepancy"] is not None else None
+            ),
+            "wage_source_metadata_valid": bool(wage_source["valid"]),
+            "wage_semantic_consistency_valid": bool(wage_semantics["valid"]),
             "wage_evidence_valid": wage_evidence_valid,
             "wage_evidence_quality": wage_quality,
             "wage_evidence_reasons": (
@@ -474,7 +717,8 @@ def curate() -> dict[str, pd.DataFrame]:
             "wage_source_ids_json": wage_source_ids,
             "wage_authority_dependency": "WAGE_EVIDENCE_PLUS_TRUSTED_B2_POLICY_CONTEXT",
             "wage_lineage": (
-                f"{wage_source_ids} -> wage evidence -> {WAGE_RULE_ID} -> {wage_state}"
+                f"{wage_source_ids} -> wage consistency validation -> {WAGE_RULE_ID} "
+                f"-> {wage_state}"
             ),
 
             "estimated_exposure_synthetic_rp": (
@@ -483,10 +727,12 @@ def curate() -> dict[str, pd.DataFrame]:
                 else None
             ),
             "exposure_decision_role": "VISUALIZATION_ONLY__MUST_NOT_INFLUENCE_DECISION",
-            "observed_payment_state": payment_state,
+            "observed_payment_state": row.get("payment_state_observed"),
             "validated_payment_state": validated_payment_state,
             "payment_evidence_reason": payment_reason,
-            "contribution_evidence_valid": payment_evidence_valid,
+            "contribution_source_metadata_valid": bool(contribution_source["valid"]),
+            "payment_semantic_consistency_valid": bool(payment_semantics["valid"]),
+            "contribution_evidence_valid": contribution_evidence_valid,
             "contribution_evidence_quality": contribution_quality,
             "contribution_evidence_reasons": (
                 "|".join(contribution_quality_reasons)
@@ -498,8 +744,8 @@ def curate() -> dict[str, pd.DataFrame]:
             "contribution_source_ids_json": contribution_source_ids,
             "contribution_authority_dependency": "PAYMENT_EVIDENCE_PLUS_TRUSTED_B2_POLICY_CONTEXT",
             "contribution_lineage": (
-                f"{contribution_source_ids} -> payment evidence -> {CONTRIBUTION_RULE_ID} "
-                f"-> {contribution_state}"
+                f"{contribution_source_ids} -> payment consistency validation -> "
+                f"{CONTRIBUTION_RULE_ID} -> {contribution_state}"
             ),
 
             "overall_review_state": overall_state,
@@ -525,7 +771,7 @@ def main() -> None:
         path = CURATED_DIR / filename
         frame.to_csv(path, index=False, encoding="utf-8-sig")
         print(f"wrote {path}: {len(frame):,} rows")
-    print("status: CURATED EVIDENCE READY; VALIDITY + QUALITY + PROVENANCE ISOLATED PER SIGNAL")
+    print("status: CURATED EVIDENCE READY; POLICY + PROVENANCE + CROSS-FIELD GATES FAIL CLOSED")
 
 
 if __name__ == "__main__":
