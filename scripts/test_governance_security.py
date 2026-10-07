@@ -188,7 +188,7 @@ class GovernanceSecurityTests(unittest.TestCase):
         write(root, "docs/DOCUMENT_MANIFEST.csv", manifest("REVIEWED"))
         write(root, BRD_PATH, BRD_B.replace("status: FROZEN", "status: REVIEWED"))
         head = self.commit(root, "downgrade attack")
-        self.assert_rejected(self.validator(root, base, head), "CR ingest must be CR-only")
+        self.assert_rejected(self.validator(root, base, head), "one-shot approved CR")
 
     def test_same_pr_dummy_cr_fails(self):
         td, root, base = self.repo()
@@ -197,7 +197,7 @@ class GovernanceSecurityTests(unittest.TestCase):
         write(root, f"{CR_DIR}/CR-TEST-999.md", cr_text("CR-TEST-999", base, BRD_A, BRD_B))
         write(root, "docs/00_PROJECT_GOVERNANCE/CHANGE_LOG.md", "# log\nchanged\n")
         head = self.commit(root, "same pr cr attack")
-        self.assert_rejected(self.validator(root, base, head), "one-shot approved CR")
+        self.assert_rejected(self.validator(root, base, head), "CR ingest must be CR-only")
 
     def test_exact_approved_target_accepts(self):
         td, root, pre = self.repo()
