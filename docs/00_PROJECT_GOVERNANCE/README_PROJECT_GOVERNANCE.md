@@ -3,7 +3,9 @@
 ## Current state
 
 - Phase B content: `CONDITIONALLY PASS`
-- H-B03: `REMEDIATED / PENDING INDEPENDENT PASS 2`
+- H-B03: `CLOSED`
+- H-B06: `CLOSED`
+- M-B06: `REMEDIATED / PENDING INDEPENDENT PASS 4`
 - PR #1: `HOLD`
 - B1 freeze: `HOLD`
 - B2 executable-policy freeze: `HOLD`
@@ -31,7 +33,7 @@ Verified repository metadata currently says:
 
 Therefore successful CI is evidence that checks ran, not proof they are mandatory.
 
-Before first freeze, configure repository protection so changes to main require PR + successful **Governance Trusted** check, and constrain force-push/deletion bypass.
+Before first freeze, configure repository protection so changes to main require PR + successful **Governance Trusted** check in **strict / branch-up-to-date mode**, block force-push and branch deletion, and constrain bypass.
 
 ## Bootstrap caveat
 

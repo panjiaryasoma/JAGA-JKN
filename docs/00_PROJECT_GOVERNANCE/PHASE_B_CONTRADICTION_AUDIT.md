@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.4.0
+version: 0.5.0
 owner: Panji
 artifact_authority_level: A6
 authority: Verification & Governance Evidence
@@ -12,87 +12,109 @@ last_updated: 2026-10-07
 
 ## Latest independent result
 
-Independent Pass 2 result:
+Independent Pass 3 against head `29bc20d10dc00544b24743ed6fb9acc2831f2230` concluded:
 
-- H-B03 original bypass: **CLOSED**
-- H-B06 CR authorization replay/scope binding: **OPEN HIGH**
+- H-B03: **CLOSED**
+- H-B06: **CLOSED**
+- no unresolved HIGH finding
 - Phase B content: **CONDITIONALLY PASS**
-- PR #1 merge: **HOLD**
-- B1 freeze: **HOLD**
-- B2 freeze: **HOLD**
-- implementation: **NOT AUTHORIZED**
+- M-B01: **OPEN**
+- M-B02: **OPEN — B2 ONLY**
+- M-B03: **CLOSED**
+- M-B04: **CLOSED**
+- M-B05: **PARTIAL**
+- M-B06: **OPEN — CR approval commit isolation**
 
-## H-B06 remediation
+PR #1 merge, B1 freeze, B2 freeze, A4, and implementation remain blocked according to their respective gates.
 
-The previous CR model approved path/ID scope but did not bind approval to one exact state transition. A valid historical CR could therefore become standing authorization.
+## M-B06 — CR approval commit isolation
 
-Remediation on this branch introduces **CR schema v2**.
+### Independent finding
 
-Authorization is now bound to:
-- `authorized_base_sha`;
-- source blob SHA-256 for every protected target;
-- exact target blob SHA-256, or explicit DELETE;
-- approved path;
-- affected IDs as defense-in-depth;
-- valid approver;
-- parseable approval date;
-- non-empty validation plan.
+CR schema v2 correctly binds one-shot authorization to source/base/target state, but the validator did not require the CR approval commit itself to be isolated. The approval base could introduce the CR while changing unrelated context.
 
-### One-shot base binding
+That did not break exact target authorization, but weakened snapshot isolation.
 
-A CR must be newly introduced in the semantic PR's base commit, whose first parent equals the CR's `authorized_base_sha`.
+### Remediation
 
-This solves the self-reference problem of trying to embed the CR-containing commit's own SHA in the CR while still ensuring the authorization expires when main advances.
+For an approved CR to be eligible, the validator now requires:
 
-### Replay resistance
+```text
+diff(authorized_base_sha, approval_base)
+==
+{ exact CR file path }
+```
 
-A→B approval cannot authorize B→C because:
-1. after A→B merges, the CR is no longer newly introduced in the current base;
-2. the current source blob is B, not approved source A;
-3. C cannot equal the approved B target hash.
+Nothing else may ride with the approval commit:
 
-### H-B06 adversarial regressions
+- no CHANGE_LOG update;
+- no manifest edit;
+- no unrelated REVIEWED/DRAFT artifact;
+- no second CR;
+- no target change.
 
-The security suite now covers:
+The approval commit therefore has one epistemic meaning only: **introduce this exact approval envelope against an unchanged referenced world**.
 
-- old approved CR reused for a second different change → REJECT;
-- exact target hash mismatch → REJECT;
-- authorized base SHA mismatch → REJECT;
-- ID-scoped CR with semantic change lacking identifiable ID context → REJECT;
-- explicit DELETE target → ACCEPT deletion only;
-- same exact approved target → ACCEPT;
-- CR filename vs `cr_id` mismatch → REJECT;
-- malformed `approved_at` → REJECT;
-- original downgrade attack → REJECT;
-- same-PR dummy CR → REJECT;
-- trusted validator self-change without one-shot CR → REJECT.
+### Regression coverage added
 
-**H-B06 status: REMEDIATED / PENDING INDEPENDENT PASS 3.**
+- approved CR commit + unrelated reviewed artifact → **REJECT**
+- approved CR commit + second CR → **REJECT**
+- normal single-CR approval path remains covered by exact-target acceptance tests
 
-The project does not self-close the HIGH until independent Pass 3 attempts to break the new authorization state.
+**M-B06 state: `REMEDIATED / PENDING INDEPENDENT PASS 4`.**
 
-## Other findings
+It is not self-closed.
 
-### M-B01
-**OPEN.** Main remains unprotected; required checks are off; rulesets are empty. B1 freeze remains blocked.
+## Closed HIGH findings
 
-### M-B02
-**OPEN / B2 only.** Legal provenance improved further:
-- exact UU 6/2023 source URL added;
-- exact PerBPJS 5/2018 source URL added;
-- PP 86/2013 → WAGE-001 trace added;
-- 5/2018 → 3/2020 → 2/2024 → CONTRIB-001 trace added.
+### H-B03
+**CLOSED by Independent Pass 2.**
 
-Executable policy still requires consolidated article/effective-date/exception/timing semantics.
+Base/head protection, same-PR dummy CR rejection, and trusted-base validation survived adversarial review.
 
-### M-B03
+### H-B06
+**CLOSED by Independent Pass 3.**
+
+One-shot CR binding survived replay, wrong-target, wrong-base, deletion, ID-context, filename/date, downgrade, and trusted-control attacks.
+
+## M-B01 — repository enforcement
+
+**OPEN / B1 FREEZE BLOCKER.**
+
+Verified repository state remains unprotected. Final enforcement acceptance requires all of:
+
+```text
+Pull request required
++
+Governance Trusted required
++
+strict / branch must be up to date before merge
++
+force push blocked
++
+branch deletion blocked
++
+bypass constrained
+```
+
+Strict latest-base revalidation is mandatory because CR authorization intentionally expires when main moves. A loose required check would leave a TOCTOU gap between validation and merge.
+
+## M-B02 — executable policy consolidation
+
+**OPEN / B2 ONLY.**
+
+Source URLs and traceability have improved, but executable article/effective-period/exception/wage-basis/timing semantics remain intentionally incomplete.
+
+This does not invalidate B1 safety boundaries.
+
+## M-B03
 **CLOSED.**
 
-### M-B04
+## M-B04
 **CLOSED.**
 
-### M-B05
-**PARTIAL**, largely constrained by M-B01.
+## M-B05
+**PARTIAL**, with most residual enforcement dependent on M-B01.
 
 ## Gate
 
@@ -107,15 +129,24 @@ H-B03
 CLOSED
         ↓
 H-B06
+CLOSED
+        ↓
+M-B06
 REMEDIATED
-PENDING INDEPENDENT PASS 3
+PENDING INDEPENDENT PASS 4
         ↓
-PR #1 MERGE / B1 FREEZE
+PR #1 MERGE
 HOLD
         ↓
-B2 EXECUTABLE POLICY
-HOLD
+B1 FREEZE
+HOLD on M-B01
         ↓
-A4 / IMPLEMENTATION
+B2 FREEZE
+HOLD on M-B01 + M-B02
+        ↓
+A4 / PRD / SRS
+NOT AUTHORIZED
+        ↓
+IMPLEMENTATION
 NOT AUTHORIZED
 ```

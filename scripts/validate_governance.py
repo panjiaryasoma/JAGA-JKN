@@ -331,6 +331,20 @@ def approved_base_crs(base: str, registry: list[dict[str, str]]) -> list[tuple[s
         if git_exists(base_parent, path):
             continue
 
+        # Snapshot isolation: the approval base commit has exactly one purpose:
+        # introduce this approved CR and nothing else. No CHANGE_LOG, manifest,
+        # unrelated REVIEWED docs, second CR, or target mutation may hitch a ride.
+        approval_changed = {
+            item.strip()
+            for item in git("diff", "--name-only", base_parent, base).splitlines()
+            if item.strip()
+        }
+        if approval_changed != {path}:
+            fail(
+                f"{path}: CR approval commit must be CR-only; "
+                f"changed paths={sorted(approval_changed)}"
+            )
+
         for target_path, spec in data["targets"].items():
             if not authorized_for(target_path, data["approver"], registry):
                 fail(f"{path}: approver {data['approver']} not authorized for {target_path}")

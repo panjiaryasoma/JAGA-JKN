@@ -287,6 +287,41 @@ class GovernanceSecurityTests(unittest.TestCase):
         head = self.commit(root, "bad approval date")
         self.assert_rejected(self.validator(root, approval_base, head), "valid ISO date")
 
+    def test_cr_approval_commit_with_unrelated_artifact_change_rejected(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        path = f"{CR_DIR}/CR-TEST-001.md"
+        write(root, path, cr_text("CR-TEST-001", pre, BRD_A, BRD_B))
+        write(root, "docs/README.md", README + "\nUnrelated reviewed-context change.\n")
+        approval_base = self.commit(root, "impure approval commit")
+
+        write(root, BRD_PATH, BRD_B)
+        write(root, "docs/00_PROJECT_GOVERNANCE/CHANGE_LOG.md", "# log\nsemantic change\n")
+        head = self.commit(root, "apply target after impure approval")
+        self.assert_rejected(
+            self.validator(root, approval_base, head),
+            "CR approval commit must be CR-only",
+        )
+
+    def test_cr_approval_commit_with_second_cr_rejected(self):
+        td, root, pre = self.repo()
+        self.addCleanup(td.cleanup)
+        write(root, f"{CR_DIR}/CR-TEST-001.md", cr_text("CR-TEST-001", pre, BRD_A, BRD_B))
+        write(
+            root,
+            f"{CR_DIR}/CR-TEST-002.md",
+            cr_text("CR-TEST-002", pre, BRD_A, BRD_B, decision="PENDING"),
+        )
+        approval_base = self.commit(root, "two cr approval commit")
+
+        write(root, BRD_PATH, BRD_B)
+        write(root, "docs/00_PROJECT_GOVERNANCE/CHANGE_LOG.md", "# log\nsemantic change\n")
+        head = self.commit(root, "apply target after multi-cr approval")
+        self.assert_rejected(
+            self.validator(root, approval_base, head),
+            "CR approval commit must be CR-only",
+        )
+
     def test_trusted_control_self_change_fails_without_one_shot_cr(self):
         td, root, base = self.repo(trusted=True)
         self.addCleanup(td.cleanup)

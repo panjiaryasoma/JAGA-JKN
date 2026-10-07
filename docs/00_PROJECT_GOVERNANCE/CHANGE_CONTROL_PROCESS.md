@@ -1,7 +1,7 @@
 ---
 project: JAGA-JKN
 status: REVIEWED
-version: 0.4.0
+version: 0.5.0
 owner: Panji
 artifact_authority_level: A1
 authority: Project Governance
@@ -33,6 +33,7 @@ CR authorization is intentionally two-step:
 B0 = current protected main
         ↓
 CR-only approval PR
+diff(B0, B1) = exactly one CR file
 CR declares authorized_base_sha = B0
 source hashes = state at B0
 target hashes = exact intended new content
@@ -50,7 +51,7 @@ CR can no longer authorize another change
 
 Why `authorized_base_sha` refers to **B0**, not B1: B1 contains the CR itself, so making the CR contain B1's own commit SHA would be self-referential. The validator instead requires B1's first parent to equal `authorized_base_sha`, and requires the approved CR file to be newly introduced in B1.
 
-If main moves after CR approval and before the semantic PR, the authorization expires. Re-approval is required. Annoying, yes. Also substantially less exciting than reusable governance exploits.
+If main moves after CR approval and before the semantic PR, the authorization expires. Re-approval is required. Repository enforcement must therefore require the Governance Trusted check in **strict / branch-up-to-date mode**, so a stale green check cannot survive a base movement. Annoying, yes. Also substantially less exciting than reusable governance exploits.
 
 ## CR schema v2
 
@@ -96,11 +97,12 @@ For an approved CR to authorize a protected path:
 4. `authorized_base_sha` equals the first parent of the semantic PR base;
 5. CR did not exist at `authorized_base_sha`;
 6. source blob SHA-256 at authorized base equals `source_sha256`;
-7. the CR-approval commit itself did not alter the target;
-8. semantic PR head exactly equals `target_sha256`, or is absent for explicit DELETE;
-9. ID scope is checked as defense-in-depth;
-10. the CR record used for authorization is not edited in the semantic PR;
-11. `CHANGE_LOG.md` is updated.
+7. the CR-approval commit changes **exactly one path: that CR file itself**;
+8. therefore the approval commit cannot alter the target, manifest, CHANGE_LOG, unrelated context, or introduce a second CR;
+9. semantic PR head exactly equals `target_sha256`, or is absent for explicit DELETE;
+10. ID scope is checked as defense-in-depth;
+11. the CR record used for authorization is not edited in the semantic PR;
+12. `CHANGE_LOG.md` is updated.
 
 ## Replay rule
 
@@ -124,6 +126,7 @@ The trusted `pull_request_target` workflow uses the validator from trusted base 
 No first FROZEN artifact until:
 - latest independent audit has no unresolved HIGH affecting B1;
 - repository protection requires PR + Governance Trusted;
+- required status checks run in strict / branch-must-be-up-to-date mode;
 - force-push/deletion bypass is constrained;
 - manifest/frontmatter are consistent;
 - provenance/ownership are complete.

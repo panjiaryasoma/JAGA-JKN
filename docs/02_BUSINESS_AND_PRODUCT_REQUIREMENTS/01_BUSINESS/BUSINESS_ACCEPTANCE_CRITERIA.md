@@ -25,11 +25,11 @@ B1 is freeze-ready only if:
 - BAC-007: policy-dependent semantics require source/version/effective period;
 - BAC-008: no production threshold is invented;
 - BAC-009: latest independent contradiction audit has zero unresolved HIGH affecting B1;
-- BAC-010: repository enforcement requires PR + **Governance Trusted** check and prevents accidental direct-push bypass.
+- BAC-010: repository enforcement requires PR + **Governance Trusted** as a required status check, **strict / branch-must-be-up-to-date before merge**, force-push blocked, branch deletion blocked, and bypass constrained.
 
 **Current B1 result: HOLD.**
 
-At the start of remediation, H-B03 was OPEN. The audit must be rerun after hardened-validator tests pass. BAC-010 is also currently false because `main` is unprotected.
+Independent Pass 3 closed H-B03 and H-B06. M-B06 remediation still requires independent Pass 4. BAC-010 remains false because `main` is unprotected and strict required-check enforcement is not active.
 
 ## B2 — Executable Policy Freeze
 
