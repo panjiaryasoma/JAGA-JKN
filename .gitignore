@@ -29,6 +29,8 @@ artifacts/
 models/artifacts/
 data/generated/
 data/processed/
+data/synthetic/**/*.csv
+powerbi/data/*.csv
 *.pkl
 *.joblib
 *.onnx

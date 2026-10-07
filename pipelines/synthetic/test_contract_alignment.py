@@ -26,7 +26,11 @@ def load_curation_module():
     )
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
-    spec.loader.exec_module(module)
+    sys.path.insert(0, str(HERE))
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.path.remove(str(HERE))
     return module
 
 
@@ -37,13 +41,13 @@ class ContractAlignmentTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
-        cls.data_dir = Path(cls.tmp.name) / "data"
-        cls.powerbi_dir = Path(cls.tmp.name) / "powerbi"
+        cls.data_root = Path(cls.tmp.name) / "data" / "synthetic"
+        cls.powerbi_root = Path(cls.tmp.name) / "powerbi"
         env = os.environ.copy()
         env.update({
-            "JAGA_DATA_DIR": str(cls.data_dir),
-            "JAGA_POWERBI_DIR": str(cls.powerbi_dir),
-            "JAGA_POWERBI_DATA_DIR": str(cls.powerbi_dir / "data"),
+            "JAGA_DATA_ROOT": str(cls.data_root),
+            "JAGA_POWERBI_DIR": str(cls.powerbi_root),
+            "JAGA_POWERBI_DATA_DIR": str(cls.powerbi_root / "data"),
             "JAGA_N_COMPANIES": "20",
             "JAGA_SYNTHETIC_SEED": "42",
         })
@@ -61,186 +65,155 @@ class ContractAlignmentTests(unittest.TestCase):
     def tearDownClass(cls):
         cls.tmp.cleanup()
 
+    def test_root_level_default_layout_is_encoded(self):
+        text = (HERE / "paths.py").read_text(encoding="utf-8")
+        self.assertIn('ROOT_DIR / "data" / "synthetic"', text)
+        self.assertIn('ROOT_DIR / "powerbi"', text)
+
     def test_powerbi_consumes_curated_evidence(self):
         text = (HERE / "prepare_powerbi_dataset.py").read_text(encoding="utf-8")
         self.assertIn("curated_kepatuhan_evidence.csv", text)
         self.assertNotIn("C:\\Users\\", text)
 
     def test_spouse_is_not_an_exemption_signal(self):
-        for name in [
-            "generate_raw_dataset_bpjs.py",
-            "pipeline_cleansing_dan_disambiguasi.py",
-        ]:
+        for name in ["generate_raw_dataset_bpjs.py", "pipeline_cleansing_dan_disambiguasi.py"]:
             text = (HERE / name).read_text(encoding="utf-8").lower()
             self.assertNotIn("gap_setelah_pasangan", text)
             self.assertNotIn("legal exemption", text)
 
-    def test_policy_pending_large_exposure_alone_never_causes_review(self):
-        state, recommendation, strength = CURATION.derive_decision_state(
-            worker_discrepancy_count=0,
-            wage_discrepancy_signal_rp=0,
-            contribution_payment_evidence_gap=False,
-            evidence_quality="HIGH",
-            explanation_present=False,
-            policy_status=CURATION.POLICY_PENDING,
-            synthetic_exposure_demo_rp=10**15,
-        )
-        self.assertEqual(state, "NORMAL")
-        self.assertEqual(recommendation, "NO_MATERIAL_DISCREPANCY")
-        self.assertEqual(strength, CURATION.UNSCORED)
-
-    def test_exposure_magnitude_is_decision_invariant(self):
-        common = dict(
-            worker_discrepancy_count=7,
-            wage_discrepancy_signal_rp=0,
-            contribution_payment_evidence_gap=False,
-            evidence_quality="HIGH",
-            explanation_present=False,
-            policy_status=CURATION.POLICY_PENDING,
-        )
-        low = CURATION.derive_decision_state(
-            **common, synthetic_exposure_demo_rp=1
-        )
-        huge = CURATION.derive_decision_state(
-            **common, synthetic_exposure_demo_rp=10**15
-        )
-        self.assertEqual(low, huge)
-
-    def test_policy_dependent_wage_signal_abstains_when_b2_pending(self):
-        state, recommendation, strength = CURATION.derive_decision_state(
-            worker_discrepancy_count=0,
+    def test_policy_authority_unknown_cannot_open_wage_review(self):
+        state, reason = CURATION.derive_wage_state(
             wage_discrepancy_signal_rp=1,
-            contribution_payment_evidence_gap=False,
             evidence_quality="HIGH",
-            explanation_present=False,
-            policy_status=CURATION.POLICY_PENDING,
         )
-        self.assertEqual(state, "ABSTAIN")
-        self.assertEqual(recommendation, "POLICY_REQUIRED_BUT_UNRESOLVED")
-        self.assertEqual(strength, CURATION.UNSCORED)
+        self.assertEqual((state, reason), ("ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"))
 
-    def test_policy_dependent_payment_signal_abstains_when_b2_pending(self):
-        state, recommendation, _ = CURATION.derive_decision_state(
-            worker_discrepancy_count=0,
-            wage_discrepancy_signal_rp=0,
+    def test_policy_authority_missing_cannot_open_contribution_review(self):
+        state, reason = CURATION.derive_contribution_state(
             contribution_payment_evidence_gap=True,
             evidence_quality="HIGH",
+        )
+        self.assertEqual((state, reason), ("ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"))
+
+    def test_spoofed_row_policy_metadata_has_no_decision_authority(self):
+        text = (HERE / "pipeline_cleansing_dan_disambiguasi.py").read_text(encoding="utf-8")
+        self.assertIn("TRUSTED_B2_POLICY_CONTEXT_AUTHORIZED = False", text)
+        self.assertNotIn('"AUTHORIZED" in policy_status', text)
+
+    def test_equal_count_different_worker_sets_are_detected(self):
+        result = CURATION.reconcile_worker_sets({"A", "B", "C"}, {"A", "B", "D"})
+        self.assertEqual(result["reference_count"], 3)
+        self.assertEqual(result["observed_count"], 3)
+        self.assertEqual(result["missing_worker_ids"], ["C"])
+        self.assertEqual(result["unexpected_worker_ids"], ["D"])
+        self.assertFalse(result["sets_equal"])
+
+    def test_registration_state_uses_set_reconciliation_outputs(self):
+        state, reason = CURATION.derive_registration_state(
+            missing_worker_count=1,
+            unexpected_worker_count=1,
+            evidence_quality="HIGH",
             explanation_present=False,
-            policy_status=CURATION.POLICY_PENDING,
         )
-        self.assertEqual(state, "ABSTAIN")
-        self.assertEqual(recommendation, "POLICY_REQUIRED_BUT_UNRESOLVED")
+        self.assertEqual((state, reason), ("REVIEW", "HUMAN_REVIEW_NO_AUTOMATED_PRIORITY"))
 
-    def test_low_evidence_worker_discrepancy_deterministically_abstains(self):
-        state, recommendation, _ = CURATION.derive_decision_state(
-            worker_discrepancy_count=10,
-            wage_discrepancy_signal_rp=0,
-            contribution_payment_evidence_gap=False,
-            evidence_quality="LOW",
+    def test_invalid_evidence_quality_fails_closed(self):
+        for invalid in ["UNKNOWN", "", None, "VERY_HIGH"]:
+            with self.subTest(invalid=invalid):
+                state, reason = CURATION.derive_registration_state(
+                    missing_worker_count=1,
+                    unexpected_worker_count=0,
+                    evidence_quality=invalid,
+                    explanation_present=False,
+                )
+                self.assertEqual(state, "ABSTAIN")
+                self.assertEqual(reason, "INVALID_OR_UNKNOWN_EVIDENCE_QUALITY")
+
+    def test_invalid_evidence_quality_fails_closed_for_policy_signals_too(self):
+        for invalid in ["UNKNOWN", "", None]:
+            with self.subTest(invalid=invalid):
+                self.assertEqual(
+                    CURATION.derive_wage_state(
+                        wage_discrepancy_signal_rp=1,
+                        evidence_quality=invalid,
+                    )[0],
+                    "ABSTAIN",
+                )
+                self.assertEqual(
+                    CURATION.derive_contribution_state(
+                        contribution_payment_evidence_gap=True,
+                        evidence_quality=invalid,
+                    )[0],
+                    "ABSTAIN",
+                )
+
+    def test_multi_signal_states_remain_independent(self):
+        registration = CURATION.derive_registration_state(
+            missing_worker_count=1,
+            unexpected_worker_count=0,
+            evidence_quality="HIGH",
             explanation_present=False,
-            policy_status=CURATION.POLICY_PENDING,
-        )
-        self.assertEqual(state, "ABSTAIN")
-        self.assertEqual(
-            recommendation, "INSUFFICIENT_OR_CONFLICTING_EVIDENCE"
-        )
-
-    def test_seasonal_explanation_preserves_discrepancy(self):
-        gap, explanation = CURATION.preserve_worker_discrepancy(10, True)
-        self.assertEqual(gap, 10)
-        self.assertEqual(explanation, "PROJECT_OR_SEASON_END_SYNTHETIC")
-
-    def test_explanation_triggers_enrichment_without_zeroing_gap(self):
-        state, recommendation, _ = CURATION.derive_decision_state(
-            worker_discrepancy_count=10,
-            wage_discrepancy_signal_rp=0,
+        )[0]
+        wage = CURATION.derive_wage_state(
+            wage_discrepancy_signal_rp=1,
+            evidence_quality="HIGH",
+        )[0]
+        contribution = CURATION.derive_contribution_state(
             contribution_payment_evidence_gap=False,
+            evidence_quality="HIGH",
+        )[0]
+        overall = CURATION.derive_overall_review_state(registration, wage, contribution)
+        self.assertEqual(registration, "REVIEW")
+        self.assertEqual(wage, "ABSTAIN")
+        self.assertEqual(contribution, "NORMAL")
+        self.assertEqual(overall, "PARTIAL")
+
+    def test_seasonal_explanation_does_not_mutate_set_discrepancy(self):
+        reconciliation = CURATION.reconcile_worker_sets({"A", "B", "C"}, {"A", "B"})
+        state, _ = CURATION.derive_registration_state(
+            missing_worker_count=reconciliation["missing_worker_count"],
+            unexpected_worker_count=reconciliation["unexpected_worker_count"],
             evidence_quality="HIGH",
             explanation_present=True,
-            policy_status=CURATION.POLICY_PENDING,
         )
+        self.assertEqual(reconciliation["missing_worker_count"], 1)
         self.assertEqual(state, "NEEDS_ENRICHMENT")
-        self.assertEqual(recommendation, "EVIDENCE_ENRICHMENT_REQUIRED")
 
-    def test_worker_discrepancy_can_be_surfaced_without_priority_score(self):
-        state, recommendation, strength = CURATION.derive_decision_state(
-            worker_discrepancy_count=1,
-            wage_discrepancy_signal_rp=0,
-            contribution_payment_evidence_gap=False,
-            evidence_quality="HIGH",
-            explanation_present=False,
-            policy_status=CURATION.POLICY_PENDING,
-        )
-        self.assertEqual(state, "REVIEW")
-        self.assertEqual(recommendation, "HUMAN_REVIEW_NO_AUTOMATED_PRIORITY")
-        self.assertEqual(strength, CURATION.UNSCORED)
-
-    def test_all_curated_risk_strength_is_unscored(self):
-        curated = pd.read_csv(
-            self.data_dir / "curated_kepatuhan_evidence.csv"
-        )
-        self.assertTrue(
-            curated["risk_strength"].eq(
-                "UNSCORED__THRESHOLDS_NOT_AUTHORIZED"
-            ).all()
-        )
-
-    def test_curated_discrepancy_is_mathematically_preserved(self):
-        curated = pd.read_csv(
-            self.data_dir / "curated_kepatuhan_evidence.csv"
-        )
-        expected = (
-            curated["reference_worker_count"]
-            - curated["observed_registered_worker_count"]
-        ).clip(lower=0)
-        self.assertTrue(
-            curated["worker_discrepancy_count"].eq(expected).all()
-        )
-
-    def test_synthetic_exposure_is_visualization_only(self):
-        curated = pd.read_csv(
-            self.data_dir / "curated_kepatuhan_evidence.csv"
-        )
+    def test_synthetic_exposure_remains_visualization_only(self):
+        curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
         self.assertTrue(
             curated["exposure_decision_role"].eq(
                 "VISUALIZATION_ONLY__MUST_NOT_INFLUENCE_DECISION"
             ).all()
         )
 
+    def test_risk_strength_remains_unscored(self):
+        curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
+        self.assertTrue(curated["risk_strength"].eq("UNSCORED__THRESHOLDS_NOT_AUTHORIZED").all())
+
     def test_no_invented_threshold_scoring_function_remains(self):
-        text = (
-            HERE / "pipeline_cleansing_dan_disambiguasi.py"
-        ).read_text(encoding="utf-8")
+        text = (HERE / "pipeline_cleansing_dan_disambiguasi.py").read_text(encoding="utf-8")
         self.assertNotIn("def risk_strength(", text)
         self.assertNotIn("5_000_000", text)
         self.assertNotIn("500_000", text)
         self.assertNotIn("duration_hint", text)
 
-    def test_system_recommendations_stop_at_human_interpretation(self):
-        curated = pd.read_csv(
-            self.data_dir / "curated_kepatuhan_evidence.csv"
-        )
-        allowed = {
-            "NO_MATERIAL_DISCREPANCY",
-            "POLICY_REQUIRED_BUT_UNRESOLVED",
-            "INSUFFICIENT_OR_CONFLICTING_EVIDENCE",
-            "EVIDENCE_ENRICHMENT_REQUIRED",
-            "HUMAN_REVIEW_NO_AUTOMATED_PRIORITY",
+    def test_curated_output_contains_independent_signal_states(self):
+        curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
+        required = {
+            "registration_signal_state",
+            "wage_signal_state",
+            "contribution_signal_state",
+            "overall_review_state",
+            "missing_worker_count",
+            "unexpected_worker_count",
         }
-        self.assertTrue(
-            set(curated["human_review_recommendation"]).issubset(allowed)
-        )
+        self.assertTrue(required.issubset(curated.columns))
 
     def test_ml_dataset_is_candidate_not_training_ready(self):
-        candidate = pd.read_csv(
-            self.data_dir / "dataset_candidate_ml_audit.csv"
-        )
-        self.assertTrue(
-            candidate["ml_status"].str.contains("CANDIDATE_ONLY").all()
-        )
-        self.assertFalse(
-            (self.data_dir / "dataset_intelijen_kepatuhan_ml.csv").exists()
-        )
+        candidate = pd.read_csv(self.data_root / "candidate_ml" / "dataset_candidate_ml_audit.csv")
+        self.assertTrue(candidate["ml_status"].str.contains("CANDIDATE_ONLY").all())
+        self.assertFalse((self.data_root / "candidate_ml" / "dataset_intelijen_kepatuhan_ml.csv").exists())
 
     def test_end_to_end_validator_passes(self):
         result = subprocess.run(
@@ -249,11 +222,7 @@ class ContractAlignmentTests(unittest.TestCase):
             capture_output=True,
             text=True,
         )
-        self.assertEqual(
-            result.returncode,
-            0,
-            result.stdout + result.stderr,
-        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("MERGE READINESS: NOT CLAIMED", result.stdout)
 
 

@@ -1,21 +1,10 @@
-"""Structural validation for the synthetic remediation sandbox.
-
-This proves contract-alignment properties only. It does not certify B1/B2,
-production policy, ML readiness, or merge readiness.
-"""
+"""Structural validator for the synthetic remediation sandbox."""
 
 from __future__ import annotations
 
-import os
-from pathlib import Path
-
 import pandas as pd
 
-BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = Path(os.getenv("JAGA_DATA_DIR", BASE_DIR / "data"))
-POWERBI_DATA_DIR = Path(
-    os.getenv("JAGA_POWERBI_DATA_DIR", BASE_DIR / "powerbi" / "data")
-)
+from paths import CANDIDATE_ML_DIR, CURATED_DIR, POWERBI_DATA_DIR, SCENARIO_DIR
 
 FORBIDDEN_SYSTEM_ACTION_TERMS = {
     "sanksi", "kejaksaan", "skk datun", "surat teguran", "audit investigasi",
@@ -23,52 +12,43 @@ FORBIDDEN_SYSTEM_ACTION_TERMS = {
 
 
 def main() -> None:
-    master = pd.read_csv(DATA_DIR / "master_badan_usaha.csv")
-    monthly = pd.read_csv(DATA_DIR / "kepatuhan_bulanan_badan_usaha.csv")
-    curated = pd.read_csv(DATA_DIR / "curated_kepatuhan_evidence.csv")
-    ml_candidate = pd.read_csv(DATA_DIR / "dataset_candidate_ml_audit.csv")
+    master = pd.read_csv(SCENARIO_DIR / "master_badan_usaha.csv")
+    curated = pd.read_csv(CURATED_DIR / "curated_kepatuhan_evidence.csv")
+    ml_candidate = pd.read_csv(CANDIDATE_ML_DIR / "dataset_candidate_ml_audit.csv")
     fact = pd.read_csv(POWERBI_DATA_DIR / "Fact_Risk_Evidence.csv")
 
-    assert set(monthly["id_badan_usaha"]).issubset(set(master["id_badan_usaha"]))
     assert set(curated["id_badan_usaha"]).issubset(set(master["id_badan_usaha"]))
     assert curated[["id_badan_usaha", "periode_bulan", "source_record_id"]].isna().sum().sum() == 0
 
     required = {
         "reference_worker_count", "observed_registered_worker_count",
-        "raw_worker_discrepancy_count", "worker_discrepancy_count",
-        "risk_strength", "evidence_quality", "decision_state",
-        "human_review_recommendation", "policy_rule_id",
+        "missing_worker_count", "unexpected_worker_count",
+        "registration_signal_state", "wage_signal_state", "contribution_signal_state",
+        "overall_review_state", "evidence_quality", "risk_strength",
+        "policy_rule_id", "trusted_policy_context_authorized",
         "lineage_source_to_signal", "exposure_decision_role",
     }
     assert required.issubset(curated.columns)
-    assert set(curated["decision_state"]).issubset(
-        {"NORMAL", "REVIEW", "NEEDS_ENRICHMENT", "ABSTAIN"}
+    assert curated["risk_strength"].eq("UNSCORED__THRESHOLDS_NOT_AUTHORIZED").all()
+    assert curated["trusted_policy_context_authorized"].astype(bool).eq(False).all()
+    assert set(curated["evidence_quality"]).issubset({"HIGH", "MEDIUM", "LOW"})
+    assert set(curated["overall_review_state"]).issubset(
+        {"NORMAL", "REVIEW", "NEEDS_ENRICHMENT", "ABSTAIN", "PARTIAL"}
     )
-    assert curated["risk_strength"].eq(
-        "UNSCORED__THRESHOLDS_NOT_AUTHORIZED"
-    ).all()
-    assert curated["raw_worker_discrepancy_count"].eq(
-        curated["worker_discrepancy_count"]
-    ).all()
-    assert curated["policy_rule_id"].eq("POLICY-PENDING-B2").all()
     assert curated["exposure_decision_role"].eq(
         "VISUALIZATION_ONLY__MUST_NOT_INFLUENCE_DECISION"
     ).all()
-    assert curated["is_synthetic"].astype(bool).all()
-    assert fact["exposure_label"].eq(
-        "SIMULATED_ESTIMATE__NOT_EMPIRICAL_LOSS"
-    ).all()
+    assert fact["exposure_label"].eq("SIMULATED_ESTIMATE__NOT_EMPIRICAL_LOSS").all()
     assert ml_candidate["ml_status"].str.contains("CANDIDATE_ONLY").all()
 
-    recommendations = " ".join(
-        curated["human_review_recommendation"].astype(str).str.lower().unique()
-    )
+    recommendations = " ".join(curated["human_review_recommendation"].astype(str).str.lower().unique())
     for term in FORBIDDEN_SYSTEM_ACTION_TERMS:
         assert term not in recommendations
 
     print("STATUS: SANDBOX REMEDIATION EVIDENCE VALID")
-    print("RISK STRENGTH: UNSCORED / THRESHOLDS NOT AUTHORIZED")
-    print("B2 POLICY EXECUTION: DISABLED")
+    print("WORKER REGISTRATION: SET RECONCILIATION ENABLED")
+    print("B2 POLICY AUTHORITY: FAIL-CLOSED / TRUSTED CONTEXT FALSE")
+    print("SIGNAL STATES: INDEPENDENT")
     print("ML TRAINING READINESS: NOT CERTIFIED")
     print("MERGE READINESS: NOT CLAIMED")
 

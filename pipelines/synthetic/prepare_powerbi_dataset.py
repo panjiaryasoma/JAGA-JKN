@@ -1,28 +1,23 @@
-"""Prepare portable Power BI-ready star-schema data from curated evidence.
-
-The dashboard consumes curated evidence, not pre-disambiguation monthly facts.
-No hardcoded sector risk verdict is emitted. Synthetic outcome fields are labeled.
-"""
+"""Prepare root-level Power BI star-schema data from curated evidence."""
 
 from __future__ import annotations
-
-import os
-from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-BASE_DIR = Path(__file__).resolve().parent
-SOURCE_DATA_DIR = Path(os.getenv("JAGA_DATA_DIR", BASE_DIR / "data"))
-POWERBI_ROOT = Path(os.getenv("JAGA_POWERBI_DIR", BASE_DIR / "powerbi"))
-POWERBI_DATA_DIR = Path(os.getenv("JAGA_POWERBI_DATA_DIR", POWERBI_ROOT / "data"))
-POWERBI_DATA_DIR.mkdir(parents=True, exist_ok=True)
+from paths import (
+    CURATED_DIR,
+    POWERBI_DATA_DIR,
+    POWERBI_PARAMETER_DIR,
+    SCENARIO_DIR,
+    ensure_output_dirs,
+)
 
 
 def prepare() -> dict[str, pd.DataFrame]:
-    master = pd.read_csv(SOURCE_DATA_DIR / "curated_master_badan_usaha.csv")
-    curated = pd.read_csv(SOURCE_DATA_DIR / "curated_kepatuhan_evidence.csv")
-    reviews = pd.read_csv(SOURCE_DATA_DIR / "log_review_petugas_synthetic.csv")
+    master = pd.read_csv(CURATED_DIR / "curated_master_badan_usaha.csv")
+    curated = pd.read_csv(CURATED_DIR / "curated_kepatuhan_evidence.csv")
+    reviews = pd.read_csv(SCENARIO_DIR / "log_review_petugas_synthetic.csv")
 
     dim_company = master[[
         "id_badan_usaha", "nama_badan_usaha_terstandarisasi", "bentuk_badan_hukum",
@@ -48,9 +43,17 @@ def prepare() -> dict[str, pd.DataFrame]:
     fact_risk = curated.copy()
     fact_risk["tanggal_evaluasi"] = fact_risk["periode_bulan"] + "-01"
     fact_risk["flag_needs_human_attention"] = np.where(
-        fact_risk["decision_state"].isin(["REVIEW", "NEEDS_ENRICHMENT", "ABSTAIN"]), 1, 0
+        fact_risk["overall_review_state"].isin(["REVIEW", "NEEDS_ENRICHMENT", "ABSTAIN", "PARTIAL"]),
+        1,
+        0,
     )
-    fact_risk["flag_abstain"] = np.where(fact_risk["decision_state"] == "ABSTAIN", 1, 0)
+    fact_risk["flag_abstain"] = np.where(
+        fact_risk[["registration_signal_state", "wage_signal_state", "contribution_signal_state"]]
+        .eq("ABSTAIN")
+        .any(axis=1),
+        1,
+        0,
+    )
     fact_risk["exposure_label"] = "SIMULATED_ESTIMATE__NOT_EMPIRICAL_LOSS"
 
     fact_review = reviews.copy()
@@ -68,27 +71,27 @@ def prepare() -> dict[str, pd.DataFrame]:
 
 
 def write_power_query_parameter() -> None:
-    param_dir = POWERBI_ROOT / "parameters"
-    param_dir.mkdir(parents=True, exist_ok=True)
     template = (
-        "// Create a Power BI text parameter named DataRoot and point it to the local extracted data folder.\n"
-        "// Example only; do not commit a user-specific absolute path.\n"
+        "// Power BI text parameter template.\n"
+        "// Point DataRoot to the repository's root-level powerbi/data directory.\n"
+        "// Never commit a machine-specific absolute path.\n"
         "let\n"
         "    DataRoot = \"<SET_IN_POWER_BI_PARAMETER_UI>\"\n"
         "in\n"
         "    DataRoot\n"
     )
-    (param_dir / "DataRoot.pq").write_text(template, encoding="utf-8")
+    (POWERBI_PARAMETER_DIR / "DataRoot.pq").write_text(template, encoding="utf-8")
 
 
 def main() -> None:
-    outputs = prepare()
-    for filename, frame in outputs.items():
-        frame.to_csv(POWERBI_DATA_DIR / filename, index=False, encoding="utf-8-sig")
-        print(f"wrote {filename}: {len(frame):,} rows")
+    ensure_output_dirs()
+    for filename, frame in prepare().items():
+        path = POWERBI_DATA_DIR / filename
+        frame.to_csv(path, index=False, encoding="utf-8-sig")
+        print(f"wrote {path}: {len(frame):,} rows")
     write_power_query_parameter()
-    print(f"Power BI DataRoot: set at refresh time; generated data dir={POWERBI_DATA_DIR}")
-    print("status: POWER BI DATA PREPARED FROM CURATED EVIDENCE")
+    print(f"Power BI root data directory: {POWERBI_DATA_DIR}")
+    print("status: POWER BI DATA PREPARED FROM CURATED PER-SIGNAL EVIDENCE")
 
 
 if __name__ == "__main__":
