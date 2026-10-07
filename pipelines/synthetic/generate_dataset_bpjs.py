@@ -1,8 +1,8 @@
-"""Generate deterministic synthetic JAGA-JKN employer-risk data.
+"""Generate deterministic synthetic JAGA-JKN employer-risk demo data.
 
-This file is an implementation artifact, not a legal-policy engine.
-All monetary exposure calculations are explicitly synthetic assumptions for demo use.
-The system stops at detection / assessment / prioritization / explanation / human review.
+This is a scenario generator, not a policy or decision engine.
+Synthetic monetary assumptions may support visual storytelling only and MUST NOT
+influence risk strength, prioritization, review state, sanction, or enforcement.
 """
 
 from __future__ import annotations
@@ -22,9 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = Path(os.getenv("JAGA_DATA_DIR", BASE_DIR / "data"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-# Synthetic scenario assumptions only. These values MUST NOT be interpreted as
-# executable legal policy. Production policy semantics remain blocked by B2.
-SYNTHETIC_ASSUMPTION_VERSION = "SYN-2026-10-08-v1"
+SYNTHETIC_ASSUMPTION_VERSION = "SYN-2026-10-08-v2"
 SYNTHETIC_CONTRIBUTION_RATE = 0.05
 SYNTHETIC_WAGE_CAP_RP = 12_000_000.0
 POLICY_STATUS = "SYNTHETIC_ASSUMPTION_ONLY__B2_POLICY_NOT_AUTHORIZED"
@@ -41,7 +39,6 @@ SECTORS = [
     ("A", "Pertanian / Perkebunan / Kehutanan"),
     ("K", "Jasa Keuangan / Pembiayaan / Asuransi"),
 ]
-
 REGIONS = [
     ("DKI Jakarta", "KC Jakarta Pusat"),
     ("Jawa Barat", "KC Bandung"),
@@ -54,7 +51,6 @@ REGIONS = [
     ("Sulawesi Selatan", "KC Makassar"),
     ("Bali", "KC Denpasar"),
 ]
-
 PROFILES = [
     "NORMAL",
     "WORKER_REGISTRATION_GAP",
@@ -64,7 +60,6 @@ PROFILES = [
     "RECURRENCE",
 ]
 PROFILE_WEIGHTS = [0.52, 0.16, 0.12, 0.10, 0.06, 0.04]
-
 NAME_1 = [
     "Nusantara", "Bina", "Cipta", "Mandiri", "Sentosa", "Prima", "Makmur",
     "Sejahtera", "Daya", "Karya", "Mega", "Inti", "Mitra", "Surya",
@@ -79,37 +74,8 @@ def _rng() -> tuple[random.Random, np.random.Generator]:
     return random.Random(SEED), np.random.default_rng(SEED)
 
 
-def _risk_strength(worker_gap: int, wage_gap: float, contribution_gap: float, duration: int) -> str:
-    score = 0
-    if worker_gap > 0:
-        score += min(3, 1 + worker_gap // 10)
-    if wage_gap > 0:
-        score += 1 if wage_gap < 500_000 else 2
-    if contribution_gap > 0:
-        score += 1 if contribution_gap < 5_000_000 else 2
-    if duration >= 4:
-        score += 1
-    if score == 0:
-        return "NONE"
-    if score <= 2:
-        return "LOW"
-    if score <= 4:
-        return "MEDIUM"
-    return "HIGH"
-
-
-def _review_recommendation(risk_strength: str) -> str:
-    return {
-        "NONE": "NO_REVIEW_NEEDED",
-        "LOW": "MONITOR",
-        "MEDIUM": "PRIORITIZE_HUMAN_REVIEW",
-        "HIGH": "PRIORITIZE_HUMAN_REVIEW",
-    }[risk_strength]
-
-
 def generate() -> dict[str, pd.DataFrame]:
     py_rng, np_rng = _rng()
-
     master_rows: list[dict] = []
     monthly_rows: list[dict] = []
     review_rows: list[dict] = []
@@ -166,7 +132,6 @@ def generate() -> dict[str, pd.DataFrame]:
             if trigger_month is not None and month_index >= trigger_month and not episode_active:
                 episode_active = True
                 episode_duration = 0
-
             if profile == "RECURRENCE" and month_index >= 16 and not recurrence_started:
                 episode_active = True
                 recurrence_started = True
@@ -175,42 +140,38 @@ def generate() -> dict[str, pd.DataFrame]:
             observed_workers = reference_workers
             observed_wage = reference_wage
             payment_state = "PAID_ON_TIME"
-            synthetic_days_since_due = 0
             mode = "NORMAL"
 
             if episode_active:
                 episode_duration += 1
-                severity = min(1.0, 0.25 + episode_duration * 0.15)
+                synthetic_severity = min(1.0, 0.25 + episode_duration * 0.15)
 
                 if profile in {"WORKER_REGISTRATION_GAP", "RECURRENCE", "MULTI_SIGNAL"}:
                     hidden_fraction = min(0.45, 0.08 + episode_duration * 0.06)
-                    hidden_workers = max(1, round(reference_workers * hidden_fraction))
-                    observed_workers = max(1, reference_workers - hidden_workers)
+                    observed_workers = max(1, reference_workers - max(1, round(reference_workers * hidden_fraction)))
                     mode = "WORKER_REGISTRATION_GAP"
 
                 if profile in {"WAGE_REPORTING_GAP", "MULTI_SIGNAL"}:
-                    observed_wage = round(reference_wage * (1.0 - 0.18 * severity), -3)
+                    observed_wage = round(reference_wage * (1.0 - 0.18 * synthetic_severity), -3)
                     mode = "WAGE_REPORTING_GAP" if mode == "NORMAL" else "MULTI_SIGNAL"
 
                 if profile in {"CONTRIBUTION_PAYMENT_GAP", "MULTI_SIGNAL"}:
                     payment_state = "UNPAID" if episode_duration >= 2 else "PAYMENT_PENDING"
-                    synthetic_days_since_due = min(180, 15 * episode_duration)
                     mode = "CONTRIBUTION_PAYMENT_GAP" if mode == "NORMAL" else "MULTI_SIGNAL"
 
             synthetic_reference_base = min(reference_wage, SYNTHETIC_WAGE_CAP_RP)
             synthetic_observed_base = min(observed_wage, SYNTHETIC_WAGE_CAP_RP)
-            reference_contribution = round(reference_workers * synthetic_reference_base * SYNTHETIC_CONTRIBUTION_RATE)
-            observed_contribution = round(observed_workers * synthetic_observed_base * SYNTHETIC_CONTRIBUTION_RATE)
-            if payment_state == "UNPAID":
-                paid_contribution = 0
-            else:
-                paid_contribution = observed_contribution
+            reference_contribution = round(
+                reference_workers * synthetic_reference_base * SYNTHETIC_CONTRIBUTION_RATE
+            )
+            observed_contribution = round(
+                observed_workers * synthetic_observed_base * SYNTHETIC_CONTRIBUTION_RATE
+            )
+            paid_contribution = 0 if payment_state == "UNPAID" else observed_contribution
 
             worker_gap = max(0, reference_workers - observed_workers)
             wage_gap = max(0.0, reference_wage - observed_wage)
             exposure = max(0.0, float(reference_contribution - paid_contribution))
-            strength = _risk_strength(worker_gap, wage_gap, exposure, episode_duration)
-            recommendation = _review_recommendation(strength)
 
             monthly_rows.append({
                 "id_badan_usaha": company_id,
@@ -226,27 +187,27 @@ def generate() -> dict[str, pd.DataFrame]:
                 "paid_contribution_synthetic_rp": paid_contribution,
                 "estimated_exposure_synthetic_rp": int(exposure),
                 "observed_payment_state": payment_state,
-                "synthetic_days_since_due": synthetic_days_since_due,
                 "synthetic_risk_mode_ground_truth": mode,
-                "episode_duration_months": episode_duration,
-                "risk_strength_seed": strength,
-                "human_review_recommendation": recommendation,
+                "episode_duration_synthetic_months": episode_duration,
+                "synthetic_demo_severity": "NON_NORMATIVE_VISUAL_ONLY",
                 "policy_status": POLICY_STATUS,
                 "synthetic_assumption_version": SYNTHETIC_ASSUMPTION_VERSION,
                 "is_synthetic": True,
             })
 
-            if episode_active and episode_duration >= 3 and episode_duration % 3 == 0:
-                human_outcome = np_rng.choice(
-                    ["REVIEW_CONFIRMED", "REQUEST_MORE_EVIDENCE", "NO_ACTION_AFTER_REVIEW"],
-                    p=[0.62, 0.28, 0.10],
-                )
+            # Purely synthetic narrative event for dashboard storytelling.
+            # It is intentionally random and is NOT triggered by a score, threshold,
+            # exposure, duration requirement, policy rule, or system recommendation.
+            if episode_active and py_rng.random() < 0.06:
                 review_rows.append({
-                    "id_review": f"REV-{period}-{company_id}-{episode_duration:02d}",
+                    "id_review": f"REV-{period}-{company_id}-{len(review_rows)+1:04d}",
                     "id_badan_usaha": company_id,
                     "periode_review": period,
-                    "system_recommendation": recommendation,
-                    "human_review_outcome_synthetic": human_outcome,
+                    "system_recommendation": "NOT_GENERATED__SYNTHETIC_NARRATIVE_ONLY",
+                    "human_review_outcome_synthetic": np_rng.choice(
+                        ["REVIEW_CONFIRMED", "REQUEST_MORE_EVIDENCE", "NO_ACTION_AFTER_REVIEW"],
+                        p=[0.62, 0.28, 0.10],
+                    ),
                     "simulated_resolution_state": np_rng.choice(
                         ["OPEN", "MONITORING", "RESOLVED_SYNTHETIC"], p=[0.35, 0.35, 0.30]
                     ),
@@ -254,13 +215,16 @@ def generate() -> dict[str, pd.DataFrame]:
                     "is_synthetic": True,
                 })
 
-                if human_outcome == "REVIEW_CONFIRMED" and profile not in {"MULTI_SIGNAL", "RECURRENCE"}:
-                    episode_active = False
-                    episode_duration = 0
-
     master = pd.DataFrame(master_rows)
     monthly = pd.DataFrame(monthly_rows)
-    reviews = pd.DataFrame(review_rows)
+    reviews = pd.DataFrame(
+        review_rows,
+        columns=[
+            "id_review", "id_badan_usaha", "periode_review", "system_recommendation",
+            "human_review_outcome_synthetic", "simulated_resolution_state",
+            "synthetic_outcome_assumption", "is_synthetic",
+        ],
+    )
 
     ml_rows: list[dict] = []
     for company_id, group in monthly.groupby("id_badan_usaha", sort=True):
@@ -279,20 +243,22 @@ def generate() -> dict[str, pd.DataFrame]:
             "payment_state_current": last["observed_payment_state"],
             "max_worker_gap_24m": int(group["worker_discrepancy_count"].max()),
             "max_wage_gap_24m_rp": int(group["wage_discrepancy_signal_rp"].max()),
-            "total_estimated_exposure_24m_synthetic_rp": int(group["estimated_exposure_synthetic_rp"].sum()),
-            "months_with_payment_gap": int((group["observed_payment_state"] != "PAID_ON_TIME").sum()),
+            "total_estimated_exposure_24m_synthetic_rp": int(
+                group["estimated_exposure_synthetic_rp"].sum()
+            ),
+            "months_with_payment_gap": int(
+                (group["observed_payment_state"] != "PAID_ON_TIME").sum()
+            ),
             "synthetic_target_risk_mode": last["synthetic_risk_mode_ground_truth"],
-            "synthetic_target_risk_strength_seed": last["risk_strength_seed"],
             "ml_status": "CANDIDATE_ONLY__REQUIRES_LEAKAGE_LABEL_AND_EVALUATION_AUDIT",
             "is_synthetic": True,
         })
 
-    ml_candidate = pd.DataFrame(ml_rows)
     return {
         "master_badan_usaha.csv": master,
         "kepatuhan_bulanan_badan_usaha.csv": monthly,
         "log_review_petugas_synthetic.csv": reviews,
-        "dataset_candidate_ml_audit.csv": ml_candidate,
+        "dataset_candidate_ml_audit.csv": pd.DataFrame(ml_rows),
     }
 
 
@@ -301,7 +267,7 @@ def main() -> None:
     for filename, frame in outputs.items():
         frame.to_csv(DATA_DIR / filename, index=False, encoding="utf-8-sig")
         print(f"wrote {filename}: {len(frame):,} rows")
-    print("status: SYNTHETIC DEMO DATA GENERATED; LEGAL POLICY + ML READINESS NOT CLAIMED")
+    print("status: SYNTHETIC DEMO DATA GENERATED; NO DECISION/POLICY READINESS CLAIMED")
 
 
 if __name__ == "__main__":
