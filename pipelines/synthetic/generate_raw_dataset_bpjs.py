@@ -1,8 +1,7 @@
-"""Create noisy raw synthetic evidence, including worker-set observations.
+"""Create noisy raw synthetic evidence with isolated evidence domains.
 
-Registration evidence is represented as sets of worker IDs. Aggregate counts are
-secondary projections of set reconciliation, never a substitute for identity-level
-membership semantics.
+Registration, wage, and contribution evidence carry separate source metadata so
+one domain cannot silently contaminate the confidence of another.
 """
 
 from __future__ import annotations
@@ -93,6 +92,7 @@ def generate_raw() -> dict[str, pd.DataFrame]:
     for _, row in monthly.iterrows():
         company_id = row["id_badan_usaha"]
         period = row["periode_bulan"]
+        source_record_id = f"RAW-{company_id}-{period}"
         sector = sector_map[company_id]
         scenario_reference_count = int(row["reference_worker_count_scenario"])
         scenario_observed_count = int(row["observed_registered_worker_count_scenario"])
@@ -116,6 +116,19 @@ def generate_raw() -> dict[str, pd.DataFrame]:
         external_reference_set = _resize_reference_set(
             company_id, scenario_reference_set, external_reference_count
         )
+
+        registration_source_conflict = bool(
+            reporting_lag_months > 0 and external_reference_set != scenario_reference_set
+        )
+        registration_source_freshness = "STALE" if reporting_lag_months >= 2 else "CURRENT"
+
+        # Wage evidence quality is generated independently from worker and payment evidence.
+        wage_source_freshness = "STALE" if rng.random() < 0.04 else "CURRENT"
+        wage_source_conflict = rng.random() < 0.03
+
+        # Contribution/payment evidence gets its own source health.
+        contribution_source_freshness = "STALE" if rng.random() < 0.02 else "CURRENT"
+        contribution_source_conflict = rng.random() < 0.02
 
         seasonal_change = (
             sector in {"F", "A"}
@@ -143,20 +156,32 @@ def generate_raw() -> dict[str, pd.DataFrame]:
             bank_timestamp = np.nan
             bank_observed_state = "NO_PAYMENT_EVIDENCE"
 
-        source_conflict = bool(reporting_lag_months > 0 and external_reference_set != scenario_reference_set)
-        freshness = "STALE" if reporting_lag_months >= 2 else "CURRENT"
-
         raw_rows.append({
             "id_badan_usaha": company_id,
             "periode_bulan": period,
-            "source_record_id": f"RAW-{company_id}-{period}",
+            "source_record_id": source_record_id,
+
+            "registration_reference_source_id": f"{source_record_id}:REG_REFERENCE",
+            "registration_observed_source_id": f"{source_record_id}:REG_OBSERVED",
             "reference_worker_set_json": serialize_worker_set(external_reference_set),
             "observed_registered_worker_set_json": serialize_worker_set(scenario_observed_set),
+            "reference_worker_set_verified": True,
+            "observed_worker_set_verified": True,
             "reference_worker_count_observed": len(external_reference_set),
             "observed_registered_worker_count": len(scenario_observed_set),
+            "registration_source_freshness": registration_source_freshness,
+            "registration_source_conflict": registration_source_conflict,
+
+            "wage_reference_source_id": f"{source_record_id}:WAGE_REFERENCE",
+            "wage_observed_source_id": f"{source_record_id}:WAGE_OBSERVED",
             "reference_wage_signal_rp": int(row["reference_wage_signal_rp"]),
             "observed_wage_signal_rp": int(row["observed_wage_signal_rp"]),
             "wage_discrepancy_raw_rp": int(row["wage_discrepancy_signal_rp"]),
+            "wage_source_freshness": wage_source_freshness,
+            "wage_source_conflict": wage_source_conflict,
+
+            "contribution_expected_source_id": f"{source_record_id}:CONTRIB_EXPECTED_SYNTHETIC",
+            "contribution_payment_source_id": f"{source_record_id}:CONTRIB_PAYMENT",
             "reference_contribution_synthetic_rp": int(row["reference_contribution_synthetic_rp"]),
             "paid_contribution_synthetic_rp": int(row["paid_contribution_synthetic_rp"]),
             "estimated_exposure_synthetic_rp": int(row["estimated_exposure_synthetic_rp"]),
@@ -165,11 +190,14 @@ def generate_raw() -> dict[str, pd.DataFrame]:
             "bank_posting_timestamp_synthetic": bank_timestamp,
             "bank_observed_state": bank_observed_state,
             "flag_bank_settlement_delay": settlement_delay,
+            "contribution_source_freshness": contribution_source_freshness,
+            "contribution_source_conflict": contribution_source_conflict,
+
             "external_reporting_lag_months": reporting_lag_months,
-            "external_source_freshness": freshness,
-            "external_source_conflict": source_conflict,
             "seasonal_or_project_change_indicator": seasonal_change,
-            "seasonal_or_project_reason": "PROJECT_OR_SEASON_END_SYNTHETIC" if seasonal_change else "NONE",
+            "seasonal_or_project_reason": (
+                "PROJECT_OR_SEASON_END_SYNTHETIC" if seasonal_change else "NONE"
+            ),
             "synthetic_risk_mode_ground_truth": row["synthetic_risk_mode_ground_truth"],
             "policy_status_metadata_only": row["policy_status_metadata_only"],
             "is_synthetic": True,
@@ -187,7 +215,7 @@ def main() -> None:
         path = RAW_DIR / filename
         frame.to_csv(path, index=False, encoding="utf-8-sig")
         print(f"wrote {path}: {len(frame):,} rows")
-    print("status: RAW SYNTHETIC EVIDENCE GENERATED WITH WORKER-SET SEMANTICS")
+    print("status: RAW SYNTHETIC EVIDENCE GENERATED WITH ISOLATED SOURCE DOMAINS")
 
 
 if __name__ == "__main__":

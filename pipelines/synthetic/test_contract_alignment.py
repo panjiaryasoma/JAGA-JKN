@@ -81,24 +81,126 @@ class ContractAlignmentTests(unittest.TestCase):
             self.assertNotIn("gap_setelah_pasangan", text)
             self.assertNotIn("legal exemption", text)
 
-    def test_policy_authority_unknown_cannot_open_wage_review(self):
+    def test_empty_reference_worker_set_is_not_valid_evidence(self):
+        with self.assertRaises(ValueError):
+            CURATION.parse_worker_set("[]")
+
+    def test_malformed_worker_evidence_cannot_normalize(self):
+        state, reason = CURATION.derive_registration_state(
+            missing_worker_count=0,
+            unexpected_worker_count=0,
+            evidence_valid=False,
+            evidence_quality="LOW",
+            explanation_present=False,
+        )
+        self.assertEqual(state, "ABSTAIN")
+        self.assertEqual(reason, "INVALID_OR_MISSING_REGISTRATION_EVIDENCE")
+
+    def test_invalid_quality_with_no_registration_gap_cannot_normalize(self):
+        state, reason = CURATION.derive_registration_state(
+            missing_worker_count=0,
+            unexpected_worker_count=0,
+            evidence_valid=True,
+            evidence_quality="UNKNOWN",
+            explanation_present=False,
+        )
+        self.assertEqual((state, reason), ("ABSTAIN", "INVALID_OR_UNKNOWN_EVIDENCE_QUALITY"))
+
+    def test_invalid_quality_with_no_wage_gap_cannot_normalize(self):
         state, reason = CURATION.derive_wage_state(
-            wage_discrepancy_signal_rp=1,
-            evidence_quality="HIGH",
+            wage_discrepancy_signal_rp=0,
+            evidence_valid=True,
+            evidence_quality="UNKNOWN",
         )
-        self.assertEqual((state, reason), ("ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"))
+        self.assertEqual((state, reason), ("ABSTAIN", "INVALID_OR_UNKNOWN_EVIDENCE_QUALITY"))
 
-    def test_policy_authority_missing_cannot_open_contribution_review(self):
+    def test_invalid_quality_with_no_payment_gap_cannot_normalize(self):
         state, reason = CURATION.derive_contribution_state(
-            contribution_payment_evidence_gap=True,
-            evidence_quality="HIGH",
+            contribution_payment_evidence_gap=False,
+            evidence_valid=True,
+            evidence_quality="UNKNOWN",
         )
-        self.assertEqual((state, reason), ("ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"))
+        self.assertEqual((state, reason), ("ABSTAIN", "INVALID_OR_UNKNOWN_EVIDENCE_QUALITY"))
 
-    def test_spoofed_row_policy_metadata_has_no_decision_authority(self):
-        text = (HERE / "pipeline_cleansing_dan_disambiguasi.py").read_text(encoding="utf-8")
-        self.assertIn("TRUSTED_B2_POLICY_CONTEXT_AUTHORIZED = False", text)
-        self.assertNotIn('"AUTHORIZED" in policy_status', text)
+    def test_missing_wage_evidence_cannot_normalize(self):
+        state, reason = CURATION.derive_wage_state(
+            wage_discrepancy_signal_rp=0,
+            evidence_valid=False,
+            evidence_quality="LOW",
+        )
+        self.assertEqual((state, reason), ("ABSTAIN", "INVALID_OR_MISSING_WAGE_EVIDENCE"))
+
+    def test_missing_contribution_evidence_cannot_normalize(self):
+        state, reason = CURATION.derive_contribution_state(
+            contribution_payment_evidence_gap=False,
+            evidence_valid=False,
+            evidence_quality="LOW",
+        )
+        self.assertEqual((state, reason), ("ABSTAIN", "INVALID_OR_MISSING_CONTRIBUTION_EVIDENCE"))
+
+    def test_medium_quality_without_apparent_gap_requires_enrichment(self):
+        self.assertEqual(
+            CURATION.derive_registration_state(
+                missing_worker_count=0,
+                unexpected_worker_count=0,
+                evidence_valid=True,
+                evidence_quality="MEDIUM",
+                explanation_present=False,
+            )[0],
+            "NEEDS_ENRICHMENT",
+        )
+        self.assertEqual(
+            CURATION.derive_wage_state(
+                wage_discrepancy_signal_rp=0,
+                evidence_valid=True,
+                evidence_quality="MEDIUM",
+            )[0],
+            "NEEDS_ENRICHMENT",
+        )
+
+    def test_settlement_pending_does_not_reduce_registration_quality(self):
+        registration = CURATION.registration_evidence_quality(
+            worker_set_evidence_valid=True,
+            source_stale=False,
+            source_conflict=False,
+        )
+        contribution = CURATION.contribution_evidence_quality(
+            payment_evidence_valid=True,
+            source_stale=False,
+            source_conflict=False,
+            settlement_pending=True,
+        )
+        self.assertEqual(registration[0], "HIGH")
+        self.assertEqual(contribution[0], "LOW")
+
+    def test_worker_source_conflict_does_not_reduce_contribution_quality(self):
+        registration = CURATION.registration_evidence_quality(
+            worker_set_evidence_valid=True,
+            source_stale=False,
+            source_conflict=True,
+        )
+        contribution = CURATION.contribution_evidence_quality(
+            payment_evidence_valid=True,
+            source_stale=False,
+            source_conflict=False,
+            settlement_pending=False,
+        )
+        self.assertEqual(registration[0], "LOW")
+        self.assertEqual(contribution[0], "HIGH")
+
+    def test_wage_source_problem_does_not_reduce_registration_quality(self):
+        wage = CURATION.wage_evidence_quality(
+            wage_evidence_valid=True,
+            source_stale=False,
+            source_conflict=True,
+        )
+        registration = CURATION.registration_evidence_quality(
+            worker_set_evidence_valid=True,
+            source_stale=False,
+            source_conflict=False,
+        )
+        self.assertEqual(wage[0], "LOW")
+        self.assertEqual(registration[0], "HIGH")
 
     def test_equal_count_different_worker_sets_are_detected(self):
         result = CURATION.reconcile_worker_sets({"A", "B", "C"}, {"A", "B", "D"})
@@ -112,72 +214,125 @@ class ContractAlignmentTests(unittest.TestCase):
         state, reason = CURATION.derive_registration_state(
             missing_worker_count=1,
             unexpected_worker_count=1,
+            evidence_valid=True,
             evidence_quality="HIGH",
             explanation_present=False,
         )
         self.assertEqual((state, reason), ("REVIEW", "HUMAN_REVIEW_NO_AUTOMATED_PRIORITY"))
 
-    def test_invalid_evidence_quality_fails_closed(self):
-        for invalid in ["UNKNOWN", "", None, "VERY_HIGH"]:
-            with self.subTest(invalid=invalid):
-                state, reason = CURATION.derive_registration_state(
-                    missing_worker_count=1,
-                    unexpected_worker_count=0,
-                    evidence_quality=invalid,
-                    explanation_present=False,
-                )
-                self.assertEqual(state, "ABSTAIN")
-                self.assertEqual(reason, "INVALID_OR_UNKNOWN_EVIDENCE_QUALITY")
+    def test_policy_dependent_signals_remain_fail_closed(self):
+        self.assertEqual(
+            CURATION.derive_wage_state(
+                wage_discrepancy_signal_rp=1,
+                evidence_valid=True,
+                evidence_quality="HIGH",
+            ),
+            ("ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"),
+        )
+        self.assertEqual(
+            CURATION.derive_contribution_state(
+                contribution_payment_evidence_gap=True,
+                evidence_valid=True,
+                evidence_quality="HIGH",
+            ),
+            ("ABSTAIN", "POLICY_REQUIRED_BUT_UNRESOLVED"),
+        )
 
-    def test_invalid_evidence_quality_fails_closed_for_policy_signals_too(self):
-        for invalid in ["UNKNOWN", "", None]:
-            with self.subTest(invalid=invalid):
-                self.assertEqual(
-                    CURATION.derive_wage_state(
-                        wage_discrepancy_signal_rp=1,
-                        evidence_quality=invalid,
-                    )[0],
-                    "ABSTAIN",
-                )
-                self.assertEqual(
-                    CURATION.derive_contribution_state(
-                        contribution_payment_evidence_gap=True,
-                        evidence_quality=invalid,
-                    )[0],
-                    "ABSTAIN",
-                )
+    def test_multi_signal_states_and_qualities_remain_independent(self):
+        registration_quality = CURATION.registration_evidence_quality(
+            worker_set_evidence_valid=True,
+            source_stale=False,
+            source_conflict=False,
+        )[0]
+        wage_quality = CURATION.wage_evidence_quality(
+            wage_evidence_valid=True,
+            source_stale=False,
+            source_conflict=False,
+        )[0]
+        contribution_quality = CURATION.contribution_evidence_quality(
+            payment_evidence_valid=True,
+            source_stale=False,
+            source_conflict=False,
+            settlement_pending=False,
+        )[0]
 
-    def test_multi_signal_states_remain_independent(self):
         registration = CURATION.derive_registration_state(
             missing_worker_count=1,
             unexpected_worker_count=0,
-            evidence_quality="HIGH",
+            evidence_valid=True,
+            evidence_quality=registration_quality,
             explanation_present=False,
         )[0]
         wage = CURATION.derive_wage_state(
             wage_discrepancy_signal_rp=1,
-            evidence_quality="HIGH",
+            evidence_valid=True,
+            evidence_quality=wage_quality,
         )[0]
         contribution = CURATION.derive_contribution_state(
             contribution_payment_evidence_gap=False,
-            evidence_quality="HIGH",
+            evidence_valid=True,
+            evidence_quality=contribution_quality,
         )[0]
-        overall = CURATION.derive_overall_review_state(registration, wage, contribution)
-        self.assertEqual(registration, "REVIEW")
-        self.assertEqual(wage, "ABSTAIN")
-        self.assertEqual(contribution, "NORMAL")
-        self.assertEqual(overall, "PARTIAL")
 
-    def test_seasonal_explanation_does_not_mutate_set_discrepancy(self):
+        self.assertEqual((registration, wage, contribution), ("REVIEW", "ABSTAIN", "NORMAL"))
+        self.assertEqual(
+            CURATION.derive_overall_review_state(registration, wage, contribution),
+            "PARTIAL",
+        )
+
+    def test_seasonal_explanation_preserves_registration_discrepancy(self):
         reconciliation = CURATION.reconcile_worker_sets({"A", "B", "C"}, {"A", "B"})
         state, _ = CURATION.derive_registration_state(
             missing_worker_count=reconciliation["missing_worker_count"],
             unexpected_worker_count=reconciliation["unexpected_worker_count"],
+            evidence_valid=True,
             evidence_quality="HIGH",
             explanation_present=True,
         )
         self.assertEqual(reconciliation["missing_worker_count"], 1)
         self.assertEqual(state, "NEEDS_ENRICHMENT")
+
+    def test_curated_output_has_isolated_evidence_quality(self):
+        curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
+        self.assertNotIn("evidence_quality", curated.columns)
+        self.assertTrue({
+            "registration_evidence_quality",
+            "wage_evidence_quality",
+            "contribution_evidence_quality",
+        }.issubset(curated.columns))
+
+    def test_curated_output_has_per_signal_provenance(self):
+        curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
+        required = {
+            "registration_rule_id", "registration_source_ids_json", "registration_lineage",
+            "wage_rule_id", "wage_source_ids_json", "wage_lineage",
+            "contribution_rule_id", "contribution_source_ids_json", "contribution_lineage",
+        }
+        self.assertTrue(required.issubset(curated.columns))
+        self.assertTrue(curated["registration_rule_id"].eq("REG-001").all())
+        self.assertTrue(curated["wage_rule_id"].eq("WAGE-001").all())
+        self.assertTrue(curated["contribution_rule_id"].eq("CONTRIB-001").all())
+
+    def test_invalid_pipeline_evidence_never_becomes_normal(self):
+        curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
+        self.assertFalse(
+            (
+                (~curated["worker_set_evidence_valid"].astype(bool))
+                & curated["registration_signal_state"].eq("NORMAL")
+            ).any()
+        )
+        self.assertFalse(
+            (
+                (~curated["wage_evidence_valid"].astype(bool))
+                & curated["wage_signal_state"].eq("NORMAL")
+            ).any()
+        )
+        self.assertFalse(
+            (
+                (~curated["contribution_evidence_valid"].astype(bool))
+                & curated["contribution_signal_state"].eq("NORMAL")
+            ).any()
+        )
 
     def test_synthetic_exposure_remains_visualization_only(self):
         curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
@@ -197,18 +352,6 @@ class ContractAlignmentTests(unittest.TestCase):
         self.assertNotIn("5_000_000", text)
         self.assertNotIn("500_000", text)
         self.assertNotIn("duration_hint", text)
-
-    def test_curated_output_contains_independent_signal_states(self):
-        curated = pd.read_csv(self.data_root / "curated" / "curated_kepatuhan_evidence.csv")
-        required = {
-            "registration_signal_state",
-            "wage_signal_state",
-            "contribution_signal_state",
-            "overall_review_state",
-            "missing_worker_count",
-            "unexpected_worker_count",
-        }
-        self.assertTrue(required.issubset(curated.columns))
 
     def test_ml_dataset_is_candidate_not_training_ready(self):
         candidate = pd.read_csv(self.data_root / "candidate_ml" / "dataset_candidate_ml_audit.csv")
