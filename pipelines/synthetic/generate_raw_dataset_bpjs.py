@@ -1,7 +1,7 @@
-"""Create noisy raw synthetic evidence with isolated evidence domains.
+"""Create noisy raw synthetic evidence with explicit temporal binding.
 
-Registration, wage, and contribution evidence carry separate source metadata so
-one domain cannot silently contaminate the confidence of another.
+Registration, wage, and contribution evidence remain independent. Raw data never
+declares itself authoritative; trusted authority lives in trusted_context.py.
 """
 
 from __future__ import annotations
@@ -54,6 +54,7 @@ def _observed_registration_set(
     observed = set(sorted(reference_set)[: min(observed_count, len(reference_set))])
     while len(observed) < observed_count:
         observed.add(f"{company_id}-UNEXPECTED-{period}-{len(observed)+1:04d}")
+    # Equal count can still contain a different identity.
     if observed and len(observed) == len(reference_set) and rng.random() < 0.05:
         replaced = sorted(observed)[0]
         observed.remove(replaced)
@@ -94,12 +95,16 @@ def generate_raw() -> dict[str, pd.DataFrame]:
         period = row["periode_bulan"]
         source_record_id = f"RAW-{company_id}-{period}"
         sector = sector_map[company_id]
+
         scenario_reference_count = int(row["reference_worker_count_scenario"])
         scenario_observed_count = int(row["observed_registered_worker_count_scenario"])
-
         scenario_reference_set = _worker_ids(company_id, scenario_reference_count)
         scenario_observed_set = _observed_registration_set(
-            company_id, period, scenario_reference_set, scenario_observed_count, rng
+            company_id,
+            period,
+            scenario_reference_set,
+            scenario_observed_count,
+            rng,
         )
 
         month = int(period.split("-")[1])
@@ -112,22 +117,30 @@ def generate_raw() -> dict[str, pd.DataFrame]:
 
         external_reference_count = scenario_reference_count
         if reporting_lag_months and rng.random() < 0.25:
-            external_reference_count = max(3, scenario_reference_count + rng.randint(-4, 4))
+            external_reference_count = max(
+                3,
+                scenario_reference_count + rng.randint(-4, 4),
+            )
         external_reference_set = _resize_reference_set(
-            company_id, scenario_reference_set, external_reference_count
+            company_id,
+            scenario_reference_set,
+            external_reference_count,
         )
 
         registration_source_conflict = bool(
-            reporting_lag_months > 0 and external_reference_set != scenario_reference_set
+            reporting_lag_months > 0
+            and external_reference_set != scenario_reference_set
         )
-        registration_source_freshness = "STALE" if reporting_lag_months >= 2 else "CURRENT"
+        registration_source_freshness = (
+            "STALE" if reporting_lag_months >= 2 else "CURRENT"
+        )
 
-        # Wage evidence quality is generated independently from worker and payment evidence.
         wage_source_freshness = "STALE" if rng.random() < 0.04 else "CURRENT"
         wage_source_conflict = rng.random() < 0.03
 
-        # Contribution/payment evidence gets its own source health.
-        contribution_source_freshness = "STALE" if rng.random() < 0.02 else "CURRENT"
+        contribution_source_freshness = (
+            "STALE" if rng.random() < 0.02 else "CURRENT"
+        )
         contribution_source_conflict = rng.random() < 0.02
 
         seasonal_change = (
@@ -163,28 +176,42 @@ def generate_raw() -> dict[str, pd.DataFrame]:
 
             "registration_reference_source_id": f"{source_record_id}:REG_REFERENCE",
             "registration_observed_source_id": f"{source_record_id}:REG_OBSERVED",
+            "registration_reference_period": period,
+            "registration_observed_period": period,
             "reference_worker_set_json": serialize_worker_set(external_reference_set),
-            "observed_registered_worker_set_json": serialize_worker_set(scenario_observed_set),
+            "observed_registered_worker_set_json": serialize_worker_set(
+                scenario_observed_set
+            ),
             "reference_worker_set_verified": True,
             "observed_worker_set_verified": True,
-            "reference_worker_count_observed": len(external_reference_set),
-            "observed_registered_worker_count": len(scenario_observed_set),
             "registration_source_freshness": registration_source_freshness,
             "registration_source_conflict": registration_source_conflict,
 
             "wage_reference_source_id": f"{source_record_id}:WAGE_REFERENCE",
             "wage_observed_source_id": f"{source_record_id}:WAGE_OBSERVED",
+            "wage_reference_period": period,
+            "wage_observed_period": period,
             "reference_wage_signal_rp": int(row["reference_wage_signal_rp"]),
             "observed_wage_signal_rp": int(row["observed_wage_signal_rp"]),
             "wage_discrepancy_raw_rp": int(row["wage_discrepancy_signal_rp"]),
             "wage_source_freshness": wage_source_freshness,
             "wage_source_conflict": wage_source_conflict,
 
-            "contribution_expected_source_id": f"{source_record_id}:CONTRIB_EXPECTED_SYNTHETIC",
+            "contribution_expected_source_id": (
+                f"{source_record_id}:CONTRIB_EXPECTED_SYNTHETIC"
+            ),
             "contribution_payment_source_id": f"{source_record_id}:CONTRIB_PAYMENT",
-            "reference_contribution_synthetic_rp": int(row["reference_contribution_synthetic_rp"]),
-            "paid_contribution_synthetic_rp": int(row["paid_contribution_synthetic_rp"]),
-            "estimated_exposure_synthetic_rp": int(row["estimated_exposure_synthetic_rp"]),
+            "contribution_expected_period": period,
+            "contribution_payment_period": period,
+            "reference_contribution_synthetic_rp": int(
+                row["reference_contribution_synthetic_rp"]
+            ),
+            "paid_contribution_synthetic_rp": int(
+                row["paid_contribution_synthetic_rp"]
+            ),
+            "estimated_exposure_synthetic_rp": int(
+                row["estimated_exposure_synthetic_rp"]
+            ),
             "payment_state_observed": payment_state,
             "payer_timestamp_synthetic": payer_timestamp,
             "bank_posting_timestamp_synthetic": bank_timestamp,
@@ -196,9 +223,13 @@ def generate_raw() -> dict[str, pd.DataFrame]:
             "external_reporting_lag_months": reporting_lag_months,
             "seasonal_or_project_change_indicator": seasonal_change,
             "seasonal_or_project_reason": (
-                "PROJECT_OR_SEASON_END_SYNTHETIC" if seasonal_change else "NONE"
+                "PROJECT_OR_SEASON_END_SYNTHETIC"
+                if seasonal_change
+                else "NONE"
             ),
-            "synthetic_risk_mode_ground_truth": row["synthetic_risk_mode_ground_truth"],
+            "synthetic_risk_mode_ground_truth": row[
+                "synthetic_risk_mode_ground_truth"
+            ],
             "policy_status_metadata_only": row["policy_status_metadata_only"],
             "is_synthetic": True,
         })
@@ -215,7 +246,9 @@ def main() -> None:
         path = RAW_DIR / filename
         frame.to_csv(path, index=False, encoding="utf-8-sig")
         print(f"wrote {path}: {len(frame):,} rows")
-    print("status: RAW SYNTHETIC EVIDENCE GENERATED WITH ISOLATED SOURCE DOMAINS")
+    print(
+        "status: RAW SYNTHETIC EVIDENCE GENERATED WITH EXPLICIT TEMPORAL BINDING"
+    )
 
 
 if __name__ == "__main__":
