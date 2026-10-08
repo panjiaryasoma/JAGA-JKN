@@ -10,6 +10,7 @@ import tempfile
 import unittest
 from dataclasses import FrozenInstanceError
 from pathlib import Path
+from unittest.mock import patch
 
 import pandas as pd
 
@@ -162,50 +163,54 @@ class RuleEnumInvariantTests(unittest.TestCase):
 
     def test_registration_rule_exact_enum(self):
         context = self._authorized_context()
-        consistent = CURATION._evaluate_registration_rule_with_context(
-            {"valid": True, "quality": "HIGH", "discrepancy_detected": False, "evaluated_period": "2026-06"},
-            context,
-        )[0]
-        potential = CURATION._evaluate_registration_rule_with_context(
-            {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
-            context,
-        )[0]
-        self.assertEqual(consistent, "CONSISTENT")
-        self.assertEqual(potential, "POTENTIAL_REGISTRATION_GAP")
-        self.assertNotIn(consistent, CURATION.REVIEW_STATES)
-        self.assertNotIn(potential, CURATION.REVIEW_STATES)
+        with patch.object(TRUSTED, 'TRUSTED_RULE_AUTHORITY_REGISTRY', (context,)):
+            consistent = CURATION._evaluate_registration_rule_with_context(
+                {"valid": True, "quality": "HIGH", "discrepancy_detected": False, "evaluated_period": "2026-06"},
+                context,
+            )[0]
+            potential = CURATION._evaluate_registration_rule_with_context(
+                {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
+                context,
+            )[0]
+            self.assertEqual(consistent, "CONSISTENT")
+            self.assertEqual(potential, "POTENTIAL_REGISTRATION_GAP")
+            self.assertNotIn(consistent, CURATION.REVIEW_STATES)
+            self.assertNotIn(potential, CURATION.REVIEW_STATES)
 
     def test_wage_rule_exact_enum(self):
         context = self._authorized_context()
-        self.assertEqual(
-            CURATION._evaluate_wage_rule_with_context(
-                {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
-                context,
-            )[0],
-            "POTENTIAL_WAGE_DIVERGENCE",
-        )
+        with patch.object(TRUSTED, 'TRUSTED_RULE_AUTHORITY_REGISTRY', (context,)):
+            self.assertEqual(
+                CURATION._evaluate_wage_rule_with_context(
+                    {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
+                    context,
+                )[0],
+                "POTENTIAL_WAGE_DIVERGENCE",
+            )
 
     def test_contribution_rule_exact_enum(self):
         context = self._authorized_context()
-        self.assertEqual(
-            CURATION._evaluate_contribution_rule_with_context(
-                {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
-                context,
-            )[0],
-            "POTENTIAL_CONTRIBUTION_IRREGULARITY",
-        )
+        with patch.object(TRUSTED, 'TRUSTED_RULE_AUTHORITY_REGISTRY', (context,)):
+            self.assertEqual(
+                CURATION._evaluate_contribution_rule_with_context(
+                    {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
+                    context,
+                )[0],
+                "POTENTIAL_CONTRIBUTION_IRREGULARITY",
+            )
 
     def test_invalid_evidence_rule_abstains_when_context_authorized(self):
         context = self._authorized_context()
-        result, reason = CURATION._evaluate_registration_rule_with_context(
-            {"valid": False, "quality": "LOW", "discrepancy_detected": None, "evaluated_period": "2026-06"},
-            context,
-        )
-        self.assertEqual((result, reason), ("ABSTAIN", CURATION.EVIDENCE_INVALID_REASON))
+        with patch.object(TRUSTED, 'TRUSTED_RULE_AUTHORITY_REGISTRY', (context,)):
+            result, reason = CURATION._evaluate_registration_rule_with_context(
+                {"valid": False, "quality": "LOW", "discrepancy_detected": None, "evaluated_period": "2026-06"},
+                context,
+            )
+            self.assertEqual((result, reason), ("ABSTAIN", CURATION.EVIDENCE_INVALID_REASON))
 
 
-class AuthorityActivationBoundaryTests(unittest.TestCase):
-    @staticmethod
+    class AuthorityActivationBoundaryTests(unittest.TestCase):
+        @staticmethod
     def _context(**changes):
         from dataclasses import replace
         return replace(RuleEnumInvariantTests._authorized_context(), **changes)
@@ -215,11 +220,21 @@ class AuthorityActivationBoundaryTests(unittest.TestCase):
 
     def test_valid_context_inclusive_period_boundaries(self):
         ctx = self._context()
-        for period in ("2026-01", "2026-06", "2026-12"):
-            self.assertTrue(TRUSTED.authority_context_ready(ctx, period))
+        self.assertFalse(TRUSTED.authority_context_ready(ctx, "2026-06"))
+        with patch.object(TRUSTED, "TRUSTED_RULE_AUTHORITY_REGISTRY", (ctx,)):
+            for period in ("2026-01", "2026-06", "2026-12"):
+                self.assertTrue(TRUSTED.authority_context_ready(ctx, period))
 
     def test_invalid_authority_fields_fail_closed(self):
+        valid_context = self._context()
         invalid = [
+            {"authority_id": "B2_UNRESOLVED"},
+            {"authority_id": "B2_UNVERIFIED"},
+            {"authority_id": "PENDING_B2"},
+            {"authority_id": "FAKE_AUTHORITY"},
+            {"authority_id": "UNREGISTERED_AUTHORITY"},
+            {"source_ids": ("FAKE-SOURCE",)},
+            {"rule_version": "B2_UNVERIFIED"},
             {"authority_id": "UNRESOLVED"},
             {"rule_version": "UNVERIFIED"},
             {"source_ids": ()},
@@ -234,7 +249,8 @@ class AuthorityActivationBoundaryTests(unittest.TestCase):
         for change in invalid:
             with self.subTest(change=change):
                 ctx = self._context(**change)
-                self.assertFalse(TRUSTED.authority_context_ready(ctx, "2026-06"))
+                with patch.object(TRUSTED, "TRUSTED_RULE_AUTHORITY_REGISTRY", (valid_context,)):
+                    self.assertFalse(TRUSTED.authority_context_ready(ctx, "2026-06"))
                 for fn in (
                     CURATION._evaluate_registration_rule_with_context,
                     CURATION._evaluate_wage_rule_with_context,
@@ -251,13 +267,56 @@ class AuthorityActivationBoundaryTests(unittest.TestCase):
         ctx = self._context()
         for period in ("2025-12", "2027-01", "2026-00", "invalid", None):
             with self.subTest(period=period):
-                self.assertFalse(TRUSTED.authority_context_ready(ctx, period))
+                with patch.object(TRUSTED, "TRUSTED_RULE_AUTHORITY_REGISTRY", (ctx,)):
+                    self.assertFalse(TRUSTED.authority_context_ready(ctx, period))
                 result, _ = CURATION._evaluate_registration_rule_with_context(
                     {"valid": True, "quality": "HIGH",
                      "discrepancy_detected": False, "evaluated_period": period},
                     ctx,
                 )
                 self.assertEqual(result, "ABSTAIN")
+
+
+class TrustedRegistryHardeningTests(unittest.TestCase):
+    def test_production_registry_empty_and_authority_not_ready(self):
+        self.assertEqual(TRUSTED.TRUSTED_RULE_AUTHORITY_REGISTRY, ())
+        context = RuleEnumInvariantTests._authorized_context()
+        self.assertFalse(TRUSTED.authority_context_ready(context, "2026-06"))
+
+    def test_spoofed_placeholder_denied_even_when_injected_into_registry(self):
+        from dataclasses import replace
+        valid = RuleEnumInvariantTests._authorized_context()
+        for authority in ("B2_UNRESOLVED", "B2_UNVERIFIED", "PENDING_B2"):
+            with self.subTest(authority=authority):
+                forged = replace(valid, authority_id=authority)
+                with patch.object(
+                    TRUSTED, "TRUSTED_RULE_AUTHORITY_REGISTRY", (forged,)
+                ):
+                    self.assertFalse(
+                        TRUSTED.authority_context_ready(forged, "2026-06")
+                    )
+
+    def test_forged_source_never_matches_known_registry(self):
+        from dataclasses import replace
+        original = RuleEnumInvariantTests._authorized_context()
+        tampered = replace(original, source_ids=("TRUST-ME-BRO-REF",))
+        with patch.object(
+            TRUSTED, "TRUSTED_RULE_AUTHORITY_REGISTRY", (original,)
+        ):
+            self.assertFalse(
+                TRUSTED.authority_context_ready(tampered, "2026-06")
+            )
+
+    def test_unregistered_plausible_authority_denied(self):
+        from dataclasses import replace
+        original = RuleEnumInvariantTests._authorized_context()
+        tampered = replace(original, authority_id="OFFICIAL_SOMETHING")
+        with patch.object(
+            TRUSTED, "TRUSTED_RULE_AUTHORITY_REGISTRY", (original,)
+        ):
+            self.assertFalse(
+                TRUSTED.authority_context_ready(tampered, "2026-06")
+            )
 
 
 class WorkflowMappingInvariantTests(unittest.TestCase):

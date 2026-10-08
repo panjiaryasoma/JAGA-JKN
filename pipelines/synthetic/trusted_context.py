@@ -21,16 +21,21 @@ class RuleAuthorityContext:
     source_ids: tuple[str, ...]
 
 
-_UNRESOLVED_VALUES = {"UNKNOWN", "UNVERIFIED", "UNRESOLVED", "NONE", "NULL", "PENDING"}
+
+# Sandbox registry is intentionally empty. Legal authority needs independent
+# governance approval; raw CSV fields, env vars, and booleans cannot populate it.
+TRUSTED_RULE_AUTHORITY_REGISTRY: tuple[RuleAuthorityContext, ...] = ()
 
 
 def _resolved_identifier(value: object) -> bool:
     if not isinstance(value, str) or not value.strip():
         return False
-    value = value.strip().upper()
-    return value not in _UNRESOLVED_VALUES and not value.startswith(
-        ("UNRESOLVED_", "UNVERIFIED_", "PENDING_")
+    upper = value.strip().upper()
+    forbidden = (
+        "UNRESOLVED", "UNVERIFIED", "PENDING",
+        "UNKNOWN", "PLACEHOLDER", "FAKE", "DRAFT",
     )
+    return not any(marker in upper for marker in forbidden)
 
 
 def _month(value: object) -> bool:
@@ -43,9 +48,11 @@ def _month(value: object) -> bool:
 def authority_context_ready(
     context: RuleAuthorityContext, evaluated_period: object
 ) -> bool:
-    """Structural readiness, not independent legal-authority verification.
+    """Fail closed unless the full context is in a trusted registry.
 
-    Context values must originate from trusted governance/registry, never CSV.
+    An identifier's syntax is not evidence of authority. The registry must be
+    populated by a separately authorized governance procedure; it is empty in
+    the current sandbox.
     """
     if not isinstance(context, RuleAuthorityContext):
         return False
@@ -67,9 +74,20 @@ def authority_context_ready(
         or len(set(context.source_ids)) != len(context.source_ids)
     ):
         return False
-    if not all(_month(p) for p in (
-        context.effective_from, context.effective_to, evaluated_period
-    )):
+    if not all(
+        _month(value)
+        for value in (
+            context.effective_from, context.effective_to, evaluated_period
+        )
+    ):
+        return False
+    if context.effective_from > context.effective_to:
+        return False
+
+    # Full-context match also protects source IDs, version, dates, and authority.
+    # Test fixtures can temporarily patch this module-only registry without
+    # introducing a caller-controlled authorization parameter.
+    if context not in TRUSTED_RULE_AUTHORITY_REGISTRY:
         return False
     return context.effective_from <= evaluated_period <= context.effective_to
 
