@@ -1,0 +1,103 @@
+name: Synthetic Data Generation Evidence
+
+on:
+  push:
+    branches: [lintang-data-contract-alignment]
+    paths:
+      - "pipelines/synthetic/**"
+      - ".github/workflows/synthetic-data-evidence.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      JAGA_N_COMPANIES: "500"
+      JAGA_SYNTHETIC_SEED: "42"
+    steps:
+      - name: Checkout exact source SHA
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install synthetic dependencies
+        run: python -m pip install "numpy>=2.2,<3" "pandas>=2.2,<3"
+
+      - name: Generate scenario, raw, curated and Power BI facts
+        run: |
+          set -euo pipefail
+          python pipelines/synthetic/generate_dataset_bpjs.py
+          sha256sum data/synthetic/scenario/*.csv data/synthetic/candidate_ml/*.csv > /tmp/before.sha256
+          python pipelines/synthetic/generate_dataset_bpjs.py
+          sha256sum data/synthetic/scenario/*.csv data/synthetic/candidate_ml/*.csv > /tmp/after.sha256
+          diff -u /tmp/before.sha256 /tmp/after.sha256
+          python pipelines/synthetic/generate_raw_dataset_bpjs.py
+          python pipelines/synthetic/pipeline_cleansing_dan_disambiguasi.py
+          python pipelines/synthetic/prepare_powerbi_dataset.py
+
+      - name: Validate final data contract
+        run: python pipelines/synthetic/demo_analisis_dan_validasi.py
+
+      - name: Run full synthetic regression suite
+        run: python -m unittest discover -s pipelines/synthetic -p "test_contract_alignment.py" -v
+
+      - name: Build SHA + output manifest
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import csv, hashlib, json, os, platform
+          root = Path("data/synthetic")
+          root.mkdir(parents=True, exist_ok=True)
+          artifacts = []
+          files = sorted(root.rglob("*.csv")) + sorted(Path("powerbi/data").glob("*.csv"))
+          for path in files:
+              with path.open(newline="", encoding="utf-8-sig") as handle:
+                  reader = csv.reader(handle)
+                  try:
+                      header = next(reader)
+                      row_count = sum(1 for _ in reader)
+                  except StopIteration:
+                      header, row_count = [], 0
+              artifacts.append({
+                  "path": str(path), "rows": row_count,
+                  "columns": len(header), "bytes": path.stat().st_size,
+                  "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+              })
+          manifest = {
+              "repo": os.getenv("GITHUB_REPOSITORY"),
+              "source_sha": os.getenv("GITHUB_SHA"),
+              "python": platform.python_version(),
+              "seed": int(os.getenv("JAGA_SYNTHETIC_SEED", "42")),
+              "companies_requested": int(os.getenv("JAGA_N_COMPANIES", "500")),
+              "synthetic_only": True,
+              "trusted_policy_authorized": False,
+              "pbix_rebind": "PENDING",
+              "ml_status": "CANDIDATE_ONLY",
+              "artifacts": artifacts,
+          }
+          path = root / "generation_manifest.json"
+          path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+          print("manifest entries:", len(artifacts))
+          print("source SHA:", manifest["source_sha"])
+          PY
+
+      - name: Upload downloadable CSV bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jaga-jkn-synthetic-dataset
+          path: |
+            data/synthetic/**/*.csv
+            data/synthetic/generation_manifest.json
+            powerbi/data/*.csv
+          if-no-files-found: warn
+          retention-days: 7
