@@ -1,0 +1,136 @@
+// =============================================================================
+// DAX MEASURES - SISTEM INTELIJEN KEPATUHAN PEMBERI KERJA (ECIS) BPJS KESEHATAN
+// Versi: 2.1.0-Enterprise
+// Salin rumus berikut ke dalam Power BI Desktop (Model view / Table Tools > New Measure)
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. KPI UTAMA KETENAGAKERJAAN & KEPESERTAAN
+// -----------------------------------------------------------------------------
+
+Total Tenaga Kerja Seharusnya = 
+SUM(Fact_Kepatuhan_Bulanan[jumlah_pekerja_seharusnya])
+
+Total Tenaga Kerja Terdaftar = 
+SUM(Fact_Kepatuhan_Bulanan[jumlah_pekerja_terdaftar_jkn])
+
+Total Selisih Pekerja (Gap Naker) = 
+SUM(Fact_Kepatuhan_Bulanan[selisih_pekerja])
+
+Rata-rata Rasio Kepatuhan Kepesertaan = 
+DIVIDE([Total Tenaga Kerja Terdaftar], [Total Tenaga Kerja Seharusnya], 1.0)
+
+Persentase Gap Naker = 
+DIVIDE([Total Selisih Pekerja (Gap Naker)], [Total Tenaga Kerja Seharusnya], 0.0)
+
+// -----------------------------------------------------------------------------
+// 2. METRIK FINANSIAL & IURAN JKN (PERPRES 64/2020)
+// -----------------------------------------------------------------------------
+
+Total Iuran Seharusnya = 
+SUM(Fact_Kepatuhan_Bulanan[iuran_seharusnya_rp])
+
+Total Iuran Tertagih Edabu = 
+SUM(Fact_Kepatuhan_Bulanan[iuran_tertagih_edabu_rp])
+
+Total Iuran Terbayar Riil = 
+SUM(Fact_Kepatuhan_Bulanan[iuran_terbayar_rp])
+
+Total Potensi Kerugian Iuran (Kebocoran Finansial) = 
+SUM(Fact_Kepatuhan_Bulanan[selisih_iuran_potensial_rp])
+
+Rasio Kolektibilitas Iuran = 
+DIVIDE([Total Iuran Terbayar Riil], [Total Iuran Seharusnya], 0.0)
+
+Total Denda Keterlambatan = 
+SUM(Fact_Kepatuhan_Bulanan[denda_keterlambatan_rp])
+
+// -----------------------------------------------------------------------------
+// 3. METRIK WASRIK & PENEGAKAN HUKUM (PP 86/2013)
+// -----------------------------------------------------------------------------
+
+Total Kasus Perkara Dikelola = 
+COUNTROWS(Fact_Intervensi_Wasrik)
+
+Total Kasus Aktif Berjalan = 
+CALCULATE(
+    COUNTROWS(Fact_Intervensi_Wasrik),
+    NOT(CONTAINSSTRING(Fact_Intervensi_Wasrik[hasil_resolusi_kasus], "Tuntas"))
+)
+
+Total Kasus Selesai Tuntas = 
+CALCULATE(
+    COUNTROWS(Fact_Intervensi_Wasrik),
+    CONTAINSSTRING(Fact_Intervensi_Wasrik[hasil_resolusi_kasus], "Tuntas")
+)
+
+Persentase Tingkat Penyelesaian Kasus = 
+DIVIDE([Total Kasus Selesai Tuntas], [Total Kasus Perkara Dikelola], 0.0)
+
+Rata-rata Durasi Penyelesaian (Hari) = 
+AVERAGE(Fact_Intervensi_Wasrik[waktu_penyelesaian_hari])
+
+Total Potensi Iuran Berisiko Wasrik = 
+SUM(Fact_Intervensi_Wasrik[total_potensi_iuran_hilang_rp])
+
+Total Iuran Berhasil Dipulihkan = 
+SUM(Fact_Intervensi_Wasrik[nominal_iuran_terpulihkan_rp])
+
+Recovery Rate Penerimaan Wasrik = 
+DIVIDE([Total Iuran Berhasil Dipulihkan], [Total Potensi Iuran Berisiko Wasrik], 0.0)
+
+// -----------------------------------------------------------------------------
+// 4. METRIK HUMAN-IN-THE-LOOP & RESIDIVISME
+// -----------------------------------------------------------------------------
+
+Total Kasus Sesuai Rekomendasi AI = 
+CALCULATE(
+    COUNTROWS(Fact_Intervensi_Wasrik),
+    Fact_Intervensi_Wasrik[kesesuaian_rekomendasi_petugas] = "Sesuai Rekomendasi Sistem"
+)
+
+Tingkat Persetujuan Petugas (AI Agreement Rate) = 
+DIVIDE([Total Kasus Sesuai Rekomendasi AI], [Total Kasus Perkara Dikelola], 0.0)
+
+Total Kasus Diskresi Petugas = 
+CALCULATE(
+    COUNTROWS(Fact_Intervensi_Wasrik),
+    Fact_Intervensi_Wasrik[kesesuaian_rekomendasi_petugas] = "Diskresi / Penyesuaian Petugas"
+)
+
+Total Kasus Residivis (Masalah Berulang) = 
+CALCULATE(
+    COUNTROWS(Fact_Intervensi_Wasrik),
+    Fact_Intervensi_Wasrik[flag_residivis] = 1
+)
+
+Rasio Residivisme = 
+DIVIDE([Total Kasus Residivis (Masalah Berulang)], [Total Kasus Perkara Dikelola], 0.0)
+
+// -----------------------------------------------------------------------------
+// 5. STATUS KARTU DINAMIS & FORMATTING DAX
+// -----------------------------------------------------------------------------
+
+Status Ringkasan Kepatuhan = 
+VAR Rasio = [Rata-rata Rasio Kepatuhan Kepesertaan]
+RETURN
+    SWITCH(
+        TRUE(),
+        Rasio >= 0.95, "Tingkat Kepatuhan Sangat Baik (>= 95%)",
+        Rasio >= 0.85, "Tingkat Kepatuhan Cukup (85% - 94%)",
+        Rasio >= 0.70, "Peringatan: Kepatuhan Menurun (70% - 84%)",
+        "Kritis: Desinkronisasi Berat (< 70%)"
+    )
+
+Warna Indikator Urgensi = 
+VAR Urgensi = SELECTEDVALUE(Fact_Kepatuhan_Bulanan[tingkat_urgensi_sistem])
+RETURN
+    SWITCH(
+        Urgensi,
+        "Normal", "#008B45",    // Hijau BPJS
+        "Rendah", "#1E88E5",    // Biru Muda
+        "Sedang", "#FFA000",    // Oranye Amber
+        "Tinggi", "#E53935",    // Merah Terang
+        "Kritis", "#B71C1C",    // Merah Tua Gelap
+        "#546E7A"               // Default Abu-abu
+    )

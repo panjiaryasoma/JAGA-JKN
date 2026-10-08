@@ -1,11 +1,11 @@
-﻿kode_kbli,sektor_industri,sector_prior_status
-A,Pertanian / Perkebunan / Kehutanan,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-C,Industri Pengolahan / Manufaktur,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-F,Konstruksi & Infrastruktur,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-G,Perdagangan Besar dan Eceran,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-H,"Transportasi, Pergudangan & Logistik",NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-I,Penyediaan Akomodasi dan F&B,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-J,Informasi dan Komunikasi / Teknologi,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-K,Jasa Keuangan / Pembiayaan / Asuransi,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-N,Jasa Penunjang Usaha / Outsourcing / Security,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
-Q,Pelayanan Kesehatan Swasta,NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE
+﻿kode_kbli,sektor_industri,kategori_profil_risiko
+A,"Pertanian, Perkebunan Kelapa Sawit & Kehutanan",Risiko Tinggi
+C,Industri Pengolahan / Manufaktur,Risiko Tinggi
+F,Konstruksi & Infrastruktur,Risiko Sangat Tinggi
+G,Perdagangan Besar dan Eceran,Risiko Moderat
+H,"Transportasi, Pergudangan & Logistik",Risiko Moderat
+I,Penyediaan Akomodasi dan F&B (Restoran & Hotel),Risiko Moderat
+J,Informasi dan Komunikasi / Teknologi,Risiko Rendah
+K,"Jasa Keuangan, Pembiayaan dan Asuransi",Risiko Rendah
+N,Jasa Penunjang Usaha (Alih Daya / Outsourcing / Security),Risiko Sangat Tinggi
+Q,Aktivitas Pelayanan Kesehatan & Rumah Sakit Swasta,Risiko Rendah
