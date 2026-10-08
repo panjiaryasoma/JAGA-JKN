@@ -29,7 +29,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install synthetic dependencies
-        run: python -m pip install "numpy>=2.2,<3" "pandas>=2.2,<3"
+        run: python -m pip install "numpy>=2.2,<3" "pandas>=2.2,<3" "matplotlib>=3.9,<4"
 
       - name: Generate scenario, raw, curated and Power BI facts
         run: |
@@ -46,8 +46,11 @@ jobs:
       - name: Validate final data contract
         run: python pipelines/synthetic/demo_analisis_dan_validasi.py
 
+      - name: Validate dataset quality and generate SCOBY-style reports
+        run: python pipelines/synthetic/validate_dataset_quality.py
+
       - name: Run full synthetic regression suite
-        run: python -m unittest discover -s pipelines/synthetic -p "test_contract_alignment.py" -v
+        run: python -m unittest discover -s pipelines/synthetic -p "test_*.py" -v
 
       - name: Build SHA + output manifest
         if: always()
@@ -98,6 +101,9 @@ jobs:
           path: |
             data/synthetic/**/*.csv
             data/synthetic/generation_manifest.json
+            data/synthetic/validation/*.json
+            data/synthetic/validation/*.md
             powerbi/data/*.csv
+            reports/data_quality/*.png
           if-no-files-found: warn
           retention-days: 7

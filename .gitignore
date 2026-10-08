@@ -30,6 +30,9 @@ models/artifacts/
 data/generated/
 data/processed/
 data/synthetic/**/*.csv
+data/synthetic/validation/*.json
+data/synthetic/validation/*.md
+reports/data_quality/*.png
 powerbi/data/*.csv
 *.pkl
 *.joblib
