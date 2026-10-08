@@ -348,24 +348,25 @@ class WorkflowMappingInvariantTests(unittest.TestCase):
             "evaluated_period": "2026-06",
         }
         context = RuleEnumInvariantTests._authorized_context()
-        rule_before = CURATION._evaluate_registration_rule_with_context(
-            evidence,
-            context,
-        )
-        state, _ = CURATION.map_registration_review_state(
-            rule_result=rule_before[0],
-            rule_reason=rule_before[1],
-            evidence_valid=True,
-            evidence_quality="HIGH",
-            legitimate_explanation_present=True,
-        )
-        rule_after = CURATION._evaluate_registration_rule_with_context(
-            evidence,
-            context,
-        )
-        self.assertEqual(rule_before, rule_after)
-        self.assertEqual(rule_before[0], "POTENTIAL_REGISTRATION_GAP")
-        self.assertEqual(state, "NEEDS_ENRICHMENT")
+        with patch.object(TRUSTED, 'TRUSTED_RULE_AUTHORITY_REGISTRY', (context,)):
+            rule_before = CURATION._evaluate_registration_rule_with_context(
+                evidence,
+                context,
+            )
+            state, _ = CURATION.map_registration_review_state(
+                rule_result=rule_before[0],
+                rule_reason=rule_before[1],
+                evidence_valid=True,
+                evidence_quality="HIGH",
+                legitimate_explanation_present=True,
+            )
+            rule_after = CURATION._evaluate_registration_rule_with_context(
+                evidence,
+                context,
+            )
+            self.assertEqual(rule_before, rule_after)
+            self.assertEqual(rule_before[0], "POTENTIAL_REGISTRATION_GAP")
+            self.assertEqual(state, "NEEDS_ENRICHMENT")
 
     def test_authority_abstain_maps_abstain(self):
         state, _ = CURATION.map_registration_review_state(
