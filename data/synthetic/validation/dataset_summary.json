@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "scope": "SYNTHETIC_SANDBOX_DATA_QUALITY_ONLY",
+  "seed": 42,
+  "raw_seed_offset": 1,
+  "companies": 500,
+  "months": 24,
+  "scenario_monthly_rows": 12000,
+  "curated_monthly_rows": 12000,
+  "issues": [],
+  "descriptive_warnings": [],
+  "observed_discrepancies_are_not_legal_findings": true,
+  "no_policy_authorization": true,
+  "ml_status": "CANDIDATE_ONLY",
+  "generated_tables": [
+    "anomaly_distribution.csv",
+    "contribution_payment_distribution.csv",
+    "dataset_summary.csv",
+    "duplicate_keys.csv",
+    "evidence_quality_distribution.csv",
+    "missing_values.csv",
+    "numeric_range_issues.csv",
+    "numeric_range_summary.csv",
+    "payment_state_distribution.csv",
+    "registration_discrepancy_distribution.csv",
+    "scenario_profile_distribution.csv",
+    "temporal_consistency.csv",
+    "wage_discrepancy_distribution.csv"
+  ],
+  "generated_plots": [
+    "scenario_profile_distribution.png",
+    "observed_discrepancy_by_month.png",
+    "evidence_quality_distribution.png",
+    "payment_state_distribution.png"
+  ]
+}

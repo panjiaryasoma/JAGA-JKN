@@ -1,0 +1,10 @@
+﻿dataset,missing_key_columns,null_key_rows,duplicate_key_rows,duplicate_full_rows
+scenario_master,0,0,0,0
+scenario_monthly,0,0,0,0
+scenario_reviews,0,0,0,0
+raw_master,0,0,0,0
+raw_monthly,0,0,0,0
+curated_master,0,0,0,0
+curated_monthly,0,0,0,0
+candidate_ml,0,0,0,0
+powerbi_fact,0,0,0,0
