@@ -5,7 +5,7 @@
 **Dataset yang dipakai:** branch `lintang-data-contract-alignment`, commit `9390d36a1adbef6f17aa6804dd6c56d290e06d04`  
 **Status:** data sintetis sudah dibuat dan dicek; **fitur, label, pembagian data, dan training ML belum final**.
 
-## Dir, mulai dari sini dulu
+## Dir mulai dari sini dulu
 
 Kita sudah punya dataset sintetis JAGA-JKN untuk **500 badan usaha** dengan riwayat **24 bulan** (Januari 2025 sampai Desember 2026). Totalnya **12.000 baris data bulanan**. Ini bahan buat eksperimen ML, **bukan data asli BPJS** dan bukan bukti kalau suatu perusahaan benar-benar melanggar aturan.
 
