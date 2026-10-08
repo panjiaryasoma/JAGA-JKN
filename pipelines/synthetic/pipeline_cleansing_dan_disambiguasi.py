@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import math
 import re
+from datetime import datetime, timedelta
 from typing import Iterable
 
 import numpy as np
@@ -24,6 +25,15 @@ UNSCORED = "UNSCORED__THRESHOLDS_NOT_AUTHORIZED"
 VALID_EVIDENCE_QUALITIES = {"HIGH", "MEDIUM", "LOW"}
 VALID_SOURCE_FRESHNESS = {"CURRENT", "STALE"}
 TRUSTED_B2_POLICY_CONTEXT_AUTHORIZED = False
+
+# Registration authority is trusted implementation context, never row-provided metadata.
+# It remains unresolved in this sandbox until an authoritative registry is available.
+TRUSTED_REGISTRATION_REFERENCE_AUTHORITY = "UNRESOLVED"
+TRUSTED_REGISTRATION_REFERENCE_AUTHORITY_VERIFIED = False
+TRUSTED_REGISTRATION_RULE_VERSION = "UNVERIFIED"
+TRUSTED_REGISTRATION_APPLICABLE_VERSION_VERIFIED = False
+
+VALID_EXPLANATION_REASONS = {"PROJECT_OR_SEASON_END_SYNTHETIC"}
 
 REGISTRATION_RULE_ID = "REG-001"
 WAGE_RULE_ID = "WAGE-001"
@@ -142,6 +152,71 @@ def validate_source_metadata(
     }
 
 
+def trusted_registration_authority_context() -> dict[str, object]:
+    return {
+        "reference_authority": TRUSTED_REGISTRATION_REFERENCE_AUTHORITY,
+        "reference_authority_verified": TRUSTED_REGISTRATION_REFERENCE_AUTHORITY_VERIFIED,
+        "rule_version": TRUSTED_REGISTRATION_RULE_VERSION,
+        "applicable_version_verified": TRUSTED_REGISTRATION_APPLICABLE_VERSION_VERIFIED,
+        "context_source": "TRUSTED_IMPLEMENTATION_CONTEXT__NOT_ROW_DATA",
+    }
+
+
+def _is_missing_scalar(value: object) -> bool:
+    if value is None:
+        return True
+    try:
+        missing = pd.isna(value)
+    except (TypeError, ValueError):
+        return False
+    return bool(missing) if isinstance(missing, (bool, np.bool_)) else False
+
+
+def validate_explanation_metadata(
+    *,
+    indicator: object,
+    reason: object,
+) -> dict[str, object]:
+    flag = _strict_bool(indicator)
+    if flag is None:
+        return {
+            "valid": False,
+            "present": False,
+            "reason": "NONE",
+            "validation_reason": "INVALID_EXPLANATION_INDICATOR",
+        }
+
+    if flag:
+        if isinstance(reason, str) and reason in VALID_EXPLANATION_REASONS:
+            return {
+                "valid": True,
+                "present": True,
+                "reason": reason,
+                "validation_reason": "NONE",
+            }
+        return {
+            "valid": False,
+            "present": False,
+            "reason": "NONE",
+            "validation_reason": "MISSING_OR_INVALID_EXPLANATION_REASON",
+        }
+
+    if _is_missing_scalar(reason) or reason == "NONE":
+        return {
+            "valid": True,
+            "present": False,
+            "reason": "NONE",
+            "validation_reason": "NONE",
+        }
+
+    return {
+        "valid": False,
+        "present": False,
+        "reason": "NONE",
+        "validation_reason": "EXPLANATION_REASON_WITH_FALSE_INDICATOR",
+    }
+
+
 def _validate_evidence_quality(value: object) -> str | None:
     if not isinstance(value, str) or value not in VALID_EVIDENCE_QUALITIES:
         return None
@@ -249,6 +324,8 @@ def derive_registration_state(
     evidence_valid: bool,
     evidence_quality: object,
     explanation_present: bool,
+    reference_authority_verified: bool | None = None,
+    applicable_version_verified: bool | None = None,
 ) -> tuple[str, str]:
     invalid = _invalid_evidence_gate(
         evidence_valid=evidence_valid,
@@ -257,6 +334,20 @@ def derive_registration_state(
     )
     if invalid is not None:
         return invalid
+
+    authority_verified = (
+        TRUSTED_REGISTRATION_REFERENCE_AUTHORITY_VERIFIED
+        if reference_authority_verified is None
+        else reference_authority_verified
+    )
+    version_verified = (
+        TRUSTED_REGISTRATION_APPLICABLE_VERSION_VERIFIED
+        if applicable_version_verified is None
+        else applicable_version_verified
+    )
+    if authority_verified is not True or version_verified is not True:
+        return "ABSTAIN", "REFERENCE_AUTHORITY_OR_RULE_VERSION_UNRESOLVED"
+
     quality_gate = _quality_gate(evidence_quality)
     if quality_gate is not None:
         return quality_gate
@@ -265,7 +356,6 @@ def derive_registration_state(
     if missing_worker_count <= 0 and unexpected_worker_count <= 0:
         return "NORMAL", "NO_REGISTRATION_SET_DISCREPANCY"
     return "REVIEW", "HUMAN_REVIEW_NO_AUTOMATED_PRIORITY"
-
 
 def derive_wage_state(
     *,
@@ -379,14 +469,16 @@ def validate_wage_semantics(
     }
 
 
-def _is_present(value: object) -> bool:
-    if value is None:
-        return False
+def _parse_timestamp_strict(value: object) -> dict[str, object]:
+    if _is_missing_scalar(value):
+        return {"present": False, "valid": True, "value": None}
+    if not isinstance(value, str) or not value.strip():
+        return {"present": True, "valid": False, "value": None}
     try:
-        missing = pd.isna(value)
-    except (TypeError, ValueError):
-        return True
-    return bool(not missing)
+        parsed = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return {"present": True, "valid": False, "value": None}
+    return {"present": True, "valid": True, "value": parsed}
 
 
 def validate_payment_semantics(
@@ -420,44 +512,62 @@ def validate_payment_semantics(
             "reason": "INCONSISTENT_PAYMENT_STATE_COMBINATION",
         }
 
-    payer_present = _is_present(payer_timestamp)
-    bank_present = _is_present(bank_timestamp)
-
-    timestamp_valid = (
-        (
-            combination in {
-                ("PAID_ON_TIME", "POSTED_ON_TIME", False),
-                ("PAID_ON_TIME", "POSTED_NEXT_DAY", True),
-            }
-            and payer_present
-            and bank_present
-        )
-        or (
-            combination == ("PAYMENT_PENDING", "SETTLEMENT_PENDING", False)
-            and payer_present
-            and not bank_present
-        )
-        or (
-            combination == ("UNPAID", "NO_PAYMENT_EVIDENCE", False)
-            and not payer_present
-            and not bank_present
-        )
-    )
-    if not timestamp_valid:
+    payer = _parse_timestamp_strict(payer_timestamp)
+    bank = _parse_timestamp_strict(bank_timestamp)
+    if (payer["present"] and not payer["valid"]) or (bank["present"] and not bank["valid"]):
         return {
             "valid": False,
             "settlement_pending": bank_state == "SETTLEMENT_PENDING",
             "validated_payment_state": "UNKNOWN",
-            "reason": "INCONSISTENT_PAYMENT_TIMESTAMPS",
+            "reason": "INVALID_PAYMENT_TIMESTAMP_FORMAT",
         }
 
-    if payment_state == "PAID_ON_TIME":
-        validated = "PAID_ON_TIME"
-    elif payment_state == "PAYMENT_PENDING":
-        validated = "UNKNOWN"
+    if combination == ("PAID_ON_TIME", "POSTED_ON_TIME", False):
+        if not payer["present"] or not bank["present"]:
+            reason = "INCONSISTENT_PAYMENT_TIMESTAMPS"
+        elif bank["value"] < payer["value"]:
+            reason = "INCONSISTENT_PAYMENT_CHRONOLOGY"
+        elif bank["value"].date() != payer["value"].date():
+            reason = "INCONSISTENT_PAYMENT_DATE_RELATIONSHIP"
+        else:
+            reason = "NONE"
+    elif combination == ("PAID_ON_TIME", "POSTED_NEXT_DAY", True):
+        if not payer["present"] or not bank["present"]:
+            reason = "INCONSISTENT_PAYMENT_TIMESTAMPS"
+        elif bank["value"] <= payer["value"]:
+            reason = "INCONSISTENT_PAYMENT_CHRONOLOGY"
+        elif bank["value"].date() != payer["value"].date() + timedelta(days=1):
+            reason = "INCONSISTENT_PAYMENT_DATE_RELATIONSHIP"
+        else:
+            reason = "NONE"
+    elif combination == ("PAYMENT_PENDING", "SETTLEMENT_PENDING", False):
+        reason = (
+            "NONE"
+            if payer["present"] and not bank["present"]
+            else "INCONSISTENT_PAYMENT_TIMESTAMPS"
+        )
     else:
-        validated = "UNPAID"
+        reason = (
+            "NONE"
+            if not payer["present"] and not bank["present"]
+            else "INCONSISTENT_PAYMENT_TIMESTAMPS"
+        )
 
+    if reason != "NONE":
+        return {
+            "valid": False,
+            "settlement_pending": bank_state == "SETTLEMENT_PENDING",
+            "validated_payment_state": "UNKNOWN",
+            "reason": reason,
+        }
+
+    validated = (
+        "PAID_ON_TIME"
+        if payment_state == "PAID_ON_TIME"
+        else "UNKNOWN"
+        if payment_state == "PAYMENT_PENDING"
+        else "UNPAID"
+    )
     return {
         "valid": True,
         "settlement_pending": bank_state == "SETTLEMENT_PENDING",
@@ -471,6 +581,8 @@ def validate_payment_semantics(
         ),
     }
 
+
+def _source_ids_json(source_metadata: dict[str, object]) -> str:
 
 def _source_ids_json(source_metadata: dict[str, object]) -> str:
     return json.dumps(source_metadata["source_ids"], separators=(",", ":"))
@@ -520,12 +632,26 @@ def curate() -> dict[str, pd.DataFrame]:
             worker_set_valid = False
             worker_set_error = type(exc).__name__
 
-        registration_evidence_valid = worker_set_valid and bool(registration_source["valid"])
+        explanation_metadata = validate_explanation_metadata(
+            indicator=row.get("seasonal_or_project_change_indicator"),
+            reason=row.get("seasonal_or_project_reason"),
+        )
+        registration_authority = trusted_registration_authority_context()
+
+        registration_evidence_valid = (
+            worker_set_valid
+            and bool(registration_source["valid"])
+            and bool(explanation_metadata["valid"])
+        )
         registration_validity_reasons = list(registration_source["reasons"])
         if not worker_verification_valid:
             registration_validity_reasons.append("INVALID_WORKER_SET_VERIFICATION_STATE")
         if not worker_set_valid:
             registration_validity_reasons.append("INVALID_WORKER_SET_EVIDENCE")
+        if not bool(explanation_metadata["valid"]):
+            registration_validity_reasons.append(
+                str(explanation_metadata["validation_reason"])
+            )
 
         registration_quality, registration_quality_reasons = registration_evidence_quality(
             evidence_valid=registration_evidence_valid,
@@ -584,11 +710,7 @@ def curate() -> dict[str, pd.DataFrame]:
             and bool(payment_semantics["valid"])
         )
         contribution_validity_reasons = list(contribution_source["reasons"])
-        if payment_semantics["reason"] in {
-            "INVALID_PAYMENT_ENUM_OR_FLAG",
-            "INCONSISTENT_PAYMENT_STATE_COMBINATION",
-            "INCONSISTENT_PAYMENT_TIMESTAMPS",
-        }:
+        if not bool(payment_semantics["valid"]):
             contribution_validity_reasons.append(str(payment_semantics["reason"]))
 
         settlement_pending = bool(payment_semantics["settlement_pending"])
@@ -608,11 +730,7 @@ def curate() -> dict[str, pd.DataFrame]:
             else False
         )
 
-        explanation = (
-            str(row.get("seasonal_or_project_reason"))
-            if bool(row.get("seasonal_or_project_change_indicator", False))
-            else "NONE"
-        )
+        explanation = str(explanation_metadata["reason"])
 
         missing_count = int(reconciliation["missing_worker_count"]) if reconciliation else 0
         unexpected_count = int(reconciliation["unexpected_worker_count"]) if reconciliation else 0
@@ -622,7 +740,13 @@ def curate() -> dict[str, pd.DataFrame]:
             unexpected_worker_count=unexpected_count,
             evidence_valid=registration_evidence_valid,
             evidence_quality=registration_quality,
-            explanation_present=explanation != "NONE",
+            explanation_present=bool(explanation_metadata["present"]),
+            reference_authority_verified=bool(
+                registration_authority["reference_authority_verified"]
+            ),
+            applicable_version_verified=bool(
+                registration_authority["applicable_version_verified"]
+            ),
         )
         wage_state, wage_reason = derive_wage_state(
             wage_discrepancy_signal_rp=wage_gap,
@@ -676,9 +800,26 @@ def curate() -> dict[str, pd.DataFrame]:
             "worker_sets_equal": sets_equal,
             "worker_set_evidence_valid": worker_set_valid,
             "registration_source_metadata_valid": bool(registration_source["valid"]),
+            "registration_explanation_metadata_valid": bool(explanation_metadata["valid"]),
+            "registration_explanation_metadata_reason": str(
+                explanation_metadata["validation_reason"]
+            ),
             "registration_evidence_valid": registration_evidence_valid,
             "worker_set_evidence_error": worker_set_error,
             "worker_discrepancy_explanation": explanation,
+            "registration_reference_authority": str(
+                registration_authority["reference_authority"]
+            ),
+            "registration_reference_authority_verified": bool(
+                registration_authority["reference_authority_verified"]
+            ),
+            "registration_rule_version": str(registration_authority["rule_version"]),
+            "registration_applicable_version_verified": bool(
+                registration_authority["applicable_version_verified"]
+            ),
+            "registration_authority_context_source": str(
+                registration_authority["context_source"]
+            ),
             "registration_evidence_quality": registration_quality,
             "registration_evidence_reasons": (
                 "|".join(registration_quality_reasons) if registration_quality_reasons else "NONE"
@@ -687,10 +828,14 @@ def curate() -> dict[str, pd.DataFrame]:
             "registration_signal_reason": registration_reason,
             "registration_rule_id": REGISTRATION_RULE_ID,
             "registration_source_ids_json": registration_source_ids,
-            "registration_authority_dependency": "WORKER_REFERENCE_SET_AND_JKN_REGISTRATION_SET",
+            "registration_authority_dependency": (
+                "TRUSTED_REFERENCE_AUTHORITY_AND_APPLICABLE_RULE_VERSION"
+            ),
             "registration_lineage": (
-                f"{registration_source_ids} -> set reconciliation -> {REGISTRATION_RULE_ID} "
-                f"-> {registration_state}"
+                f"{registration_source_ids} -> set reconciliation -> "
+                f"authority={registration_authority['reference_authority']} -> "
+                f"rule={REGISTRATION_RULE_ID}@{registration_authority['rule_version']} -> "
+                f"{registration_state}"
             ),
 
             "reference_wage_signal_rp": (

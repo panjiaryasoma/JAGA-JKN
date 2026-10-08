@@ -33,9 +33,13 @@ def main() -> None:
     assert curated[["id_badan_usaha", "periode_bulan", "source_record_id"]].isna().sum().sum() == 0
 
     required = {
-        "registration_source_metadata_valid", "registration_evidence_valid",
-        "registration_evidence_quality", "registration_signal_state",
-        "registration_rule_id", "registration_source_ids_json", "registration_lineage",
+        "registration_source_metadata_valid", "registration_explanation_metadata_valid",
+        "registration_evidence_valid", "registration_evidence_quality",
+        "registration_signal_state", "registration_rule_id",
+        "registration_source_ids_json", "registration_lineage",
+        "registration_reference_authority_verified",
+        "registration_applicable_version_verified",
+        "registration_rule_version", "registration_authority_context_source",
         "wage_source_metadata_valid", "wage_semantic_consistency_valid",
         "wage_evidence_valid", "wage_evidence_quality", "wage_signal_state",
         "wage_rule_id", "wage_source_ids_json", "wage_lineage",
@@ -83,6 +87,13 @@ def main() -> None:
         & curated["contribution_signal_state"].eq("NORMAL")
     ).any()
 
+    # Trusted registration authority/version is unresolved in this sandbox.
+    assert curated["registration_reference_authority_verified"].astype(bool).eq(False).all()
+    assert curated["registration_applicable_version_verified"].astype(bool).eq(False).all()
+    assert curated["registration_rule_version"].eq("UNVERIFIED").all()
+    assert curated["registration_explanation_metadata_valid"].astype(bool).all()
+    assert not curated["registration_signal_state"].isin(["NORMAL", "REVIEW"]).any()
+
     # B2 is unresolved in this sandbox, therefore policy-dependent rules cannot NORMAL.
     assert curated["trusted_policy_context_authorized"].astype(bool).eq(False).all()
     assert not curated["wage_signal_state"].eq("NORMAL").any()
@@ -113,9 +124,10 @@ def main() -> None:
         assert term not in recommendations
 
     print("STATUS: SANDBOX REMEDIATION EVIDENCE VALID")
+    print("REGISTRATION AUTHORITY: TRUSTED CONTEXT REQUIRED BEFORE NORMAL/REVIEW")
     print("B2 POLICY GATE: BEFORE NORMAL FOR WAGE + CONTRIBUTION")
-    print("SOURCE METADATA: REQUIRED FOR EVIDENCE VALIDITY")
-    print("CROSS-FIELD SEMANTICS: VALIDATED")
+    print("SOURCE + EXPLANATION METADATA: REQUIRED FOR EVIDENCE VALIDITY")
+    print("TIMESTAMP + CROSS-FIELD SEMANTICS: VALIDATED")
     print("ML TRAINING READINESS: NOT CERTIFIED")
     print("MERGE READINESS: NOT CLAIMED")
 

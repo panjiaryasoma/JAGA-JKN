@@ -277,6 +277,8 @@ class ContractAlignmentTests(unittest.TestCase):
             evidence_valid=True,
             evidence_quality="HIGH",
             explanation_present=False,
+            reference_authority_verified=True,
+            applicable_version_verified=True,
         )
         self.assertEqual((state, reason), ("REVIEW", "HUMAN_REVIEW_NO_AUTOMATED_PRIORITY"))
 
@@ -305,6 +307,8 @@ class ContractAlignmentTests(unittest.TestCase):
             evidence_valid=True,
             evidence_quality="HIGH",
             explanation_present=False,
+            reference_authority_verified=True,
+            applicable_version_verified=True,
         )[0]
         wage = CURATION.derive_wage_state(
             wage_discrepancy_signal_rp=1,
@@ -330,6 +334,8 @@ class ContractAlignmentTests(unittest.TestCase):
             evidence_valid=True,
             evidence_quality="HIGH",
             explanation_present=True,
+            reference_authority_verified=True,
+            applicable_version_verified=True,
         )
         self.assertEqual(reconciliation["missing_worker_count"], 1)
         self.assertEqual(state, "NEEDS_ENRICHMENT")
@@ -400,6 +406,191 @@ class ContractAlignmentTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("MERGE READINESS: NOT CLAIMED", result.stdout)
+
+
+
+class Pass5BoundaryRegressionTests(unittest.TestCase):
+    def test_registration_authority_unresolved_blocks_review(self):
+        state, reason = CURATION.derive_registration_state(
+            missing_worker_count=1,
+            unexpected_worker_count=0,
+            evidence_valid=True,
+            evidence_quality="HIGH",
+            explanation_present=False,
+        )
+        self.assertEqual(
+            (state, reason),
+            ("ABSTAIN", "REFERENCE_AUTHORITY_OR_RULE_VERSION_UNRESOLVED"),
+        )
+
+    def test_registration_authority_unresolved_blocks_normal_too(self):
+        state, reason = CURATION.derive_registration_state(
+            missing_worker_count=0,
+            unexpected_worker_count=0,
+            evidence_valid=True,
+            evidence_quality="HIGH",
+            explanation_present=False,
+        )
+        self.assertEqual(
+            (state, reason),
+            ("ABSTAIN", "REFERENCE_AUTHORITY_OR_RULE_VERSION_UNRESOLVED"),
+        )
+
+    def test_registration_trusted_context_is_not_row_authorized(self):
+        context = CURATION.trusted_registration_authority_context()
+        self.assertFalse(context["reference_authority_verified"])
+        self.assertFalse(context["applicable_version_verified"])
+        self.assertEqual(context["reference_authority"], "UNRESOLVED")
+        self.assertEqual(context["rule_version"], "UNVERIFIED")
+        self.assertEqual(
+            context["context_source"],
+            "TRUSTED_IMPLEMENTATION_CONTEXT__NOT_ROW_DATA",
+        )
+
+    def test_spoofed_source_id_does_not_establish_registration_authority(self):
+        source = CURATION.validate_source_metadata(
+            source_ids=("trust-me-bro-ref", "whatever-observed"),
+            freshness="CURRENT",
+            conflict=False,
+        )
+        self.assertTrue(source["valid"])
+        state, _ = CURATION.derive_registration_state(
+            missing_worker_count=1,
+            unexpected_worker_count=0,
+            evidence_valid=True,
+            evidence_quality="HIGH",
+            explanation_present=False,
+        )
+        self.assertEqual(state, "ABSTAIN")
+
+    def test_invalid_timestamp_strings_are_rejected(self):
+        result = CURATION.validate_payment_semantics(
+            payment_state="PAID_ON_TIME",
+            bank_state="POSTED_ON_TIME",
+            settlement_delay_flag=False,
+            payer_timestamp="banana",
+            bank_timestamp="potato",
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["reason"], "INVALID_PAYMENT_TIMESTAMP_FORMAT")
+
+    def test_posted_next_day_cannot_happen_before_payer(self):
+        result = CURATION.validate_payment_semantics(
+            payment_state="PAID_ON_TIME",
+            bank_state="POSTED_NEXT_DAY",
+            settlement_delay_flag=True,
+            payer_timestamp="2026-01-11 23:10:00",
+            bank_timestamp="2026-01-10 00:10:00",
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["reason"], "INCONSISTENT_PAYMENT_CHRONOLOGY")
+
+    def test_posted_next_day_requires_next_calendar_day(self):
+        result = CURATION.validate_payment_semantics(
+            payment_state="PAID_ON_TIME",
+            bank_state="POSTED_NEXT_DAY",
+            settlement_delay_flag=True,
+            payer_timestamp="2026-01-10 10:00:00",
+            bank_timestamp="2026-01-10 11:00:00",
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["reason"], "INCONSISTENT_PAYMENT_DATE_RELATIONSHIP")
+
+    def test_posted_on_time_requires_same_calendar_day(self):
+        result = CURATION.validate_payment_semantics(
+            payment_state="PAID_ON_TIME",
+            bank_state="POSTED_ON_TIME",
+            settlement_delay_flag=False,
+            payer_timestamp="2026-01-10 23:59:00",
+            bank_timestamp="2026-01-11 00:01:00",
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["reason"], "INCONSISTENT_PAYMENT_DATE_RELATIONSHIP")
+
+    def test_nan_explanation_indicator_is_invalid(self):
+        result = CURATION.validate_explanation_metadata(
+            indicator=float("nan"),
+            reason=float("nan"),
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["validation_reason"], "INVALID_EXPLANATION_INDICATOR")
+
+    def test_string_false_explanation_indicator_is_invalid(self):
+        result = CURATION.validate_explanation_metadata(
+            indicator="False",
+            reason="NONE",
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["validation_reason"], "INVALID_EXPLANATION_INDICATOR")
+
+    def test_true_explanation_requires_allowed_reason(self):
+        result = CURATION.validate_explanation_metadata(
+            indicator=True,
+            reason=None,
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(
+            result["validation_reason"],
+            "MISSING_OR_INVALID_EXPLANATION_REASON",
+        )
+
+    def test_false_explanation_rejects_substantive_reason(self):
+        result = CURATION.validate_explanation_metadata(
+            indicator=False,
+            reason="PROJECT_OR_SEASON_END_SYNTHETIC",
+        )
+        self.assertFalse(result["valid"])
+        self.assertEqual(
+            result["validation_reason"],
+            "EXPLANATION_REASON_WITH_FALSE_INDICATOR",
+        )
+
+    def test_valid_explanation_can_enrich_without_mutating_discrepancy(self):
+        metadata = CURATION.validate_explanation_metadata(
+            indicator=True,
+            reason="PROJECT_OR_SEASON_END_SYNTHETIC",
+        )
+        reconciliation = CURATION.reconcile_worker_sets({"A", "B", "C"}, {"A", "B"})
+        state, _ = CURATION.derive_registration_state(
+            missing_worker_count=reconciliation["missing_worker_count"],
+            unexpected_worker_count=reconciliation["unexpected_worker_count"],
+            evidence_valid=True,
+            evidence_quality="HIGH",
+            explanation_present=bool(metadata["present"]),
+            reference_authority_verified=True,
+            applicable_version_verified=True,
+        )
+        self.assertTrue(metadata["valid"])
+        self.assertEqual(reconciliation["missing_worker_count"], 1)
+        self.assertEqual(state, "NEEDS_ENRICHMENT")
+
+    def test_generated_curated_registration_stays_abstain_until_authority_verified(self):
+        curated = pd.read_csv(
+            self.data_root / "curated" / "curated_kepatuhan_evidence.csv"
+        )
+        self.assertTrue(
+            curated["registration_reference_authority_verified"]
+            .astype(bool)
+            .eq(False)
+            .all()
+        )
+        self.assertTrue(
+            curated["registration_applicable_version_verified"]
+            .astype(bool)
+            .eq(False)
+            .all()
+        )
+        self.assertFalse(
+            curated["registration_signal_state"].isin(["NORMAL", "REVIEW"]).any()
+        )
+
+    def test_generated_explanation_metadata_is_strictly_valid(self):
+        curated = pd.read_csv(
+            self.data_root / "curated" / "curated_kepatuhan_evidence.csv"
+        )
+        self.assertTrue(
+            curated["registration_explanation_metadata_valid"].astype(bool).all()
+        )
 
 
 if __name__ == "__main__":
