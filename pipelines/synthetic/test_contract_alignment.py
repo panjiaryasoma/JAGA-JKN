@@ -209,8 +209,8 @@ class RuleEnumInvariantTests(unittest.TestCase):
             self.assertEqual((result, reason), ("ABSTAIN", CURATION.EVIDENCE_INVALID_REASON))
 
 
-    class AuthorityActivationBoundaryTests(unittest.TestCase):
-        @staticmethod
+class AuthorityActivationBoundaryTests(unittest.TestCase):
+    @staticmethod
     def _context(**changes):
         from dataclasses import replace
         return replace(RuleEnumInvariantTests._authorized_context(), **changes)
