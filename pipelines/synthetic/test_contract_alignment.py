@@ -410,6 +410,33 @@ class ContractAlignmentTests(unittest.TestCase):
 
 
 class Pass5BoundaryRegressionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.TemporaryDirectory()
+        cls.data_root = Path(cls.tmp.name) / "data" / "synthetic"
+        cls.powerbi_root = Path(cls.tmp.name) / "powerbi"
+        env = os.environ.copy()
+        env.update({
+            "JAGA_DATA_ROOT": str(cls.data_root),
+            "JAGA_POWERBI_DIR": str(cls.powerbi_root),
+            "JAGA_POWERBI_DATA_DIR": str(cls.powerbi_root / "data"),
+            "JAGA_N_COMPANIES": "20",
+            "JAGA_SYNTHETIC_SEED": "42",
+        })
+        cls.env = env
+        for script in SCRIPTS:
+            subprocess.run(
+                [sys.executable, str(HERE / script)],
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
     def test_registration_authority_unresolved_blocks_review(self):
         state, reason = CURATION.derive_registration_state(
             missing_worker_count=1,
