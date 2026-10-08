@@ -32,8 +32,13 @@ def _load_module(name: str, filename: str):
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     sys.path.insert(0, str(HERE))
+    sys.modules[name] = module
     try:
         spec.loader.exec_module(module)
+    except BaseException:
+        if sys.modules.get(name) is module:
+            del sys.modules[name]
+        raise
     finally:
         sys.path.remove(str(HERE))
     return module
@@ -43,7 +48,8 @@ CURATION = _load_module(
     "jaga_curation",
     "pipeline_cleansing_dan_disambiguasi.py",
 )
-TRUSTED = _load_module("jaga_trusted_context", "trusted_context.py")
+TRUSTED = sys.modules["trusted_context"]
+POWERBI = _load_module("jaga_powerbi_presentation", "prepare_powerbi_dataset.py")
 
 
 def setUpModule():
@@ -157,11 +163,11 @@ class RuleEnumInvariantTests(unittest.TestCase):
     def test_registration_rule_exact_enum(self):
         context = self._authorized_context()
         consistent = CURATION._evaluate_registration_rule_with_context(
-            {"valid": True, "quality": "HIGH", "discrepancy_detected": False},
+            {"valid": True, "quality": "HIGH", "discrepancy_detected": False, "evaluated_period": "2026-06"},
             context,
         )[0]
         potential = CURATION._evaluate_registration_rule_with_context(
-            {"valid": True, "quality": "HIGH", "discrepancy_detected": True},
+            {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
             context,
         )[0]
         self.assertEqual(consistent, "CONSISTENT")
@@ -173,7 +179,7 @@ class RuleEnumInvariantTests(unittest.TestCase):
         context = self._authorized_context()
         self.assertEqual(
             CURATION._evaluate_wage_rule_with_context(
-                {"valid": True, "quality": "HIGH", "discrepancy_detected": True},
+                {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
                 context,
             )[0],
             "POTENTIAL_WAGE_DIVERGENCE",
@@ -183,7 +189,7 @@ class RuleEnumInvariantTests(unittest.TestCase):
         context = self._authorized_context()
         self.assertEqual(
             CURATION._evaluate_contribution_rule_with_context(
-                {"valid": True, "quality": "HIGH", "discrepancy_detected": True},
+                {"valid": True, "quality": "HIGH", "discrepancy_detected": True, "evaluated_period": "2026-06"},
                 context,
             )[0],
             "POTENTIAL_CONTRIBUTION_IRREGULARITY",
@@ -192,10 +198,66 @@ class RuleEnumInvariantTests(unittest.TestCase):
     def test_invalid_evidence_rule_abstains_when_context_authorized(self):
         context = self._authorized_context()
         result, reason = CURATION._evaluate_registration_rule_with_context(
-            {"valid": False, "quality": "LOW", "discrepancy_detected": None},
+            {"valid": False, "quality": "LOW", "discrepancy_detected": None, "evaluated_period": "2026-06"},
             context,
         )
         self.assertEqual((result, reason), ("ABSTAIN", CURATION.EVIDENCE_INVALID_REASON))
+
+
+class AuthorityActivationBoundaryTests(unittest.TestCase):
+    @staticmethod
+    def _context(**changes):
+        from dataclasses import replace
+        return replace(RuleEnumInvariantTests._authorized_context(), **changes)
+
+    def test_python_loader_class_identity(self):
+        self.assertIs(CURATION.RuleAuthorityContext, TRUSTED.RuleAuthorityContext)
+
+    def test_valid_context_inclusive_period_boundaries(self):
+        ctx = self._context()
+        for period in ("2026-01", "2026-06", "2026-12"):
+            self.assertTrue(TRUSTED.authority_context_ready(ctx, period))
+
+    def test_invalid_authority_fields_fail_closed(self):
+        invalid = [
+            {"authority_id": "UNRESOLVED"},
+            {"rule_version": "UNVERIFIED"},
+            {"source_ids": ()},
+            {"source_ids": ("",)},
+            {"effective_from": None},
+            {"effective_to": None},
+            {"effective_from": "2026-13"},
+            {"effective_to": "2025-12"},
+            {"authorized": False},
+            {"applicable_period_verified": False},
+        ]
+        for change in invalid:
+            with self.subTest(change=change):
+                ctx = self._context(**change)
+                self.assertFalse(TRUSTED.authority_context_ready(ctx, "2026-06"))
+                for fn in (
+                    CURATION._evaluate_registration_rule_with_context,
+                    CURATION._evaluate_wage_rule_with_context,
+                    CURATION._evaluate_contribution_rule_with_context,
+                ):
+                    result, _ = fn(
+                        {"valid": True, "quality": "HIGH",
+                         "discrepancy_detected": True, "evaluated_period": "2026-06"},
+                        ctx,
+                    )
+                    self.assertEqual(result, "ABSTAIN")
+
+    def test_outside_period_and_missing_period_abstains(self):
+        ctx = self._context()
+        for period in ("2025-12", "2027-01", "2026-00", "invalid", None):
+            with self.subTest(period=period):
+                self.assertFalse(TRUSTED.authority_context_ready(ctx, period))
+                result, _ = CURATION._evaluate_registration_rule_with_context(
+                    {"valid": True, "quality": "HIGH",
+                     "discrepancy_detected": False, "evaluated_period": period},
+                    ctx,
+                )
+                self.assertEqual(result, "ABSTAIN")
 
 
 class WorkflowMappingInvariantTests(unittest.TestCase):
@@ -224,6 +286,7 @@ class WorkflowMappingInvariantTests(unittest.TestCase):
             "valid": True,
             "quality": "HIGH",
             "discrepancy_detected": True,
+            "evaluated_period": "2026-06",
         }
         context = RuleEnumInvariantTests._authorized_context()
         rule_before = CURATION._evaluate_registration_rule_with_context(
@@ -504,6 +567,56 @@ class PowerBIPresentationContractTests(unittest.TestCase):
                 "SIMULATED_ESTIMATE__NOT_EMPIRICAL_LOSS"
             ).all()
         )
+
+
+class AttentionFlagInvariantTests(unittest.TestCase):
+    def _flags(self, reg, wage, contribution, reg_reason):
+        frame = pd.DataFrame([{
+            "registration_review_state": reg,
+            "wage_review_state": wage,
+            "contribution_review_state": contribution,
+            "registration_rule_reason": reg_reason,
+            "wage_rule_reason": CURATION.POLICY_UNRESOLVED_REASON,
+            "contribution_rule_reason": CURATION.POLICY_UNRESOLVED_REASON,
+        }])
+        return POWERBI.attach_attention_flags(frame).iloc[0]
+
+    def test_pure_governance_abstain_not_operator_queue(self):
+        row = self._flags(
+            "ABSTAIN", "ABSTAIN", "ABSTAIN",
+            CURATION.AUTHORITY_UNRESOLVED_REASON,
+        )
+        self.assertEqual(
+            tuple(int(row[k]) for k in (
+                "flag_reviewable", "flag_needs_enrichment", "flag_abstain",
+                "flag_governance_blocked", "flag_needs_human_attention",
+            )),
+            (0, 0, 1, 1, 0),
+        )
+
+    def test_review_plus_governance_blocker_is_actionable(self):
+        row = self._flags(
+            "REVIEW", "ABSTAIN", "ABSTAIN", "OBSERVED_SET_DISCREPANCY",
+        )
+        self.assertEqual(int(row["flag_reviewable"]), 1)
+        self.assertEqual(int(row["flag_governance_blocked"]), 1)
+        self.assertEqual(int(row["flag_needs_human_attention"]), 1)
+
+    def test_enrichment_separately_actionable(self):
+        row = self._flags(
+            "NEEDS_ENRICHMENT", "ABSTAIN", "ABSTAIN", "EVIDENCE_INSUFFICIENT",
+        )
+        self.assertEqual(int(row["flag_reviewable"]), 0)
+        self.assertEqual(int(row["flag_needs_enrichment"]), 1)
+        self.assertEqual(int(row["flag_needs_human_attention"]), 1)
+
+    def test_current_synthetic_dataset_has_no_fake_operator_queue(self):
+        fact = pd.read_csv(POWERBI_ROOT / "data" / "Fact_Risk_Evidence.csv")
+        self.assertTrue(fact["flag_reviewable"].eq(0).all())
+        self.assertTrue(fact["flag_needs_enrichment"].eq(0).all())
+        self.assertTrue(fact["flag_abstain"].eq(1).all())
+        self.assertTrue(fact["flag_governance_blocked"].eq(1).all())
+        self.assertTrue(fact["flag_needs_human_attention"].eq(0).all())
 
 
 class DeterminismAndEndToEndTests(unittest.TestCase):

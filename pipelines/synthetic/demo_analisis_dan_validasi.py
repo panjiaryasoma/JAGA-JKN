@@ -9,6 +9,8 @@ import pandas as pd
 
 from paths import CANDIDATE_ML_DIR, CURATED_DIR, POWERBI_DATA_DIR, SCENARIO_DIR
 from trusted_context import (
+    RuleAuthorityContext,
+    authority_context_ready,
     CONTRIBUTION_POLICY_CONTEXT,
     REGISTRATION_AUTHORITY_CONTEXT,
     WAGE_POLICY_CONTEXT,
@@ -132,6 +134,18 @@ def main() -> None:
     assert not REGISTRATION_AUTHORITY_CONTEXT.authorized
     assert not WAGE_POLICY_CONTEXT.authorized
     assert not CONTRIBUTION_POLICY_CONTEXT.authorized
+    bad_context = RuleAuthorityContext(
+        authorized=True, authority_id="UNRESOLVED", rule_version="UNVERIFIED",
+        applicable_period_verified=True,
+        effective_from=None, effective_to=None, source_ids=(),
+    )
+    assert not authority_context_ready(bad_context, "2026-06")
+    for context in (
+        REGISTRATION_AUTHORITY_CONTEXT,
+        WAGE_POLICY_CONTEXT,
+        CONTRIBUTION_POLICY_CONTEXT,
+    ):
+        assert not authority_context_ready(context, "2026-06")
     assert curated["registration_rule_result"].eq("ABSTAIN").all()
     assert curated["wage_rule_result"].eq("ABSTAIN").all()
     assert curated["contribution_rule_result"].eq("ABSTAIN").all()
@@ -175,6 +189,34 @@ def main() -> None:
     assert fact["exposure_label"].eq(
         "SIMULATED_ESTIMATE__NOT_EMPIRICAL_LOSS"
     ).all()
+    states = fact[[
+        "registration_review_state", "wage_review_state",
+        "contribution_review_state",
+    ]]
+    reasons = fact[[
+        "registration_rule_reason", "wage_rule_reason",
+        "contribution_rule_reason",
+    ]]
+    expected = {
+        "flag_reviewable": states.eq("REVIEW").any(axis=1).astype(int),
+        "flag_needs_enrichment": states.eq("NEEDS_ENRICHMENT").any(axis=1).astype(int),
+        "flag_abstain": states.eq("ABSTAIN").any(axis=1).astype(int),
+        "flag_governance_blocked": reasons.isin({
+            "AUTHORITY_OR_APPLICABLE_VERSION_UNRESOLVED",
+            "POLICY_REQUIRED_BUT_UNRESOLVED",
+        }).any(axis=1).astype(int),
+    }
+    expected["flag_needs_human_attention"] = (
+        expected["flag_reviewable"] | expected["flag_needs_enrichment"]
+    )
+    for col, series in expected.items():
+        assert col in fact.columns, col
+        assert fact[col].eq(series).all(), col
+    assert fact["flag_reviewable"].eq(0).all()
+    assert fact["flag_needs_enrichment"].eq(0).all()
+    assert fact["flag_abstain"].eq(1).all()
+    assert fact["flag_governance_blocked"].eq(1).all()
+    assert fact["flag_needs_human_attention"].eq(0).all()
 
     recommendations = " ".join(
         curated["human_review_recommendation"].astype(str).str.lower().unique()

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 
 from paths import (
@@ -71,6 +70,32 @@ FACT_COLUMNS = [
 ]
 
 
+def attach_attention_flags(fact: pd.DataFrame) -> pd.DataFrame:
+    """Keep governance abstention distinct from the human-review queue."""
+    output = fact.copy()
+    states = output[[
+        "registration_review_state", "wage_review_state",
+        "contribution_review_state",
+    ]]
+    reasons = output[[
+        "registration_rule_reason", "wage_rule_reason",
+        "contribution_rule_reason",
+    ]]
+    output["flag_reviewable"] = states.eq("REVIEW").any(axis=1).astype(int)
+    output["flag_needs_enrichment"] = (
+        states.eq("NEEDS_ENRICHMENT").any(axis=1).astype(int)
+    )
+    output["flag_abstain"] = states.eq("ABSTAIN").any(axis=1).astype(int)
+    output["flag_governance_blocked"] = reasons.isin({
+        "AUTHORITY_OR_APPLICABLE_VERSION_UNRESOLVED",
+        "POLICY_REQUIRED_BUT_UNRESOLVED",
+    }).any(axis=1).astype(int)
+    output["flag_needs_human_attention"] = (
+        output["flag_reviewable"] | output["flag_needs_enrichment"]
+    )
+    return output
+
+
 def prepare() -> dict[str, pd.DataFrame]:
     master = pd.read_csv(CURATED_DIR / "curated_master_badan_usaha.csv")
     curated = pd.read_csv(CURATED_DIR / "curated_kepatuhan_evidence.csv")
@@ -123,24 +148,7 @@ def prepare() -> dict[str, pd.DataFrame]:
 
     fact = curated[FACT_COLUMNS].copy()
     fact["tanggal_evaluasi"] = fact["periode_bulan"] + "-01"
-    fact["flag_needs_human_attention"] = np.where(
-        fact["overall_review_state"].isin(
-            ["REVIEW", "NEEDS_ENRICHMENT", "ABSTAIN", "PARTIAL"]
-        ),
-        1,
-        0,
-    )
-    fact["flag_abstain"] = np.where(
-        fact[[
-            "registration_review_state",
-            "wage_review_state",
-            "contribution_review_state",
-        ]]
-        .eq("ABSTAIN")
-        .any(axis=1),
-        1,
-        0,
-    )
+    fact = attach_attention_flags(fact)
     fact["exposure_label"] = "SIMULATED_ESTIMATE__NOT_EMPIRICAL_LOSS"
     fact["presentation_contract"] = "OBSERVATION_RULE_WORKFLOW_V1"
 

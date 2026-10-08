@@ -24,6 +24,7 @@ from trusted_context import (
     REGISTRATION_AUTHORITY_CONTEXT,
     WAGE_POLICY_CONTEXT,
     RuleAuthorityContext,
+    authority_context_ready,
 )
 
 REGISTRATION_RULE_ID = "REG-001"
@@ -438,15 +439,15 @@ def validate_payment_semantics(
     }
 
 
-def _context_ready(context: RuleAuthorityContext) -> bool:
-    return context.authorized and context.applicable_period_verified
+def _context_ready(context: RuleAuthorityContext, evaluated_period: object) -> bool:
+    return authority_context_ready(context, evaluated_period)
 
 
 def _evaluate_registration_rule_with_context(
     evidence: dict[str, object],
     context: RuleAuthorityContext,
 ) -> tuple[str, str]:
-    if not _context_ready(context):
+    if not _context_ready(context, evidence.get("evaluated_period")):
         return "ABSTAIN", AUTHORITY_UNRESOLVED_REASON
     if not bool(evidence["valid"]):
         return "ABSTAIN", EVIDENCE_INVALID_REASON
@@ -461,7 +462,7 @@ def _evaluate_wage_rule_with_context(
     evidence: dict[str, object],
     context: RuleAuthorityContext,
 ) -> tuple[str, str]:
-    if not _context_ready(context):
+    if not _context_ready(context, evidence.get("evaluated_period")):
         return "ABSTAIN", POLICY_UNRESOLVED_REASON
     if not bool(evidence["valid"]):
         return "ABSTAIN", EVIDENCE_INVALID_REASON
@@ -476,7 +477,7 @@ def _evaluate_contribution_rule_with_context(
     evidence: dict[str, object],
     context: RuleAuthorityContext,
 ) -> tuple[str, str]:
-    if not _context_ready(context):
+    if not _context_ready(context, evidence.get("evaluated_period")):
         return "ABSTAIN", POLICY_UNRESOLVED_REASON
     if not bool(evidence["valid"]):
         return "ABSTAIN", EVIDENCE_INVALID_REASON
@@ -702,6 +703,7 @@ def curate() -> dict[str, pd.DataFrame]:
             "valid": registration_valid,
             "quality": registration_quality,
             "discrepancy_detected": registration_discrepancy,
+            "evaluated_period": evaluated_period,
         }
         registration_rule_result, registration_rule_reason = (
             evaluate_registration_rule(registration_evidence)
@@ -744,6 +746,7 @@ def curate() -> dict[str, pd.DataFrame]:
             "valid": wage_valid,
             "quality": wage_quality,
             "discrepancy_detected": wage_semantics["discrepancy_detected"],
+            "evaluated_period": evaluated_period,
         }
         wage_rule_result, wage_rule_reason = evaluate_wage_rule(wage_evidence)
         wage_review_state, wage_review_reason = map_wage_review_state(
@@ -792,6 +795,7 @@ def curate() -> dict[str, pd.DataFrame]:
             "valid": contribution_valid,
             "quality": contribution_quality,
             "discrepancy_detected": payment_semantics["payment_gap_observed"],
+            "evaluated_period": evaluated_period,
         }
         contribution_rule_result, contribution_rule_reason = (
             evaluate_contribution_rule(contribution_evidence)
