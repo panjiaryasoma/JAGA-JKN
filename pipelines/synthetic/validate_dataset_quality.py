@@ -57,6 +57,9 @@ TABLE_PATHS = {
 def missing_classification(table_name: str, column: str) -> str:
     allowed = {
         "raw_master": {"npwp_badan_usaha_raw", "nomor_telepon_pic_raw"},
+        # Curated master intentionally preserves the original noisy raw fields
+        # for traceability; normalization outputs live in separate columns.
+        "curated_master": {"npwp_badan_usaha_raw", "nomor_telepon_pic_raw"},
         "raw_monthly": {
             "payer_timestamp_synthetic",
             "bank_posting_timestamp_synthetic",

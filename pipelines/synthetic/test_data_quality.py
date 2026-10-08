@@ -61,6 +61,13 @@ class DataQualityInvariantTests(unittest.TestCase):
             "EXPECTED_SYNTHETIC_ABSENCE",
         )
 
+    def test_curated_master_preserves_intentional_raw_missingness(self):
+        for column in ("npwp_badan_usaha_raw", "nomor_telepon_pic_raw"):
+            self.assertEqual(
+                missing_classification("curated_master", column),
+                "EXPECTED_SYNTHETIC_ABSENCE",
+            )
+
     def test_unknown_missing_is_flagged_for_review(self):
         self.assertEqual(
             missing_classification("curated_monthly", "registration_rule_result"),
