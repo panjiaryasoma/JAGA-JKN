@@ -102,8 +102,9 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          find data/synthetic -type f \\( -name '*.csv' -o -name 'dataset_summary.json' -o -name 'data_quality_findings.md' \\) -print0 |
+          find data/synthetic -type f -name '*.csv' -print0 |
             xargs -0 -r git add -f --
+          git add -f -- data/synthetic/validation/dataset_summary.json data/synthetic/validation/data_quality_findings.md
           find powerbi/data -maxdepth 1 -type f -name '*.csv' -print0 |
             xargs -0 -r git add -f --
           if git diff --cached --quiet; then
