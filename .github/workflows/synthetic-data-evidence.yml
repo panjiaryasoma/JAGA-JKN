@@ -8,7 +8,7 @@ on:
       - ".github/workflows/synthetic-data-evidence.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   synthetic-evidence:
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout exact source SHA
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: true
 
       - name: Setup Python 3.13
         uses: actions/setup-python@v5
@@ -92,6 +92,29 @@ jobs:
           print("manifest entries:", len(artifacts))
           print("source SHA:", manifest["source_sha"])
           PY
+
+      - name: Commit generated synthetic CSV and validation evidence
+        # Only runs after generator, contract validator, quality profiler and tests pass.
+        # Dataset-only pushes do not match this workflow's paths trigger.
+        if: success() && github.ref == 'refs/heads/lintang-data-contract-alignment'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          find data/synthetic -type f \\( -name '*.csv' -o -name 'dataset_summary.json' -o -name 'data_quality_findings.md' \\) -print0 |
+            xargs -0 -r git add -f --
+          find powerbi/data -maxdepth 1 -type f -name '*.csv' -print0 |
+            xargs -0 -r git add -f --
+          if git diff --cached --quiet; then
+            echo "Generated CSV files are already tracked and unchanged"
+            exit 0
+          fi
+          echo "Staged generated artifacts:"
+          git diff --cached --stat
+          git commit -m "data: version seeded synthetic CSV and quality evidence"
+          git push origin HEAD:refs/heads/lintang-data-contract-alignment
+          echo "Generated synthetic CSV files committed to data branch"
 
       - name: Upload downloadable CSV bundle
         if: always()
