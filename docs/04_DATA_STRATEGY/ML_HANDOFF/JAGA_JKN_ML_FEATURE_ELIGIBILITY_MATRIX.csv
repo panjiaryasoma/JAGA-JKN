@@ -1,0 +1,92 @@
+﻿column,role,default_in_X,requires_approval,guidance
+id_badan_usaha,JOIN_KEY_NOT_FEATURE,NO,NO,"Join, group split, audit, dan temporal cutoff; bukan input mentah model."
+periode_bulan,JOIN_KEY_NOT_FEATURE,NO,NO,"Join, group split, audit, dan temporal cutoff; bukan input mentah model."
+source_record_id,JOIN_KEY_NOT_FEATURE,NO,NO,"Join, group split, audit, dan temporal cutoff; bukan input mentah model."
+reference_worker_count,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+observed_registered_worker_count,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+missing_worker_count,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+unexpected_worker_count,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+missing_worker_ids_json,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+unexpected_worker_ids_json,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+registration_discrepancy_detected,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+registration_evidence_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+registration_evidence_quality,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+registration_evidence_reasons,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_source_metadata_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+registration_period_binding_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+registration_source_ids_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_source_periods_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_worker_set_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+registration_worker_set_error,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_explanation_metadata_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+registration_explanation_reason,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_rule_id,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_rule_result,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+registration_rule_reason,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+registration_review_state,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+registration_review_reason,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+registration_lineage,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+reference_wage_signal_rp,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+observed_wage_signal_rp,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+wage_discrepancy_signal_rp,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+wage_discrepancy_detected,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+wage_evidence_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+wage_evidence_quality,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+wage_evidence_reasons,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_source_metadata_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+wage_period_binding_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+wage_source_ids_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_source_periods_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_semantic_consistency_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+wage_rule_id,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_rule_result,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+wage_rule_reason,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+wage_review_state,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+wage_review_reason,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+wage_lineage,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+observed_payment_state,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+validated_payment_state,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+contribution_payment_gap_observed,CONDITIONAL_OBSERVATION,NO,YES,"Boleh dievaluasi sebagai kandidat X hanya bila tersedia pada prediction cutoff, konsisten dengan sumber evidence, dan lolos leakage audit."
+contribution_evidence_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+contribution_evidence_quality,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+contribution_evidence_reasons,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_source_metadata_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+contribution_period_binding_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+contribution_source_ids_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_source_periods_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+payment_semantic_consistency_valid,CONDITIONAL_EVIDENCE_QUALITY,NO,YES,Kandidat X terbatas jika validasi evidence sudah tersedia pada cutoff dan tidak merekonstruksi target.
+payment_evidence_reason,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_rule_id,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_rule_result,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+contribution_rule_reason,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+contribution_review_state,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+contribution_review_reason,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+contribution_lineage,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+overall_review_state,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+human_review_recommendation,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+observed_discrepancy_types,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+estimated_exposure_synthetic_rp,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+exposure_decision_role,DO_NOT_USE_AS_FEATURE,NO,NO,Hasil keputusan/workflow atau simulasi exposure/identifier tingkat pekerja; dilarang sebagai X secara default.
+synthetic_risk_mode_ground_truth,TARGET_CANDIDATE_ONLY,NO,YES,Ground truth simulasi dari generator; boleh hanya setelah target/task + label leakage audit disetujui; tidak untuk X.
+is_synthetic,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_authority_authorized,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_authority_id,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_rule_version,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_applicable_period_verified,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_authority_effective_from,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_authority_effective_to,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+registration_authority_source_ids_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_authority_authorized,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_authority_id,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_rule_version,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_applicable_period_verified,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_authority_effective_from,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_authority_effective_to,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+wage_authority_source_ids_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_authority_authorized,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_authority_id,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_rule_version,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_applicable_period_verified,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_authority_effective_from,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_authority_effective_to,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
+contribution_authority_source_ids_json,METADATA_AUDIT_ONLY,NO,NO,"Provenance, metadata governance, alasan, lineage, atau metadata sandbox; exclude X default."
