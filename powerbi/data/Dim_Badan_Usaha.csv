@@ -1,0 +1,501 @@
+﻿id_badan_usaha,nama_badan_usaha_terstandarisasi,bentuk_badan_hukum,kode_kbli,sektor_industri,skala_usaha,provinsi,kantor_cabang_bpjs,synthetic_assumption_version,urutan_skala_usaha
+BU-0001,KOPERASI Bina Tekstil,Koperasi,I,Penyediaan Akomodasi dan F&B,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0002,PT Mitra Tekstil,PT,G,Perdagangan Besar dan Eceran,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0003,PT Mega Plastindo,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0004,CV Surya Tekstil,CV,F,Konstruksi & Infrastruktur,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0005,PT Daya Plastindo,PT,C,Industri Pengolahan / Manufaktur,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0006,YAYASAN Prima Logistik,Yayasan,A,Pertanian / Perkebunan / Kehutanan,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0007,KOPERASI Bina Tekstil,Koperasi,J,Informasi dan Komunikasi / Teknologi,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0008,PT Nusantara Tekstil,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0009,CV Prima Solusindo,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Besar,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,4
+BU-0010,KOPERASI Surya Solusindo,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0011,PT Daya Tekstil,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0012,PT Mandiri Tekstil,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0013,PT Makmur Multi Karya,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0014,KOPERASI Sentosa Plastindo,Koperasi,I,Penyediaan Akomodasi dan F&B,Mikro,Riau,KC Pekanbaru,SYN-2026-10-08-v3,1
+BU-0015,PT Sejahtera Distribusindo,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0016,PT Daya Pangan,PT,F,Konstruksi & Infrastruktur,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0017,PT Mitra Plastindo,PT,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0018,CV Inti Konstruksi,CV,Q,Pelayanan Kesehatan Swasta,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0019,CV Sentosa Logistik,CV,Q,Pelayanan Kesehatan Swasta,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0020,PT Cipta Multi Karya,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0021,CV Mitra Tekstil,CV,H,"Transportasi, Pergudangan & Logistik",Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0022,PT Daya Tekstil,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0023,PT Bina Pangan,PT,I,Penyediaan Akomodasi dan F&B,Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0024,PT Sentosa Distribusindo,PT,F,Konstruksi & Infrastruktur,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0025,PT Surya Multi Karya,PT,J,Informasi dan Komunikasi / Teknologi,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0026,KOPERASI Makmur Solusindo,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0027,CV Daya Sarana Jaya,CV,Q,Pelayanan Kesehatan Swasta,Mikro,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,1
+BU-0028,PT Prima Solusindo,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0029,CV Bina Tekstil,CV,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0030,CV Cipta Hospitality,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0031,PT Prima Plastindo,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0032,CV Prima Sarana Jaya,CV,Q,Pelayanan Kesehatan Swasta,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0033,PT Mega Hospitality,PT,I,Penyediaan Akomodasi dan F&B,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0034,KOPERASI Sejahtera Solusindo,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0035,PT Sentosa Teknologi,PT,J,Informasi dan Komunikasi / Teknologi,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0036,KOPERASI Makmur Plastindo,Koperasi,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0037,YAYASAN Sejahtera Multi Karya,Yayasan,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0038,CV Nusantara Tekstil,CV,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0039,YAYASAN Surya Sarana Jaya,Yayasan,A,Pertanian / Perkebunan / Kehutanan,Besar,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,4
+BU-0040,YAYASAN Bina Logistik,Yayasan,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0041,PT Nusantara Konstruksi,PT,G,Perdagangan Besar dan Eceran,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0042,PT Bina Tekstil,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0043,CV Mandiri Teknologi,CV,H,"Transportasi, Pergudangan & Logistik",Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0044,PT Sejahtera Multi Karya,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0045,KOPERASI Bina Solusindo,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0046,PT Surya Logistik,PT,A,Pertanian / Perkebunan / Kehutanan,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0047,PT Inti Plastindo,PT,F,Konstruksi & Infrastruktur,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0048,PT Nusantara Pangan,PT,J,Informasi dan Komunikasi / Teknologi,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0049,PT Daya Plastindo,PT,A,Pertanian / Perkebunan / Kehutanan,Besar,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,4
+BU-0050,PT Daya Teknologi,PT,G,Perdagangan Besar dan Eceran,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0051,PT Sentosa Teknologi,PT,C,Industri Pengolahan / Manufaktur,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0052,CV Sentosa Teknologi,CV,F,Konstruksi & Infrastruktur,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0053,CV Prima Sarana Jaya,CV,I,Penyediaan Akomodasi dan F&B,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0054,YAYASAN Sejahtera Tekstil,Yayasan,H,"Transportasi, Pergudangan & Logistik",Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0055,CV Prima Konstruksi,CV,A,Pertanian / Perkebunan / Kehutanan,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0056,KOPERASI Nusantara Distribusindo,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0057,PT Sejahtera Tekstil,PT,F,Konstruksi & Infrastruktur,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0058,PT Cipta Teknologi,PT,Q,Pelayanan Kesehatan Swasta,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0059,PT Mega Logistik,PT,J,Informasi dan Komunikasi / Teknologi,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0060,PT Mega Sarana Jaya,PT,I,Penyediaan Akomodasi dan F&B,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0061,PT Nusantara Logistik,PT,J,Informasi dan Komunikasi / Teknologi,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0062,KOPERASI Surya Tekstil,Koperasi,G,Perdagangan Besar dan Eceran,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0063,PT Nusantara Solusindo,PT,J,Informasi dan Komunikasi / Teknologi,Besar,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,4
+BU-0064,YAYASAN Daya Plastindo,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Besar,Bali,KC Denpasar,SYN-2026-10-08-v3,4
+BU-0065,CV Makmur Logistik,CV,A,Pertanian / Perkebunan / Kehutanan,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0066,PT Inti Logistik,PT,C,Industri Pengolahan / Manufaktur,Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0067,PT Mandiri Multi Karya,PT,H,"Transportasi, Pergudangan & Logistik",Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0068,PT Daya Pangan,PT,C,Industri Pengolahan / Manufaktur,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0069,PT Inti Multi Karya,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0070,KOPERASI Mitra Teknologi,Koperasi,G,Perdagangan Besar dan Eceran,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0071,CV Sentosa Teknologi,CV,I,Penyediaan Akomodasi dan F&B,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0072,PT Karya Konstruksi,PT,J,Informasi dan Komunikasi / Teknologi,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0073,PT Sentosa Konstruksi,PT,J,Informasi dan Komunikasi / Teknologi,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0074,CV Karya Teknologi,CV,J,Informasi dan Komunikasi / Teknologi,Besar,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,4
+BU-0075,PT Prima Solusindo,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0076,KOPERASI Mandiri Distribusindo,Koperasi,H,"Transportasi, Pergudangan & Logistik",Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0077,CV Nusantara Teknologi,CV,A,Pertanian / Perkebunan / Kehutanan,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0078,YAYASAN Mandiri Plastindo,Yayasan,Q,Pelayanan Kesehatan Swasta,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0079,CV Cipta Teknologi,CV,H,"Transportasi, Pergudangan & Logistik",Besar,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,4
+BU-0080,YAYASAN Prima Tekstil,Yayasan,Q,Pelayanan Kesehatan Swasta,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0081,PT Sejahtera Solusindo,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0082,CV Mega Solusindo,CV,J,Informasi dan Komunikasi / Teknologi,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0083,YAYASAN Surya Distribusindo,Yayasan,C,Industri Pengolahan / Manufaktur,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0084,YAYASAN Mandiri Hospitality,Yayasan,F,Konstruksi & Infrastruktur,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0085,PT Bina Teknologi,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0086,YAYASAN Mega Solusindo,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0087,CV Mandiri Konstruksi,CV,A,Pertanian / Perkebunan / Kehutanan,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0088,PT Sentosa Multi Karya,PT,F,Konstruksi & Infrastruktur,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0089,CV Surya Solusindo,CV,I,Penyediaan Akomodasi dan F&B,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0090,CV Nusantara Pangan,CV,A,Pertanian / Perkebunan / Kehutanan,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0091,PT Sejahtera Logistik,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,1
+BU-0092,PT Cipta Multi Karya,PT,F,Konstruksi & Infrastruktur,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0093,PT Cipta Pangan,PT,J,Informasi dan Komunikasi / Teknologi,Besar,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,4
+BU-0094,KOPERASI Mitra Plastindo,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0095,PT Mitra Multi Karya,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0096,CV Nusantara Teknologi,CV,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0097,YAYASAN Surya Teknologi,Yayasan,C,Industri Pengolahan / Manufaktur,Besar,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,4
+BU-0098,KOPERASI Daya Multi Karya,Koperasi,H,"Transportasi, Pergudangan & Logistik",Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0099,CV Sejahtera Hospitality,CV,H,"Transportasi, Pergudangan & Logistik",Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0100,KOPERASI Sentosa Solusindo,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0101,PT Sentosa Hospitality,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0102,CV Mitra Multi Karya,CV,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0103,CV Daya Hospitality,CV,A,Pertanian / Perkebunan / Kehutanan,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0104,CV Prima Hospitality,CV,I,Penyediaan Akomodasi dan F&B,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0105,YAYASAN Sentosa Solusindo,Yayasan,I,Penyediaan Akomodasi dan F&B,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0106,PT Sejahtera Multi Karya,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0107,PT Mega Plastindo,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0108,PT Mandiri Konstruksi,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0109,CV Mega Distribusindo,CV,H,"Transportasi, Pergudangan & Logistik",Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0110,PT Cipta Pangan,PT,H,"Transportasi, Pergudangan & Logistik",Mikro,Riau,KC Pekanbaru,SYN-2026-10-08-v3,1
+BU-0111,PT Surya Tekstil,PT,I,Penyediaan Akomodasi dan F&B,Mikro,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,1
+BU-0112,PT Sentosa Hospitality,PT,F,Konstruksi & Infrastruktur,Besar,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,4
+BU-0113,CV Sejahtera Pangan,CV,Q,Pelayanan Kesehatan Swasta,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0114,PT Surya Tekstil,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0115,CV Sejahtera Solusindo,CV,J,Informasi dan Komunikasi / Teknologi,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0116,CV Daya Multi Karya,CV,F,Konstruksi & Infrastruktur,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0117,YAYASAN Karya Multi Karya,Yayasan,I,Penyediaan Akomodasi dan F&B,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0118,PT Nusantara Teknologi,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0119,PT Inti Konstruksi,PT,F,Konstruksi & Infrastruktur,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0120,KOPERASI Inti Plastindo,Koperasi,I,Penyediaan Akomodasi dan F&B,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0121,YAYASAN Sejahtera Logistik,Yayasan,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0122,CV Surya Distribusindo,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0123,PT Nusantara Teknologi,PT,Q,Pelayanan Kesehatan Swasta,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0124,CV Daya Plastindo,CV,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0125,PT Mega Logistik,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0126,CV Surya Pangan,CV,I,Penyediaan Akomodasi dan F&B,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0127,KOPERASI Prima Tekstil,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0128,PT Inti Multi Karya,PT,G,Perdagangan Besar dan Eceran,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0129,CV Daya Logistik,CV,G,Perdagangan Besar dan Eceran,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0130,KOPERASI Cipta Plastindo,Koperasi,G,Perdagangan Besar dan Eceran,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0131,CV Nusantara Tekstil,CV,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0132,CV Mega Distribusindo,CV,Q,Pelayanan Kesehatan Swasta,Besar,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,4
+BU-0133,PT Sejahtera Multi Karya,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0134,PT Sentosa Distribusindo,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,1
+BU-0135,YAYASAN Inti Konstruksi,Yayasan,F,Konstruksi & Infrastruktur,Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0136,CV Daya Pangan,CV,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0137,YAYASAN Mandiri Teknologi,Yayasan,Q,Pelayanan Kesehatan Swasta,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0138,KOPERASI Surya Teknologi,Koperasi,F,Konstruksi & Infrastruktur,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0139,YAYASAN Bina Logistik,Yayasan,F,Konstruksi & Infrastruktur,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0140,PT Makmur Teknologi,PT,H,"Transportasi, Pergudangan & Logistik",Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0141,PT Surya Sarana Jaya,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0142,PT Makmur Sarana Jaya,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0143,YAYASAN Nusantara Konstruksi,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0144,KOPERASI Mega Plastindo,Koperasi,I,Penyediaan Akomodasi dan F&B,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0145,PT Nusantara Hospitality,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0146,KOPERASI Mega Solusindo,Koperasi,I,Penyediaan Akomodasi dan F&B,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0147,YAYASAN Nusantara Logistik,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0148,KOPERASI Sentosa Pangan,Koperasi,H,"Transportasi, Pergudangan & Logistik",Mikro,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,1
+BU-0149,PT Cipta Distribusindo,PT,F,Konstruksi & Infrastruktur,Besar,Bali,KC Denpasar,SYN-2026-10-08-v3,4
+BU-0150,PT Sentosa Tekstil,PT,Q,Pelayanan Kesehatan Swasta,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0151,PT Bina Logistik,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0152,PT Mandiri Sarana Jaya,PT,Q,Pelayanan Kesehatan Swasta,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0153,CV Mandiri Pangan,CV,A,Pertanian / Perkebunan / Kehutanan,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0154,PT Sentosa Tekstil,PT,I,Penyediaan Akomodasi dan F&B,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0155,PT Bina Multi Karya,PT,J,Informasi dan Komunikasi / Teknologi,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0156,YAYASAN Makmur Hospitality,Yayasan,F,Konstruksi & Infrastruktur,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0157,CV Bina Pangan,CV,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0158,YAYASAN Mandiri Pangan,Yayasan,H,"Transportasi, Pergudangan & Logistik",Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0159,YAYASAN Sentosa Plastindo,Yayasan,Q,Pelayanan Kesehatan Swasta,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0160,YAYASAN Mega Teknologi,Yayasan,F,Konstruksi & Infrastruktur,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0161,KOPERASI Cipta Tekstil,Koperasi,H,"Transportasi, Pergudangan & Logistik",Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0162,KOPERASI Mandiri Hospitality,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0163,PT Prima Logistik,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0164,PT Makmur Pangan,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0165,KOPERASI Inti Tekstil,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0166,CV Bina Solusindo,CV,H,"Transportasi, Pergudangan & Logistik",Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0167,PT Cipta Konstruksi,PT,G,Perdagangan Besar dan Eceran,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0168,CV Cipta Konstruksi,CV,I,Penyediaan Akomodasi dan F&B,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0169,CV Karya Multi Karya,CV,H,"Transportasi, Pergudangan & Logistik",Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0170,CV Nusantara Teknologi,CV,H,"Transportasi, Pergudangan & Logistik",Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0171,YAYASAN Prima Logistik,Yayasan,G,Perdagangan Besar dan Eceran,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0172,CV Surya Solusindo,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0173,PT Sentosa Solusindo,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0174,PT Daya Distribusindo,PT,C,Industri Pengolahan / Manufaktur,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0175,KOPERASI Mega Teknologi,Koperasi,H,"Transportasi, Pergudangan & Logistik",Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0176,PT Daya Distribusindo,PT,J,Informasi dan Komunikasi / Teknologi,Besar,Bali,KC Denpasar,SYN-2026-10-08-v3,4
+BU-0177,CV Mitra Sarana Jaya,CV,C,Industri Pengolahan / Manufaktur,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0178,PT Surya Solusindo,PT,C,Industri Pengolahan / Manufaktur,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0179,CV Surya Distribusindo,CV,J,Informasi dan Komunikasi / Teknologi,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0180,CV Sejahtera Multi Karya,CV,H,"Transportasi, Pergudangan & Logistik",Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0181,PT Karya Konstruksi,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0182,PT Makmur Sarana Jaya,PT,J,Informasi dan Komunikasi / Teknologi,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0183,PT Mitra Logistik,PT,I,Penyediaan Akomodasi dan F&B,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0184,PT Mega Distribusindo,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0185,PT Cipta Distribusindo,PT,F,Konstruksi & Infrastruktur,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0186,PT Sejahtera Konstruksi,PT,C,Industri Pengolahan / Manufaktur,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0187,CV Bina Multi Karya,CV,A,Pertanian / Perkebunan / Kehutanan,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0188,PT Mega Teknologi,PT,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0189,YAYASAN Mitra Logistik,Yayasan,Q,Pelayanan Kesehatan Swasta,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0190,PT Nusantara Distribusindo,PT,F,Konstruksi & Infrastruktur,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0191,PT Inti Distribusindo,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0192,PT Inti Distribusindo,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0193,CV Cipta Hospitality,CV,H,"Transportasi, Pergudangan & Logistik",Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0194,CV Cipta Multi Karya,CV,C,Industri Pengolahan / Manufaktur,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0195,PT Sentosa Pangan,PT,F,Konstruksi & Infrastruktur,Besar,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,4
+BU-0196,PT Makmur Teknologi,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0197,PT Prima Solusindo,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0198,YAYASAN Daya Sarana Jaya,Yayasan,H,"Transportasi, Pergudangan & Logistik",Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0199,PT Mandiri Plastindo,PT,C,Industri Pengolahan / Manufaktur,Besar,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,4
+BU-0200,PT Mitra Solusindo,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0201,PT Prima Teknologi,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0202,CV Mandiri Tekstil,CV,C,Industri Pengolahan / Manufaktur,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0203,PT Nusantara Solusindo,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0204,PT Surya Konstruksi,PT,C,Industri Pengolahan / Manufaktur,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0205,YAYASAN Bina Hospitality,Yayasan,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0206,PT Sentosa Konstruksi,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0207,PT Mitra Logistik,PT,F,Konstruksi & Infrastruktur,Besar,Bali,KC Denpasar,SYN-2026-10-08-v3,4
+BU-0208,PT Daya Pangan,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0209,YAYASAN Prima Logistik,Yayasan,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0210,CV Surya Hospitality,CV,F,Konstruksi & Infrastruktur,Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0211,CV Sejahtera Pangan,CV,G,Perdagangan Besar dan Eceran,Mikro,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,1
+BU-0212,KOPERASI Sejahtera Distribusindo,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0213,PT Mitra Solusindo,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0214,YAYASAN Mitra Sarana Jaya,Yayasan,H,"Transportasi, Pergudangan & Logistik",Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0215,PT Karya Teknologi,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0216,YAYASAN Sentosa Hospitality,Yayasan,J,Informasi dan Komunikasi / Teknologi,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0217,KOPERASI Nusantara Pangan,Koperasi,G,Perdagangan Besar dan Eceran,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0218,PT Makmur Konstruksi,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0219,PT Mega Multi Karya,PT,C,Industri Pengolahan / Manufaktur,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0220,PT Sejahtera Sarana Jaya,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0221,KOPERASI Prima Distribusindo,Koperasi,C,Industri Pengolahan / Manufaktur,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0222,YAYASAN Prima Distribusindo,Yayasan,Q,Pelayanan Kesehatan Swasta,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0223,PT Sentosa Konstruksi,PT,C,Industri Pengolahan / Manufaktur,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0224,YAYASAN Prima Hospitality,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0225,PT Sentosa Multi Karya,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0226,CV Nusantara Distribusindo,CV,H,"Transportasi, Pergudangan & Logistik",Besar,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,4
+BU-0227,YAYASAN Karya Konstruksi,Yayasan,J,Informasi dan Komunikasi / Teknologi,Mikro,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,1
+BU-0228,KOPERASI Nusantara Teknologi,Koperasi,C,Industri Pengolahan / Manufaktur,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0229,CV Bina Tekstil,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0230,CV Sejahtera Solusindo,CV,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0231,PT Sentosa Distribusindo,PT,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0232,PT Surya Sarana Jaya,PT,F,Konstruksi & Infrastruktur,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0233,CV Nusantara Distribusindo,CV,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0234,CV Inti Multi Karya,CV,Q,Pelayanan Kesehatan Swasta,Besar,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,4
+BU-0235,PT Cipta Multi Karya,PT,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0236,PT Daya Logistik,PT,G,Perdagangan Besar dan Eceran,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0237,PT Surya Distribusindo,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0238,KOPERASI Inti Plastindo,Koperasi,I,Penyediaan Akomodasi dan F&B,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0239,YAYASAN Sentosa Hospitality,Yayasan,A,Pertanian / Perkebunan / Kehutanan,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0240,CV Bina Teknologi,CV,A,Pertanian / Perkebunan / Kehutanan,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0241,CV Nusantara Konstruksi,CV,G,Perdagangan Besar dan Eceran,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0242,YAYASAN Karya Konstruksi,Yayasan,G,Perdagangan Besar dan Eceran,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0243,PT Inti Tekstil,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0244,CV Mega Konstruksi,CV,C,Industri Pengolahan / Manufaktur,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0245,CV Bina Solusindo,CV,C,Industri Pengolahan / Manufaktur,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0246,CV Mandiri Konstruksi,CV,H,"Transportasi, Pergudangan & Logistik",Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0247,KOPERASI Mandiri Multi Karya,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Mikro,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,1
+BU-0248,KOPERASI Sejahtera Solusindo,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0249,KOPERASI Prima Pangan,Koperasi,F,Konstruksi & Infrastruktur,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0250,PT Mega Multi Karya,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0251,CV Mega Sarana Jaya,CV,C,Industri Pengolahan / Manufaktur,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0252,PT Inti Pangan,PT,J,Informasi dan Komunikasi / Teknologi,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0253,PT Daya Pangan,PT,F,Konstruksi & Infrastruktur,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0254,KOPERASI Nusantara Plastindo,Koperasi,C,Industri Pengolahan / Manufaktur,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0255,PT Karya Pangan,PT,F,Konstruksi & Infrastruktur,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0256,PT Mandiri Sarana Jaya,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0257,KOPERASI Mandiri Distribusindo,Koperasi,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0258,PT Nusantara Tekstil,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0259,CV Sentosa Konstruksi,CV,H,"Transportasi, Pergudangan & Logistik",Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0260,PT Prima Teknologi,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0261,PT Mitra Logistik,PT,I,Penyediaan Akomodasi dan F&B,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0262,PT Sentosa Plastindo,PT,A,Pertanian / Perkebunan / Kehutanan,Besar,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,4
+BU-0263,KOPERASI Inti Plastindo,Koperasi,I,Penyediaan Akomodasi dan F&B,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0264,CV Mitra Plastindo,CV,Q,Pelayanan Kesehatan Swasta,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0265,PT Sejahtera Logistik,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0266,CV Sentosa Pangan,CV,C,Industri Pengolahan / Manufaktur,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0267,KOPERASI Bina Pangan,Koperasi,Q,Pelayanan Kesehatan Swasta,Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0268,CV Surya Pangan,CV,J,Informasi dan Komunikasi / Teknologi,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0269,PT Cipta Solusindo,PT,F,Konstruksi & Infrastruktur,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0270,CV Daya Logistik,CV,H,"Transportasi, Pergudangan & Logistik",Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0271,CV Prima Tekstil,CV,F,Konstruksi & Infrastruktur,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0272,KOPERASI Makmur Pangan,Koperasi,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0273,KOPERASI Surya Solusindo,Koperasi,C,Industri Pengolahan / Manufaktur,Besar,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,4
+BU-0274,PT Makmur Hospitality,PT,G,Perdagangan Besar dan Eceran,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0275,PT Bina Hospitality,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0276,PT Inti Solusindo,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0277,PT Bina Logistik,PT,J,Informasi dan Komunikasi / Teknologi,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0278,YAYASAN Nusantara Logistik,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0279,KOPERASI Surya Teknologi,Koperasi,C,Industri Pengolahan / Manufaktur,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0280,CV Karya Plastindo,CV,C,Industri Pengolahan / Manufaktur,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0281,CV Mitra Solusindo,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0282,CV Daya Pangan,CV,J,Informasi dan Komunikasi / Teknologi,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0283,KOPERASI Mitra Pangan,Koperasi,C,Industri Pengolahan / Manufaktur,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0284,YAYASAN Cipta Hospitality,Yayasan,J,Informasi dan Komunikasi / Teknologi,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0285,YAYASAN Karya Konstruksi,Yayasan,J,Informasi dan Komunikasi / Teknologi,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0286,PT Daya Konstruksi,PT,J,Informasi dan Komunikasi / Teknologi,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0287,PT Mandiri Konstruksi,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0288,KOPERASI Daya Hospitality,Koperasi,F,Konstruksi & Infrastruktur,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0289,CV Prima Multi Karya,CV,I,Penyediaan Akomodasi dan F&B,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0290,PT Makmur Teknologi,PT,F,Konstruksi & Infrastruktur,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0291,KOPERASI Bina Hospitality,Koperasi,C,Industri Pengolahan / Manufaktur,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0292,CV Mandiri Solusindo,CV,A,Pertanian / Perkebunan / Kehutanan,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0293,PT Surya Pangan,PT,F,Konstruksi & Infrastruktur,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0294,CV Cipta Pangan,CV,I,Penyediaan Akomodasi dan F&B,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0295,PT Cipta Hospitality,PT,C,Industri Pengolahan / Manufaktur,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0296,PT Prima Teknologi,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0297,PT Karya Solusindo,PT,G,Perdagangan Besar dan Eceran,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0298,PT Cipta Multi Karya,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0299,PT Sentosa Tekstil,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0300,KOPERASI Makmur Teknologi,Koperasi,G,Perdagangan Besar dan Eceran,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0301,PT Daya Teknologi,PT,F,Konstruksi & Infrastruktur,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0302,CV Cipta Tekstil,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,1
+BU-0303,PT Karya Konstruksi,PT,G,Perdagangan Besar dan Eceran,Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0304,KOPERASI Makmur Multi Karya,Koperasi,H,"Transportasi, Pergudangan & Logistik",Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0305,PT Mandiri Tekstil,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0306,KOPERASI Cipta Hospitality,Koperasi,C,Industri Pengolahan / Manufaktur,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0307,YAYASAN Sentosa Multi Karya,Yayasan,A,Pertanian / Perkebunan / Kehutanan,Mikro,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,1
+BU-0308,KOPERASI Mega Hospitality,Koperasi,J,Informasi dan Komunikasi / Teknologi,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0309,KOPERASI Daya Logistik,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0310,CV Daya Multi Karya,CV,A,Pertanian / Perkebunan / Kehutanan,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0311,CV Nusantara Teknologi,CV,I,Penyediaan Akomodasi dan F&B,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0312,CV Nusantara Konstruksi,CV,F,Konstruksi & Infrastruktur,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0313,CV Sejahtera Pangan,CV,C,Industri Pengolahan / Manufaktur,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0314,YAYASAN Sentosa Konstruksi,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Besar,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,4
+BU-0315,KOPERASI Inti Teknologi,Koperasi,C,Industri Pengolahan / Manufaktur,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0316,CV Mitra Konstruksi,CV,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0317,KOPERASI Mitra Multi Karya,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0318,KOPERASI Makmur Tekstil,Koperasi,H,"Transportasi, Pergudangan & Logistik",Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0319,YAYASAN Mitra Sarana Jaya,Yayasan,I,Penyediaan Akomodasi dan F&B,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0320,PT Cipta Pangan,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0321,PT Sentosa Solusindo,PT,G,Perdagangan Besar dan Eceran,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0322,PT Mandiri Teknologi,PT,F,Konstruksi & Infrastruktur,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0323,PT Mega Solusindo,PT,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0324,KOPERASI Prima Teknologi,Koperasi,G,Perdagangan Besar dan Eceran,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0325,KOPERASI Bina Multi Karya,Koperasi,J,Informasi dan Komunikasi / Teknologi,Mikro,Riau,KC Pekanbaru,SYN-2026-10-08-v3,1
+BU-0326,PT Sejahtera Solusindo,PT,G,Perdagangan Besar dan Eceran,Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0327,PT Inti Distribusindo,PT,Q,Pelayanan Kesehatan Swasta,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0328,YAYASAN Nusantara Logistik,Yayasan,C,Industri Pengolahan / Manufaktur,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0329,CV Mandiri Multi Karya,CV,Q,Pelayanan Kesehatan Swasta,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0330,PT Mega Pangan,PT,Q,Pelayanan Kesehatan Swasta,Mikro,Riau,KC Pekanbaru,SYN-2026-10-08-v3,1
+BU-0331,CV Daya Hospitality,CV,A,Pertanian / Perkebunan / Kehutanan,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0332,PT Bina Tekstil,PT,C,Industri Pengolahan / Manufaktur,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0333,CV Sentosa Tekstil,CV,F,Konstruksi & Infrastruktur,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0334,KOPERASI Prima Distribusindo,Koperasi,Q,Pelayanan Kesehatan Swasta,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0335,PT Makmur Pangan,PT,G,Perdagangan Besar dan Eceran,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0336,KOPERASI Cipta Solusindo,Koperasi,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0337,YAYASAN Daya Konstruksi,Yayasan,F,Konstruksi & Infrastruktur,Besar,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,4
+BU-0338,CV Cipta Sarana Jaya,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0339,CV Prima Hospitality,CV,Q,Pelayanan Kesehatan Swasta,Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0340,KOPERASI Nusantara Distribusindo,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0341,CV Cipta Plastindo,CV,Q,Pelayanan Kesehatan Swasta,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0342,CV Nusantara Logistik,CV,I,Penyediaan Akomodasi dan F&B,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0343,KOPERASI Inti Plastindo,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Besar,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,4
+BU-0344,PT Nusantara Sarana Jaya,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0345,CV Prima Distribusindo,CV,G,Perdagangan Besar dan Eceran,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0346,YAYASAN Prima Multi Karya,Yayasan,C,Industri Pengolahan / Manufaktur,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0347,CV Surya Konstruksi,CV,F,Konstruksi & Infrastruktur,Besar,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,4
+BU-0348,YAYASAN Nusantara Konstruksi,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0349,PT Sejahtera Plastindo,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Besar,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,4
+BU-0350,PT Makmur Hospitality,PT,A,Pertanian / Perkebunan / Kehutanan,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0351,PT Surya Tekstil,PT,F,Konstruksi & Infrastruktur,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0352,PT Prima Konstruksi,PT,C,Industri Pengolahan / Manufaktur,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0353,CV Makmur Hospitality,CV,C,Industri Pengolahan / Manufaktur,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0354,PT Sejahtera Tekstil,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0355,CV Bina Pangan,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0356,PT Karya Tekstil,PT,F,Konstruksi & Infrastruktur,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0357,KOPERASI Daya Hospitality,Koperasi,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0358,PT Sejahtera Hospitality,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0359,KOPERASI Cipta Logistik,Koperasi,G,Perdagangan Besar dan Eceran,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0360,YAYASAN Bina Pangan,Yayasan,I,Penyediaan Akomodasi dan F&B,Besar,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,4
+BU-0361,CV Daya Pangan,CV,C,Industri Pengolahan / Manufaktur,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0362,KOPERASI Mega Tekstil,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0363,CV Karya Pangan,CV,G,Perdagangan Besar dan Eceran,Besar,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,4
+BU-0364,CV Mega Pangan,CV,C,Industri Pengolahan / Manufaktur,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0365,CV Mandiri Konstruksi,CV,A,Pertanian / Perkebunan / Kehutanan,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0366,PT Mega Pangan,PT,C,Industri Pengolahan / Manufaktur,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0367,KOPERASI Karya Hospitality,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Bali,KC Denpasar,SYN-2026-10-08-v3,3
+BU-0368,PT Makmur Tekstil,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0369,KOPERASI Mandiri Plastindo,Koperasi,Q,Pelayanan Kesehatan Swasta,Besar,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,4
+BU-0370,PT Karya Sarana Jaya,PT,G,Perdagangan Besar dan Eceran,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0371,PT Cipta Distribusindo,PT,F,Konstruksi & Infrastruktur,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0372,CV Inti Solusindo,CV,H,"Transportasi, Pergudangan & Logistik",Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0373,PT Daya Logistik,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0374,KOPERASI Mitra Solusindo,Koperasi,F,Konstruksi & Infrastruktur,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0375,PT Sejahtera Sarana Jaya,PT,A,Pertanian / Perkebunan / Kehutanan,Mikro,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,1
+BU-0376,CV Cipta Sarana Jaya,CV,C,Industri Pengolahan / Manufaktur,Besar,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,4
+BU-0377,KOPERASI Prima Distribusindo,Koperasi,F,Konstruksi & Infrastruktur,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0378,PT Inti Distribusindo,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0379,PT Prima Logistik,PT,H,"Transportasi, Pergudangan & Logistik",Besar,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,4
+BU-0380,PT Sentosa Teknologi,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0381,YAYASAN Mitra Teknologi,Yayasan,C,Industri Pengolahan / Manufaktur,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0382,KOPERASI Inti Hospitality,Koperasi,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0383,PT Nusantara Pangan,PT,I,Penyediaan Akomodasi dan F&B,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0384,YAYASAN Sejahtera Teknologi,Yayasan,A,Pertanian / Perkebunan / Kehutanan,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0385,PT Cipta Logistik,PT,A,Pertanian / Perkebunan / Kehutanan,Mikro,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,1
+BU-0386,PT Karya Plastindo,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0387,KOPERASI Cipta Solusindo,Koperasi,I,Penyediaan Akomodasi dan F&B,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0388,CV Cipta Multi Karya,CV,H,"Transportasi, Pergudangan & Logistik",Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0389,YAYASAN Mitra Hospitality,Yayasan,A,Pertanian / Perkebunan / Kehutanan,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0390,KOPERASI Makmur Tekstil,Koperasi,H,"Transportasi, Pergudangan & Logistik",Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0391,PT Inti Tekstil,PT,J,Informasi dan Komunikasi / Teknologi,Mikro,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,1
+BU-0392,PT Prima Hospitality,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0393,KOPERASI Bina Distribusindo,Koperasi,Q,Pelayanan Kesehatan Swasta,Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0394,PT Karya Sarana Jaya,PT,I,Penyediaan Akomodasi dan F&B,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0395,PT Sentosa Multi Karya,PT,F,Konstruksi & Infrastruktur,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0396,YAYASAN Inti Plastindo,Yayasan,F,Konstruksi & Infrastruktur,Mikro,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,1
+BU-0397,CV Sentosa Multi Karya,CV,C,Industri Pengolahan / Manufaktur,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0398,YAYASAN Bina Pangan,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0399,YAYASAN Cipta Distribusindo,Yayasan,I,Penyediaan Akomodasi dan F&B,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0400,PT Prima Distribusindo,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0401,CV Surya Konstruksi,CV,G,Perdagangan Besar dan Eceran,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0402,PT Surya Teknologi,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0403,CV Karya Sarana Jaya,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0404,YAYASAN Nusantara Konstruksi,Yayasan,A,Pertanian / Perkebunan / Kehutanan,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0405,PT Makmur Tekstil,PT,Q,Pelayanan Kesehatan Swasta,Besar,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,4
+BU-0406,PT Inti Sarana Jaya,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0407,CV Mitra Multi Karya,CV,A,Pertanian / Perkebunan / Kehutanan,Kecil,Banten,KC Tangerang,SYN-2026-10-08-v3,2
+BU-0408,CV Prima Multi Karya,CV,F,Konstruksi & Infrastruktur,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0409,CV Sejahtera Distribusindo,CV,H,"Transportasi, Pergudangan & Logistik",Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0410,PT Mega Teknologi,PT,A,Pertanian / Perkebunan / Kehutanan,Mikro,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,1
+BU-0411,YAYASAN Daya Pangan,Yayasan,G,Perdagangan Besar dan Eceran,Besar,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,4
+BU-0412,PT Inti Plastindo,PT,I,Penyediaan Akomodasi dan F&B,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0413,PT Makmur Logistik,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Besar,Banten,KC Tangerang,SYN-2026-10-08-v3,4
+BU-0414,PT Bina Teknologi,PT,I,Penyediaan Akomodasi dan F&B,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0415,CV Mega Solusindo,CV,F,Konstruksi & Infrastruktur,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0416,PT Bina Solusindo,PT,J,Informasi dan Komunikasi / Teknologi,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0417,PT Inti Hospitality,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0418,KOPERASI Sejahtera Teknologi,Koperasi,H,"Transportasi, Pergudangan & Logistik",Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0419,KOPERASI Makmur Solusindo,Koperasi,G,Perdagangan Besar dan Eceran,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0420,YAYASAN Inti Pangan,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0421,KOPERASI Sentosa Teknologi,Koperasi,I,Penyediaan Akomodasi dan F&B,Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
+BU-0422,PT Bina Solusindo,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,1
+BU-0423,CV Inti Logistik,CV,H,"Transportasi, Pergudangan & Logistik",Mikro,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,1
+BU-0424,YAYASAN Bina Konstruksi,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0425,YAYASAN Bina Solusindo,Yayasan,I,Penyediaan Akomodasi dan F&B,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0426,YAYASAN Mandiri Solusindo,Yayasan,J,Informasi dan Komunikasi / Teknologi,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0427,KOPERASI Prima Logistik,Koperasi,N,Jasa Penunjang Usaha / Outsourcing / Security,Besar,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,4
+BU-0428,KOPERASI Sentosa Hospitality,Koperasi,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0429,YAYASAN Bina Hospitality,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Mikro,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,1
+BU-0430,CV Mitra Tekstil,CV,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0431,KOPERASI Sejahtera Tekstil,Koperasi,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0432,CV Sentosa Teknologi,CV,Q,Pelayanan Kesehatan Swasta,Besar,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,4
+BU-0433,YAYASAN Inti Sarana Jaya,Yayasan,K,Jasa Keuangan / Pembiayaan / Asuransi,Kecil,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,2
+BU-0434,PT Mega Hospitality,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0435,PT Karya Teknologi,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0436,PT Mega Konstruksi,PT,Q,Pelayanan Kesehatan Swasta,Kecil,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,2
+BU-0437,PT Karya Solusindo,PT,J,Informasi dan Komunikasi / Teknologi,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0438,PT Cipta Tekstil,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0439,PT Inti Sarana Jaya,PT,I,Penyediaan Akomodasi dan F&B,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0440,CV Mega Distribusindo,CV,H,"Transportasi, Pergudangan & Logistik",Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0441,PT Mitra Pangan,PT,G,Perdagangan Besar dan Eceran,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0442,PT Karya Hospitality,PT,F,Konstruksi & Infrastruktur,Mikro,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,1
+BU-0443,CV Mitra Sarana Jaya,CV,G,Perdagangan Besar dan Eceran,Menengah,Banten,KC Tangerang,SYN-2026-10-08-v3,3
+BU-0444,YAYASAN Cipta Distribusindo,Yayasan,C,Industri Pengolahan / Manufaktur,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0445,PT Cipta Teknologi,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0446,PT Surya Sarana Jaya,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0447,PT Surya Hospitality,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0448,PT Daya Konstruksi,PT,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,3
+BU-0449,YAYASAN Sentosa Pangan,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0450,YAYASAN Mandiri Multi Karya,Yayasan,I,Penyediaan Akomodasi dan F&B,Mikro,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,1
+BU-0451,CV Karya Konstruksi,CV,Q,Pelayanan Kesehatan Swasta,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0452,PT Sejahtera Multi Karya,PT,A,Pertanian / Perkebunan / Kehutanan,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0453,PT Inti Solusindo,PT,Q,Pelayanan Kesehatan Swasta,Menengah,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,3
+BU-0454,PT Bina Multi Karya,PT,H,"Transportasi, Pergudangan & Logistik",Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0455,KOPERASI Daya Hospitality,Koperasi,H,"Transportasi, Pergudangan & Logistik",Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0456,YAYASAN Karya Konstruksi,Yayasan,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0457,KOPERASI Sentosa Pangan,Koperasi,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0458,PT Prima Hospitality,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0459,CV Karya Teknologi,CV,Q,Pelayanan Kesehatan Swasta,Mikro,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,1
+BU-0460,PT Sejahtera Solusindo,PT,G,Perdagangan Besar dan Eceran,Besar,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,4
+BU-0461,CV Surya Distribusindo,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0462,PT Cipta Solusindo,PT,G,Perdagangan Besar dan Eceran,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0463,PT Mega Teknologi,PT,J,Informasi dan Komunikasi / Teknologi,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0464,PT Mitra Sarana Jaya,PT,C,Industri Pengolahan / Manufaktur,Besar,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,4
+BU-0465,KOPERASI Mitra Multi Karya,Koperasi,G,Perdagangan Besar dan Eceran,Besar,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,4
+BU-0466,CV Cipta Logistik,CV,I,Penyediaan Akomodasi dan F&B,Mikro,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,1
+BU-0467,PT Mitra Solusindo,PT,Q,Pelayanan Kesehatan Swasta,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0468,YAYASAN Bina Solusindo,Yayasan,F,Konstruksi & Infrastruktur,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0469,PT Cipta Pangan,PT,I,Penyediaan Akomodasi dan F&B,Besar,Jawa Barat,KC Bandung,SYN-2026-10-08-v3,4
+BU-0470,CV Mitra Solusindo,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0471,PT Prima Hospitality,PT,I,Penyediaan Akomodasi dan F&B,Besar,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,4
+BU-0472,CV Sentosa Teknologi,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0473,CV Makmur Konstruksi,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0474,CV Mitra Tekstil,CV,F,Konstruksi & Infrastruktur,Kecil,Riau,KC Pekanbaru,SYN-2026-10-08-v3,2
+BU-0475,YAYASAN Inti Konstruksi,Yayasan,I,Penyediaan Akomodasi dan F&B,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0476,KOPERASI Surya Hospitality,Koperasi,F,Konstruksi & Infrastruktur,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0477,PT Mega Plastindo,PT,H,"Transportasi, Pergudangan & Logistik",Kecil,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,2
+BU-0478,KOPERASI Karya Plastindo,Koperasi,F,Konstruksi & Infrastruktur,Mikro,Banten,KC Tangerang,SYN-2026-10-08-v3,1
+BU-0479,CV Mitra Konstruksi,CV,J,Informasi dan Komunikasi / Teknologi,Menengah,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,3
+BU-0480,PT Surya Distribusindo,PT,I,Penyediaan Akomodasi dan F&B,Besar,Bali,KC Denpasar,SYN-2026-10-08-v3,4
+BU-0481,PT Makmur Hospitality,PT,J,Informasi dan Komunikasi / Teknologi,Mikro,Bali,KC Denpasar,SYN-2026-10-08-v3,1
+BU-0482,CV Mandiri Hospitality,CV,J,Informasi dan Komunikasi / Teknologi,Kecil,Jawa Timur,KC Surabaya,SYN-2026-10-08-v3,2
+BU-0483,PT Mitra Konstruksi,PT,J,Informasi dan Komunikasi / Teknologi,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0484,PT Makmur Teknologi,PT,G,Perdagangan Besar dan Eceran,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0485,KOPERASI Nusantara Teknologi,Koperasi,G,Perdagangan Besar dan Eceran,Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0486,KOPERASI Prima Multi Karya,Koperasi,G,Perdagangan Besar dan Eceran,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0487,CV Daya Solusindo,CV,A,Pertanian / Perkebunan / Kehutanan,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0488,YAYASAN Karya Sarana Jaya,Yayasan,C,Industri Pengolahan / Manufaktur,Kecil,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,2
+BU-0489,PT Inti Solusindo,PT,G,Perdagangan Besar dan Eceran,Besar,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,4
+BU-0490,YAYASAN Sentosa Konstruksi,Yayasan,F,Konstruksi & Infrastruktur,Menengah,Kalimantan Timur,KC Balikpapan,SYN-2026-10-08-v3,3
+BU-0491,CV Mandiri Konstruksi,CV,N,Jasa Penunjang Usaha / Outsourcing / Security,Kecil,Bali,KC Denpasar,SYN-2026-10-08-v3,2
+BU-0492,KOPERASI Prima Sarana Jaya,Koperasi,H,"Transportasi, Pergudangan & Logistik",Menengah,Riau,KC Pekanbaru,SYN-2026-10-08-v3,3
+BU-0493,PT Bina Distribusindo,PT,I,Penyediaan Akomodasi dan F&B,Menengah,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,3
+BU-0494,PT Mandiri Tekstil,PT,I,Penyediaan Akomodasi dan F&B,Besar,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,4
+BU-0495,PT Bina Logistik,PT,K,Jasa Keuangan / Pembiayaan / Asuransi,Mikro,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,1
+BU-0496,PT Inti Konstruksi,PT,G,Perdagangan Besar dan Eceran,Kecil,Sulawesi Selatan,KC Makassar,SYN-2026-10-08-v3,2
+BU-0497,CV Makmur Multi Karya,CV,I,Penyediaan Akomodasi dan F&B,Kecil,Jawa Tengah,KC Semarang,SYN-2026-10-08-v3,2
+BU-0498,PT Inti Sarana Jaya,PT,F,Konstruksi & Infrastruktur,Menengah,Sumatera Utara,KC Medan,SYN-2026-10-08-v3,3
+BU-0499,PT Makmur Distribusindo,PT,G,Perdagangan Besar dan Eceran,Menengah,DKI Jakarta,KC Jakarta Pusat,SYN-2026-10-08-v3,3
+BU-0500,KOPERASI Surya Solusindo,Koperasi,Q,Pelayanan Kesehatan Swasta,Besar,Riau,KC Pekanbaru,SYN-2026-10-08-v3,4
