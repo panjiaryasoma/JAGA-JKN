@@ -1,0 +1,10 @@
+﻿dataset,rows,columns,null_cells,duplicate_full_rows,unique_companies
+scenario_master,500,12,0,0,500
+scenario_monthly,12000,19,0,0,500
+scenario_reviews,244,8,0,0,150
+raw_master,500,15,78,0,500
+raw_monthly,12000,42,3172,0,500
+curated_master,500,17,78,0,500
+curated_monthly,12000,91,72000,0,500
+candidate_ml,500,12,0,0,500
+powerbi_fact,12000,58,0,0,500
