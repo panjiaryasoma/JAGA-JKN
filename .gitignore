@@ -45,3 +45,9 @@ dist-web/
 
 # Logs
 *.log
+
+# Local case store (including SQLite journals)
+var/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

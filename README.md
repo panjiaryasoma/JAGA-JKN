@@ -8,7 +8,20 @@ JAGA-JKN adalah platform web decision-support berbasis AI/ML untuk membantu BPJS
 
 ## Status
 
-Project scaffold / preproduction baseline untuk Healthkathon BPJS Kesehatan 2026.
+Backend prototipe sintetis tersedia: profil/bukti bulanan, dashboard agregat, kasus review persisten, intervensi/outcome, audit, dan role demo. Snapshot terkunci berisi 500 badan usaha × 24 bulan. ML masih `NOT_CONFIGURED`; kebijakan `UNRESOLVED` dan keputusan bukti `ABSTAIN`.
+
+## Menjalankan backend
+
+Gunakan Python 3.12 atau 3.13 dan uv 0.12.23, dari root repository:
+
+```bash
+uv sync --locked
+uv run --locked python -m apps.api --demo
+```
+
+Swagger: http://127.0.0.1:8000/docs. Token reviewer/supervisor dibuat acak dan ditampilkan sekali di terminal; gunakan tombol **Authorize** untuk mencoba workflow. Kasus tersimpan di `var/jaga-jkn.sqlite3`. Tanpa `--demo` atau token environment, endpoint baca tetap tersedia dan workflow menjawab `AUTH_NOT_CONFIGURED`.
+
+Panduan integrasi, contoh request, konfigurasi, backup, dan pemeriksaan: [apps/api/README.md](apps/api/README.md). Kontrak: [API_CONTRACT.md](docs/05_PREPRODUCTION/01_CONTRACTS_ACTIVE/API_CONTRACT.md). Bukti penyelesaian teknis: [BACKEND_IMPLEMENTATION_REPORT.md](docs/08_TESTING_AND_ACCEPTANCE/BACKEND_IMPLEMENTATION_REPORT.md).
 
 ## Struktur utama
 
