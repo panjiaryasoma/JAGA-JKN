@@ -15,6 +15,7 @@ from starlette.exceptions import HTTPException
 
 from apps.api.auth import registry
 from apps.api.config import Settings
+from apps.api.experimental_ml import open_trusted_model
 from apps.api.schemas import (
     CompanyQuery,
     DataResponse,
@@ -54,6 +55,9 @@ ERROR_MESSAGES = {
     "VERSION_CONFLICT": "Versi kasus berubah. Muat ulang sebelum mencoba tindakan baru.",
     "IDEMPOTENCY_CONFLICT": "Idempotency-Key sudah digunakan untuk permintaan berbeda.",
     "PRECONDITION_REQUIRED": "If-Match diperlukan untuk mengubah kasus yang sudah ada.",
+    "ML_EXPERIMENT_DISABLED": "Inferensi sintetis eksperimental tidak diaktifkan.",
+    "ML_ARTIFACT_UNAVAILABLE": "Model sintetis eksperimental tidak tersedia.",
+    "ML_INFERENCE_UNAVAILABLE": "Inferensi sintetis tidak dapat dijalankan.",
 }
 ERROR_RESPONSES = {
     status: {"model": ErrorResponse, "description": description}
@@ -124,7 +128,27 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             application.state.case_store = case_store
         except APIError as exc:
             LOGGER.warning(json.dumps({"event": "case_store_load_failed", "code": exc.code}))
+        application.state.ml_service = None
+        application.state.ml_experimental_status = "DISABLED"
+        if config.experimental_ml_enabled:
+            application.state.ml_experimental_status = "UNAVAILABLE"
+            if application.state.snapshot is not None:
+                try:
+                    application.state.ml_service = open_trusted_model(
+                        application.state.snapshot, config.ml_model_path
+                    )
+                    application.state.ml_experimental_status = "READY"
+                except Exception as exc:  # noqa: BLE001 -- unavailable model must not break core API
+                    LOGGER.warning(
+                        json.dumps(
+                            {
+                                "event": "experimental_model_load_failed",
+                                "exception_type": type(exc).__name__,
+                            }
+                        )
+                    )
         yield
+        application.state.ml_service = None
         application.state.snapshot = None
         application.state.case_store = None
 
@@ -139,6 +163,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.state.snapshot = None
     application.state.dataset_error = "DATASET_UNAVAILABLE"
     application.state.case_store = None
+    application.state.ml_service = None
+    application.state.ml_experimental_status = "DISABLED"
     application.state.auth_registry = registry(config)
 
     @application.middleware("http")
