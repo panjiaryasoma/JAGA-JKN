@@ -30,7 +30,7 @@ def get_models() -> dict:
             min_samples_leaf=10,
             class_weight="balanced",
             random_state=MODEL_SEED,
-            n_jobs=2,
+            n_jobs=1,
         ),
         "LightGBM": lgb.LGBMClassifier(
             n_estimators=500,
@@ -38,7 +38,7 @@ def get_models() -> dict:
             num_leaves=31,
             class_weight="balanced",
             random_state=MODEL_SEED,
-            n_jobs=2,
+            n_jobs=1,
             verbose=-1,
             deterministic=True,
             force_col_wise=True,
