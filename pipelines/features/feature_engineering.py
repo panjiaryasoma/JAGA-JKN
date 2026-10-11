@@ -1,11 +1,6 @@
 """
-pipelines/features/feature_engineering.py
-==========================================
-Phase 2a: Load raw curated datasets, merge company master profile,
-standardize column names to English, engineer temporal and composite features,
+engineer temporal and composite features,
 and construct the binary target as well as lead-1 (t+1) early warning target.
-
-Lead ML Engineer: Haidir (Dir)
 """
 
 import sys

@@ -58,12 +58,12 @@ def split_companies(df: pd.DataFrame) -> tuple:
     companies = profiles[COL_COMPANY_ID].values
     strata    = profiles["dominant_label"].values
 
-    # Step 1: Hold out 15% for final test set
+    # Hold out 15% for final test set
     tv_ids, test_ids, tv_strata, _ = train_test_split(
         companies, strata, test_size=0.15, random_state=SPLIT_SEED, stratify=strata
     )
 
-    # Step 2: From remaining 85%, isolate validation set (15% of total dataset)
+    # From remaining 85%, isolate validation set (15% of total dataset)
     tv_profile_strata = profiles.set_index(COL_COMPANY_ID).loc[tv_ids, "dominant_label"].values
     train_ids, val_ids, _, _ = train_test_split(
         tv_ids, tv_profile_strata,
@@ -95,7 +95,7 @@ def _compute_sha256(path: Path) -> str:
 
 
 def save_splits(df: pd.DataFrame, train_ids, val_ids, test_ids) -> None:
-    """Save cleaned partitions (train.csv, val.csv, test.csv) and split_manifest.json."""
+    """Save cleaned partitions and split_manifest.json."""
     print("[Split] Saving partition CSV files...")
 
     save_cols = (
@@ -149,7 +149,7 @@ def save_splits(df: pd.DataFrame, train_ids, val_ids, test_ids) -> None:
 
 
 def run(df: pd.DataFrame) -> tuple:
-    """Execute complete data splitting pipeline. Returns (train_df, val_df, test_df)."""
+    """Execute complete data splitting pipeline."""
     train_ids, val_ids, test_ids = split_companies(df)
     save_splits(df, train_ids, val_ids, test_ids)
 

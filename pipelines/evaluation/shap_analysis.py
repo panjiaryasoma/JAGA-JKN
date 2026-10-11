@@ -1,14 +1,6 @@
 """
-pipelines/evaluation/shap_analysis.py
-=========================================
-Phase 6a: SHAP (SHapley Additive exPlanations) model interpretability.
+SHAP model interpretability.
 Calculates feature-level attribution values and generates bar and beeswarm plots.
-
-Outputs:
-  results/figures/eval_shap_*.png
-  results/figures/eval_shap_beeswarm_*.png
-
-Lead ML Engineer: Haidir (Dir)
 """
 
 import sys

@@ -5,25 +5,22 @@ All pipeline modules import paths, feature sets, seeds, and hyperparameters from
 
 from pathlib import Path
 
-# --- Project Paths -----------------------------------------------------------
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-# --- Reproducibility Seeds ---------------------------------------------------
-SPLIT_SEED = 20261011  # Company-level stratified split seed
-MODEL_SEED = 20261012  # Model initialization seed
+SPLIT_SEED = 20261011 
+MODEL_SEED = 20261012 
 
 # --- Input Data Paths --------------------------------------------------------
 DATA_CURATED_EVIDENCE = PROJECT_ROOT / "data/synthetic/curated/curated_kepatuhan_evidence.csv"
 DATA_MASTER_BU        = PROJECT_ROOT / "data/synthetic/curated/curated_master_badan_usaha.csv"
 DATA_SPLITS_DIR       = PROJECT_ROOT / "data/synthetic/ml_splits"
 
-# Split files (clean simple naming)
+# Split files 
 TRAIN_PATH    = DATA_SPLITS_DIR / "train.csv"
 VAL_PATH      = DATA_SPLITS_DIR / "val.csv"
 TEST_PATH     = DATA_SPLITS_DIR / "test.csv"
 MANIFEST_PATH = DATA_SPLITS_DIR / "split_manifest.json"
 
-# --- Output Paths ------------------------------------------------------------
 RESULTS_DIR  = PROJECT_ROOT / "results"
 FIGURES_DIR  = RESULTS_DIR / "figures"
 MODELS_DIR   = PROJECT_ROOT / "models"
@@ -35,7 +32,6 @@ FEAT_IMP_PATH      = RESULTS_DIR / "feature_importance.csv"
 MODEL_METADATA_PATH = MODELS_DIR / "metadata.json"
 BEST_MODEL_PATH    = MODELS_DIR / "best_model.pkl"
 
-# --- Column Renaming Map (Raw Dataset -> English Identifiers) -----------------
 COLUMN_RENAME_MAP = {
     "id_badan_usaha": "company_id",
     "periode_bulan": "period_month",
@@ -48,16 +44,15 @@ COLUMN_RENAME_MAP = {
     "kantor_cabang_bpjs": "bpjs_branch_office",
 }
 
-# --- Standard Key Column Names -----------------------------------------------
 COL_COMPANY_ID     = "company_id"
 COL_PERIOD         = "period_month"
 COL_RAW_RISK_MODE  = "risk_mode_ground_truth"
 COL_BINARY_LABEL   = "label_binary"     # 0: NORMAL, 1: NON-NORMAL
 COL_TARGET         = "target_lead_1"    # Binary label shifted by -1 month (t+1 early warning)
 
-# --- Feature Groups (32 Total Model Features) --------------------------------
 
-# Group A: Evidence Quality & Metadata Validation (16 features)
+
+# Evidence Quality & Metadata Validation (16 features)
 FEATURES_EVIDENCE_QUALITY = [
     "registration_evidence_valid",
     "registration_evidence_quality",
@@ -77,14 +72,13 @@ FEATURES_EVIDENCE_QUALITY = [
     "payment_semantic_consistency_valid",
 ]
 
-# Group B: Pre-adjudication Observations Audited with Low Leakage Risk (3 features)
+# Pre-adjudication Observations Audited with Low Leakage Risk (3 features)
 FEATURES_OBSERVATION = [
     "observed_registered_worker_count",  # correlation = -0.037
     "unexpected_worker_count",           # correlation = -0.105
     "observed_wage_signal_rp",           # correlation = -0.031
 ]
 
-# Group C: Enterprise Demographic Profile Attributes (6 features)
 FEATURES_MASTER = [
     "business_scale",
     "industry_sector",
@@ -94,7 +88,6 @@ FEATURES_MASTER = [
     "bpjs_branch_office",
 ]
 
-# Group D: Engineered Temporal and Composite Quality Scores (7 features)
 FEATURES_ENGINEERED = [
     "month_index",
     "is_semester_end",
@@ -105,7 +98,6 @@ FEATURES_ENGINEERED = [
     "contribution_quality_score",
 ]
 
-# Complete feature vector for training (32 features)
 ALL_FEATURES = (
     FEATURES_EVIDENCE_QUALITY
     + FEATURES_OBSERVATION
@@ -113,10 +105,8 @@ ALL_FEATURES = (
     + FEATURES_ENGINEERED
 )
 
-# Categorical features requiring OrdinalEncoder
 CATEGORICAL_FEATURES = FEATURES_MASTER
 
-# Validation flag subsets for domain-level scoring
 REG_QUALITY_COLS = [
     "registration_evidence_valid",
     "registration_source_metadata_valid",
