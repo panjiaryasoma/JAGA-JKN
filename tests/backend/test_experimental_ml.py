@@ -207,3 +207,82 @@ def test_real_trained_artifact_http_integration(snapshot):
         assert body["meta"]["is_synthetic"] is True
         assert client.get("/api/v1/dataset").status_code == 200
         assert client.get("/api/v1/cases", headers=auth()).json()["data"] == []
+
+
+def test_invalid_evidence_abstains_without_invoking_model(snapshot, monkeypatch):
+    from apps.api.experimental_ml import assess
+    from packages.data.snapshot import load_snapshot
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("model may not run on invalid evidence")
+
+    monkeypatch.setitem(
+        sys.modules,
+        "packages.ml.inference",
+        SimpleNamespace(predict_record=forbidden, record_from_api=forbidden),
+    )
+    loaded = load_snapshot(snapshot.data_root, snapshot.manifest_path)
+    company = loaded.company_index["BU-0001"]
+    source = loaded.evidence_index[("BU-0001", "2025-01")]
+    invalid = source.model_copy(
+        update={"registration": source.registration.model_copy(update={"evidence_valid": False})}
+    )
+    result = assess(loaded, ModelService({}, "synthetic-test", "TestModel"), company, invalid)
+    assert result.status == "ABSTAIN"
+    assert result.reason_code == "EVIDENCE_NOT_VALIDATED"
+    assert result.score is None and result.experimental_prediction is None
+
+
+def test_missing_features_abstain_but_scorer_failure_is_unavailable(snapshot, monkeypatch):
+    from apps.api.experimental_ml import assess
+    from packages.data.snapshot import load_snapshot
+    from packages.ml.features import RAW_COLUMNS
+
+    loaded = load_snapshot(snapshot.data_root, snapshot.manifest_path)
+    company = loaded.company_index["BU-0001"]
+    evidence = loaded.evidence_index[("BU-0001", "2025-01")]
+    service = ModelService({}, "synthetic-test", "TestModel")
+    raw = {key: 1 for key in RAW_COLUMNS}
+    raw["observed_wage_signal_rp"] = None
+    calls = []
+
+    def predict(*args):
+        calls.append("predict")
+        raise ValueError("invalid model scores")
+
+    monkeypatch.setitem(
+        sys.modules,
+        "packages.ml.inference",
+        SimpleNamespace(record_from_api=lambda *args: raw, predict_record=predict),
+    )
+    result = assess(loaded, service, company, evidence)
+    assert result.status == "ABSTAIN" and result.reason_code == "INCOMPLETE_INPUT"
+    assert calls == []
+
+    raw["observed_wage_signal_rp"] = 1
+    with pytest.raises(InferenceUnavailable, match="Model calculation failed"):
+        assess(loaded, service, company, evidence)
+    assert calls == ["predict"]
+
+
+def test_wrong_model_response_never_escapes(snapshot, monkeypatch):
+    from apps.api.experimental_ml import assess
+    from packages.data.snapshot import load_snapshot
+    from packages.ml.features import RAW_COLUMNS
+
+    loaded = load_snapshot(snapshot.data_root, snapshot.manifest_path)
+    company = loaded.company_index["BU-0001"]
+    evidence = loaded.evidence_index[("BU-0001", "2025-01")]
+    monkeypatch.setitem(
+        sys.modules,
+        "packages.ml.inference",
+        SimpleNamespace(
+            record_from_api=lambda *args: {key: 1 for key in RAW_COLUMNS},
+            predict_record=lambda *args: {
+                "status": "EXPERIMENTAL_SYNTHETIC",
+                "policy_status": "APPROVED",
+            },
+        ),
+    )
+    with pytest.raises(InferenceUnavailable, match="contract mismatch"):
+        assess(loaded, ModelService({}, "synthetic-test", "TestModel"), company, evidence)
