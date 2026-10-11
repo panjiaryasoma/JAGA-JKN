@@ -119,10 +119,20 @@ def assess(
             {"data": company.model_dump(mode="json"), "meta": meta},
             {"data": evidence.model_dump(mode="json"), "meta": meta},
         )
-        prediction = predict_record(service.bundle, raw)
-    except (ValueError, KeyError, TypeError, OverflowError) as exc:
-        # Invalid/missing evidence is an abstention, not a disguised risk score.
+    except (ValueError, KeyError, TypeError, OverflowError):
         return _abstain(service, company, evidence, "INCOMPLETE_INPUT")
+
+    from packages.ml.features import RAW_COLUMNS
+
+    # Predictors are scalar; required observations may legitimately be null.
+    # Validate them before invoking the model, so a scorer error is never
+    # silently mislabeled as a missing-data abstention.
+    import pandas as pd
+
+    if any(key not in raw or bool(pd.isna(raw[key])) for key in RAW_COLUMNS):
+        return _abstain(service, company, evidence, "INCOMPLETE_INPUT")
+    try:
+        prediction = predict_record(service.bundle, raw)
     except Exception as exc:
         raise InferenceUnavailable("Model calculation failed") from exc
 
