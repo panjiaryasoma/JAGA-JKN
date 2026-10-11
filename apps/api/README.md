@@ -110,3 +110,39 @@ Snapshot CSV dibaca dan divalidasi sekali saat startup. Perubahan byte tanpa pem
 Selesai untuk demo sintetis: pembacaan bukti, workflow persisten, role demo, audit melalui API, konkurensi/idempotency, dashboard, health, dokumentasi, dan tes. Bulan Januari 2025–Desember 2026 adalah waktu simulasi. `ABSTAIN`, `null`, `UNKNOWN`, ML `NOT_CONFIGURED`, dan policy `UNRESOLVED` harus ditampilkan apa adanya.
 
 Belum termasuk model terlatih/inferensi, legal-policy execution, automatic episode detection, integrasi BPJS, upload/pengiriman dokumen, pesan eksternal, IdP produksi, multi-tenant authorization, atau SLA produksi. Catatan intervensi tidak mengeksekusi tindak lanjut nyata. Audit append-only di API dapat diubah administrator database dan tidak diklaim tamper-proof. Launcher ini bukan panduan deployment publik; body/rate limit, TLS, dan penguatan operasional perlu ditetapkan sebelum deployment tersebut.
+
+## Experimental ML serving (BE-020..BE-022)
+
+Disabled by default. The ordinary backend runs without the ML dependency group or trained artifact. For an explicitly enabled synthetic-only demo, use Python 3.12 or 3.13 and run training in the **same pinned runtime**:
+
+```bash
+uv sync --locked --group ml --group synthetic
+uv run --no-sync python -m pipelines.training
+JAGA_EXPERIMENTAL_ML_ENABLED=1 uv run --no-sync python -m apps.api --demo
+```
+
+Keep the generated demo token from the launcher. In another terminal:
+
+```bash
+curl --fail-with-body http://127.0.0.1:8000/api/v1/ml/status
+curl --fail-with-body http://127.0.0.1:8000/api/v1/ml/experimental/badan-usaha/BU-0001/2025-01 -H 'Authorization: Bearer YOUR_DEMO_REVIEWER_TOKEN'
+```
+
+Only the trusted local `models/best_model.pkl` and its adjacent `metadata.json` can be loaded. HTTP callers cannot provide a model file, custom feature vector, or source path. The server checks version/feature compatibility, synthetic designation, curated dataset hashes, source commit and artifact SHA-256 before serving. Do not accept third-party pickle files, even when a checksum matches.
+
+- `GET /api/v1/ml/status` retains operational `status=NOT_CONFIGURED`, adds independent `experimental_status=DISABLED|UNAVAILABLE|READY`, and never claims an operational prediction.
+- `GET /api/v1/capabilities` exposes the same independent state as `experimental_ml`.
+- Authenticated `GET /api/v1/ml/experimental/badan-usaha/{id_badan_usaha}/{periode_bulan}` returns an existing `data/meta` envelope, an explicitly experimental synthetic score or `ABSTAIN` with `null` score/prediction when evidence is insufficient.
+- Disabled, missing or invalid bundle yields an explicit 503; it does not break dataset browsing, core readiness, dashboard or persisted cases. Exceptions and artifact paths never appear in HTTP error bodies.
+- The model predicts a next-month simulator label. The uncalibrated score is not a probability of JKN non-compliance. Its validation-selected threshold is not operationally authorized. `policy_status=UNRESOLVED` remains unchanged.
+- No POST, case mutation, legal sanction, real-world external integration, risk ranking or background scoring is introduced.
+
+Verification:
+
+```bash
+uv run --no-sync pytest tests/backend -q
+uv run --no-sync pytest tests/ml -q
+uv run --no-sync python scripts/smoke_backend.py
+```
+
+Backend CI tests default-disabled operation without optional ML dependencies; ML CI rebuilds a trusted bundle in each pinned Python version before exercising the HTTP integration test. Contracts: `docs/05_PREPRODUCTION/01_CONTRACTS_ACTIVE/INFERENCE_CONTRACT.md`. Serving remains a local, synthetic, experimental prototype and requires separate business/domain acceptance.
