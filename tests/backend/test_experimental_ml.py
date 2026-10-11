@@ -202,7 +202,10 @@ def test_real_trained_artifact_http_integration(snapshot):
         response = client.get(PREDICT, headers=auth())
         assert response.status_code == 200, response.text
         body = response.json()
-        assert body["data"]["status"] in {"ABSTAIN", "EXPERIMENTAL_SYNTHETIC"}
+        assert body["data"]["status"] == "EXPERIMENTAL_SYNTHETIC", body
+        assert 0 <= body["data"]["score"] <= 1
+        assert body["data"]["target_period"] == "2025-02"
+        assert body["data"]["experimental_prediction"] in (0, 1)
         assert body["data"]["policy_status"] == "UNRESOLVED"
         assert body["meta"]["is_synthetic"] is True
         assert client.get("/api/v1/dataset").status_code == 200
