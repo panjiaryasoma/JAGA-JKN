@@ -1,0 +1,23 @@
+{
+  "status": "PASSED",
+  "method": "Contact sheet reviewed for all nine figures; full-size inspection of feature quality, split timeline, and correlation.",
+  "figures": [
+    "01_dataset.png",
+    "02_features.png",
+    "03_split_timeline.png",
+    "04_split_labels.png",
+    "05_training_correlation.png",
+    "06_evaluation_group_time.png",
+    "07_evaluation_company_holdout.png",
+    "08_validation_selection.png",
+    "09_model_coefficients.png"
+  ],
+  "checks": [
+    "Titles, axes, legends, data sources and scope labels visible",
+    "Timeline uses target month; feature month offset explicitly stated",
+    "Primary and historical regime clearly separated",
+    "Constant boolean flags explicitly annotated; no unexplained empty chart",
+    "Colorbar for correlation fixed at -1..1",
+    "Evaluation threshold and uncalibrated-score limitations stated"
+  ]
+}

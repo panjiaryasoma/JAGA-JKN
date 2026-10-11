@@ -1,0 +1,26 @@
+{
+  "company_overlap": [
+    {
+      "first": "train",
+      "second": "val",
+      "shared_companies": 0
+    },
+    {
+      "first": "train",
+      "second": "test",
+      "shared_companies": 0
+    },
+    {
+      "first": "val",
+      "second": "test",
+      "shared_companies": 0
+    }
+  ],
+  "training_target_does_not_exceed_first_validation_feature": true,
+  "validation_target_does_not_exceed_first_test_feature": true,
+  "source_rows": 12000,
+  "lead1_eligible_rows": 11500,
+  "last_month_without_next_label": 500,
+  "primary_used_rows": 5575,
+  "primary_other_window_exclusions": 5925
+}

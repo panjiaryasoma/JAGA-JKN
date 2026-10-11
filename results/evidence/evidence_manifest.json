@@ -1,0 +1,76 @@
+{
+  "created_utc": "2026-10-11T13:57:05.229548+00:00",
+  "model_sha256": "83a4bd5362e903659d426a7d55e64756a28a3a381f72d2163a10de4829f3bb2c",
+  "model_unchanged": true,
+  "model_refit": false,
+  "threshold_retuned": false,
+  "source_script_sha256": "b62e40493ff14382357902e2ff985dd33e1737f2db2e85be34bbd5afd7331ab4",
+  "split_checks": {
+    "company_overlap": [
+      {
+        "first": "train",
+        "second": "val",
+        "shared_companies": 0
+      },
+      {
+        "first": "train",
+        "second": "test",
+        "shared_companies": 0
+      },
+      {
+        "first": "val",
+        "second": "test",
+        "shared_companies": 0
+      }
+    ],
+    "training_target_does_not_exceed_first_validation_feature": true,
+    "validation_target_does_not_exceed_first_test_feature": true,
+    "source_rows": 12000,
+    "lead1_eligible_rows": 11500,
+    "last_month_without_next_label": 500,
+    "primary_used_rows": 5575,
+    "primary_other_window_exclusions": 5925
+  },
+  "files": {
+    "results/evidence/README.md": "461d60d021ae25dd604f6f954deb74d9978a420311248588d7996bc5c9e080c2",
+    "results/evidence/clean_reproduction.json": "ce0c92f1b51e65b434fa646c957bb407fa74751336fc180aee64832e0a2d5861",
+    "results/evidence/company_membership.csv": "7ce9c4fb2860584be24f4a2dcee08749dbfa95514c76d75d276c6ddecaef00db",
+    "results/evidence/constant_training_features.json": "50eef3dd35e8741d7e112b87909da9a5f6ccd93ce36a3902e0adf67cbb1328d6",
+    "results/evidence/dataset_profile.json": "de2d7e897b867ee792731c8350760d43e42f06fbee63817e11d680ca3e10b512",
+    "results/evidence/figures/01_dataset.png": "bc20923af9a75ec9dfad3929b0245434321443e5a8e69e1022c3ea18324f0a57",
+    "results/evidence/figures/01_dataset.svg": "cb4b39d9e04c63ade24c54059e88066cf243ee286a088df164a7bb49c300a6fd",
+    "results/evidence/figures/02_features.png": "40561bde1485a7184bb7310ef021b65ff4159b3bb919b39bbeaaa10bd126a5bb",
+    "results/evidence/figures/02_features.svg": "21249e93e1fc91b29cc9d935d7be9f4a77fbd30c8c138537ab43a52c35bce4b5",
+    "results/evidence/figures/03_split_timeline.png": "93e6acdfeea1863ac4e1f054a9fa963ff76f17623277e73045ebef3c9a2add8e",
+    "results/evidence/figures/03_split_timeline.svg": "f3f626b66e1530699da7c63eb28defe0998a8dd3b28a41316810ed77e54e7062",
+    "results/evidence/figures/04_split_labels.png": "56a5b3505e07ef8008f613863f0f9275cc7b7632ff75dadff79f3dce61bc6475",
+    "results/evidence/figures/04_split_labels.svg": "bea251739496f99278cd04d0081f5857142f7cc49ae4c5623f5df466311c940d",
+    "results/evidence/figures/05_training_correlation.png": "9aac64624cd15fa349af99491895ef48518b67eb540ec9801ca848ee2b9a217b",
+    "results/evidence/figures/05_training_correlation.svg": "f08568ec075bfe80ea44083277a3b8a3eaa9509281f746fef7e92087de67b467",
+    "results/evidence/figures/06_evaluation_group_time.png": "ce4766d07564cfb1bfc473c84350ba6988ef10c7818d18347c2e75cea72f8a96",
+    "results/evidence/figures/06_evaluation_group_time.svg": "65082ee3d80d485f33b40f28572960a0e2bad306c3749c82192229a4a426ac53",
+    "results/evidence/figures/07_evaluation_company_holdout.png": "5e57fd522a060cb79d0d0ec7d8d421671a80642432e86cc216d22b7fac27b10c",
+    "results/evidence/figures/07_evaluation_company_holdout.svg": "5f6be284966b0785cb75c4ba7927afd70c2fc52118a56ac67546b69d0901658b",
+    "results/evidence/figures/08_validation_selection.png": "07b2666915386cf4b72ae144c0cb4f47ebc8f10f16faa1c6cfecd193a8eec10f",
+    "results/evidence/figures/08_validation_selection.svg": "3a045c10b74104b5037e8cce41268f315de0193d248f48d5fa085c043b6702aa",
+    "results/evidence/figures/09_model_coefficients.png": "8704b6bc3079d946d6af817202bcba71a40413294d20e7805e59f431869af014",
+    "results/evidence/figures/09_model_coefficients.svg": "3aba0d4324e1cce3ede819a3f536d66fae47923ebd8bff7b11a18f2b0f618e22",
+    "results/evidence/index.html": "d5a9ab1f50a90f27ef930ee8b8d00b2c7aa8e2896df30278dafe864c8fc6eb88",
+    "results/evidence/logs/clean_reproduction.txt": "ae4f72052bd2aafcdff95050cad9384ae47355655df88495b05a390ed5d1a9f3",
+    "results/evidence/logs/diff_check.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/evidence/logs/governance_tests.txt": "3a686c432b626dd4b61837d9307ebeb5f37277f1be9a09605193454671693049",
+    "results/evidence/logs/governance_validator.txt": "b922f4943da8736bc7c260880de7ad1e02ab05e7ee77deaf9b338a20cd0fcb2e",
+    "results/evidence/logs/inference_example.txt": "751c31985ca063c29c54c20dcfe1ec218303e32294c2ec05ad74f34a7be5233c",
+    "results/evidence/logs/lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "results/evidence/logs/ml_tests.txt": "1b9eb498e589d8c39ebf1a4e7980c5605f29bc08104ae50047497ffa415575e1",
+    "results/evidence/logs/synthetic_tests.txt": "f2098cc807ba980fe1629c8fac9751d081bcc4602fb83c119cbd00c290c1bfea",
+    "results/evidence/ml_tests.xml": "93d9a196c77d42bfa9a42156b69e1fd542d73cf0c512793e2210df8f1c5fb5be",
+    "results/evidence/model_coefficients.csv": "9390cf81a8acf6370feb05162a811596cd3ef29caa748bbc4f6a0ec063145521",
+    "results/evidence/row_assignments.csv": "3bab1167e6b9783b247c66da54306c162c0f406c2cfe9cb08d91ad9070538294",
+    "results/evidence/split_checks.json": "a143cb052b23efc63a0196df7a03b25264b5b5212e19b3980d0cda49e70ca836",
+    "results/evidence/split_summary.csv": "601004262f068df965ac221dbe211428038b5c255c68519c18fc21360ca6c6e1",
+    "results/evidence/training_correlation.csv": "7305ea7fd2e183add3dd4427941af0ccf282279c58b22c9fa0e444b0f4004951",
+    "results/evidence/validation_runs.json": "98f3da7d44ca272d36680aa278bb22ea36aee26c807ee9e5064f1645ca1bb611",
+    "results/evidence/visual_qa.json": "483c7746f6ea2e60fe22adfe8291fa0560a294128afe4e470e8a483a0382cbdc"
+  }
+}

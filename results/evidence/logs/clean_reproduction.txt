@@ -1,0 +1,74 @@
+$ uv sync --locked --group ml --python 3.12
+warning: `VIRTUAL_ENV=/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Using CPython 3.12.14 interpreter at: /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12
+Creating virtual environment at: .venv
+Resolved 28 packages in 1ms
+Downloading pandas (11.8MiB)
+Downloading scipy (33.7MiB)
+Downloading numpy (16.0MiB)
+Downloading fonttools (5.1MiB)
+Downloading scikit-learn (8.7MiB)
+Downloading matplotlib (9.4MiB)
+Downloading ruff (9.9MiB)
+Downloading lightgbm (3.3MiB)
+Downloading kiwisolver (1.4MiB)
+Downloading pygments (1.2MiB)
+Downloading pillow (6.6MiB)
+ Downloaded pygments
+ Downloaded kiwisolver
+ Downloaded lightgbm
+ Downloaded fonttools
+ Downloaded pillow
+ Downloaded scikit-learn
+ Downloaded matplotlib
+ Downloaded ruff
+ Downloaded pandas
+ Downloaded numpy
+ Downloaded scipy
+Prepared 26 packages in 11.27s
+Installed 26 packages in 45ms
+ + cloudpickle==3.1.2
+ + contourpy==1.4.0
+ + cycler==0.12.1
+ + fonttools==4.66.1
+ + iniconfig==2.3.1
+ + joblib==1.6.0
+ + kiwisolver==1.5.1
+ + lightgbm==4.7.0
+ + matplotlib==3.11.2
+ + narwhals==2.27.1
+ + numpy==2.5.4
+ + packaging==26.3
+ + pandas==2.3.3
+ + pillow==12.3.0
+ + pluggy==1.6.0
+ + pygments==2.21.0
+ + pyparsing==3.3.3
+ + pytest==9.1.1
+ + python-dateutil==2.9.0.post0
+ + pytz==2026.5
+ + ruff==0.17.0
+ + scikit-learn==1.9.1
+ + scipy==1.18.1
+ + six==1.17.0
+ + threadpoolctl==3.7.0
+ + tzdata==2026.5
+$ uv run --no-sync python -m pipelines.training
+warning: `VIRTUAL_ENV=/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Validate snapshot, build features, and freeze company/time partitions
+Select on validation: group_time
+  Fitting Logistic Regression
+  Fitting Random Forest
+  Fitting LightGBM
+Select on validation: company_holdout
+  Fitting Logistic Regression
+  Fitting Random Forest
+  Fitting LightGBM
+group_time: Logistic Regression threshold=0.493846; test macro-F1=0.5905
+company_holdout: Logistic Regression threshold=0.487176; test macro-F1=0.5833
+{
+  "model": "/workspace/scratch/28be4ecd88ab/jaga-ml-reproduce-_9ybzr9i/models/best_model.pkl",
+  "sha256": "83a4bd5362e903659d426a7d55e64756a28a3a381f72d2163a10de4829f3bb2c",
+  "reload_prediction_parity": "PASSED",
+  "handoff": "/workspace/scratch/28be4ecd88ab/jaga-ml-reproduce-_9ybzr9i/artifacts/jaga-jkn-ml-handoff.zip"
+}

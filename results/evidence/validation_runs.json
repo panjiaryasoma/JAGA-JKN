@@ -1,0 +1,112 @@
+[
+  {
+    "name": "ml_tests",
+    "command": [
+      "/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/ml",
+      "-q",
+      "--junitxml=/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/results/evidence/ml_tests.xml"
+    ],
+    "exit_code": 0,
+    "started_utc": "2026-10-11T13:56:48.664562+00:00",
+    "finished_utc": "2026-10-11T13:56:53.859714+00:00",
+    "log": "results/evidence/logs/ml_tests.txt",
+    "log_sha256": "1b9eb498e589d8c39ebf1a4e7980c5605f29bc08104ae50047497ffa415575e1"
+  },
+  {
+    "name": "synthetic_tests",
+    "command": [
+      "/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "pipelines/synthetic",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "started_utc": "2026-10-11T13:56:53.860002+00:00",
+    "finished_utc": "2026-10-11T13:56:56.464171+00:00",
+    "log": "results/evidence/logs/synthetic_tests.txt",
+    "log_sha256": "f2098cc807ba980fe1629c8fac9751d081bcc4602fb83c119cbd00c290c1bfea"
+  },
+  {
+    "name": "governance_validator",
+    "command": [
+      "/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv/bin/python",
+      "scripts/validate_governance.py"
+    ],
+    "exit_code": 0,
+    "started_utc": "2026-10-11T13:56:56.464536+00:00",
+    "finished_utc": "2026-10-11T13:56:56.513359+00:00",
+    "log": "results/evidence/logs/governance_validator.txt",
+    "log_sha256": "b922f4943da8736bc7c260880de7ad1e02ab05e7ee77deaf9b338a20cd0fcb2e"
+  },
+  {
+    "name": "governance_tests",
+    "command": [
+      "/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv/bin/python",
+      "scripts/test_governance_security.py"
+    ],
+    "exit_code": 0,
+    "started_utc": "2026-10-11T13:56:56.513643+00:00",
+    "finished_utc": "2026-10-11T13:56:59.225015+00:00",
+    "log": "results/evidence/logs/governance_tests.txt",
+    "log_sha256": "3a686c432b626dd4b61837d9307ebeb5f37277f1be9a09605193454671693049"
+  },
+  {
+    "name": "lint",
+    "command": [
+      "/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv/bin/python",
+      "-m",
+      "ruff",
+      "check",
+      "packages/ml",
+      "pipelines/configure",
+      "pipelines/features",
+      "pipelines/training",
+      "pipelines/evaluation",
+      "pipelines/audit",
+      "tests/ml",
+      "scripts/build_ml_evidence.py",
+      "scripts/reproduce_ml_bundle.py"
+    ],
+    "exit_code": 0,
+    "started_utc": "2026-10-11T13:56:59.225369+00:00",
+    "finished_utc": "2026-10-11T13:56:59.255090+00:00",
+    "log": "results/evidence/logs/lint.txt",
+    "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  {
+    "name": "diff_check",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "started_utc": "2026-10-11T13:56:59.255605+00:00",
+    "finished_utc": "2026-10-11T13:56:59.265825+00:00",
+    "log": "results/evidence/logs/diff_check.txt",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "inference_example",
+    "command": [
+      "/workspace/scratch/28be4ecd88ab/JAGA-JKN-ml-fix/.venv/bin/python",
+      "-m",
+      "packages.ml.inference",
+      "--input",
+      "models/example_input.json"
+    ],
+    "exit_code": 0,
+    "started_utc": "2026-10-11T13:56:59.266152+00:00",
+    "finished_utc": "2026-10-11T13:57:00.339668+00:00",
+    "log": "results/evidence/logs/inference_example.txt",
+    "log_sha256": "751c31985ca063c29c54c20dcfe1ec218303e32294c2ec05ad74f34a7be5233c"
+  }
+]

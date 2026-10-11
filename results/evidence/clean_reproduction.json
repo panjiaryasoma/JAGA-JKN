@@ -1,0 +1,69 @@
+{
+  "started_utc": "2026-10-11T13:55:31.627967+00:00",
+  "archive_sha256": "6f52e8f06b5e4a8681173db70aaacebada6e904af7f24a8e51dfadbaa29f6c9d",
+  "model_before_sha256": "83a4bd5362e903659d426a7d55e64756a28a3a381f72d2163a10de4829f3bb2c",
+  "settings_changed": false,
+  "threshold_retuned": false,
+  "commands": [
+    {
+      "command": [
+        "uv",
+        "sync",
+        "--locked",
+        "--group",
+        "ml",
+        "--python",
+        "3.12"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--no-sync",
+        "python",
+        "-m",
+        "pipelines.training"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "verified_archive_files": 45,
+  "comparisons": {
+    "models/best_model.pkl": {
+      "expected_sha256": "83a4bd5362e903659d426a7d55e64756a28a3a381f72d2163a10de4829f3bb2c",
+      "reproduced_sha256": "83a4bd5362e903659d426a7d55e64756a28a3a381f72d2163a10de4829f3bb2c",
+      "exact_bytes_match": true
+    },
+    "models/example_output.json": {
+      "expected_sha256": "751c31985ca063c29c54c20dcfe1ec218303e32294c2ec05ad74f34a7be5233c",
+      "reproduced_sha256": "751c31985ca063c29c54c20dcfe1ec218303e32294c2ec05ad74f34a7be5233c",
+      "exact_bytes_match": true
+    },
+    "results/benchmarks/group_time.json": {
+      "expected_sha256": "e4b507e5a123021087baa6a9e959c5c282fc559894e4c9884cbcb65b3d475671",
+      "reproduced_sha256": "e4b507e5a123021087baa6a9e959c5c282fc559894e4c9884cbcb65b3d475671",
+      "exact_bytes_match": true
+    },
+    "results/benchmarks/group_time_predictions.csv": {
+      "expected_sha256": "cf72aa30465d3f5f91abfe3fcd5cf3ee04147a7ad2f921e1b78ed8f57cb94ef4",
+      "reproduced_sha256": "cf72aa30465d3f5f91abfe3fcd5cf3ee04147a7ad2f921e1b78ed8f57cb94ef4",
+      "exact_bytes_match": true
+    },
+    "results/benchmarks/company_holdout.json": {
+      "expected_sha256": "6af79d6f62172986be18af2405559c4e3a29f235db07f7f1d7a27ee4c834501c",
+      "reproduced_sha256": "6af79d6f62172986be18af2405559c4e3a29f235db07f7f1d7a27ee4c834501c",
+      "exact_bytes_match": true
+    },
+    "results/benchmarks/company_holdout_predictions.csv": {
+      "expected_sha256": "117347761f2dae41e82df4530707d9d8e312a6944a9d43177d1f6abe25f9f291",
+      "reproduced_sha256": "117347761f2dae41e82df4530707d9d8e312a6944a9d43177d1f6abe25f9f291",
+      "exact_bytes_match": true
+    }
+  },
+  "status": "PASSED",
+  "finished_utc": "2026-10-11T13:55:50.858836+00:00",
+  "log_sha256": "ae4f72052bd2aafcdff95050cad9384ae47355655df88495b05a390ed5d1a9f3",
+  "model_after_sha256": "83a4bd5362e903659d426a7d55e64756a28a3a381f72d2163a10de4829f3bb2c"
+}

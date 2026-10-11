@@ -1,0 +1,147 @@
+{
+  "company_response": {
+    "data": {
+      "id_badan_usaha": "BU-0001",
+      "nama_badan_usaha": "KOPERASI Bina Tekstil",
+      "bentuk_badan_hukum": "Koperasi",
+      "kode_kbli": "I",
+      "sektor_industri": "Penyediaan Akomodasi dan F&B",
+      "skala_usaha": "Menengah",
+      "provinsi": "Jawa Timur",
+      "kantor_cabang_bpjs": "KC Surabaya"
+    },
+    "meta": {
+      "dataset_id": "sha256:0c630a93b363a1ed3c3030b6b80186a2b4e5978756ea2d8aaebb52ea79b28ac6",
+      "source_commit": "9390d36a1adbef6f17aa6804dd6c56d290e06d04",
+      "is_synthetic": true,
+      "ml_status": "NOT_CONFIGURED",
+      "policy_status": "UNRESOLVED"
+    }
+  },
+  "evidence_response": {
+    "data": {
+      "id_badan_usaha": "BU-0001",
+      "periode_bulan": "2025-01",
+      "source_record_id": "RAW-BU-0001-2025-01",
+      "registration": {
+        "evidence_valid": true,
+        "evidence_quality": "HIGH",
+        "evidence_reasons": [],
+        "source_metadata_valid": true,
+        "period_binding_valid": true,
+        "source_ids": [
+          "RAW-BU-0001-2025-01:REG_REFERENCE",
+          "RAW-BU-0001-2025-01:REG_OBSERVED"
+        ],
+        "source_periods": [
+          "2025-01",
+          "2025-01"
+        ],
+        "rule_result": "ABSTAIN",
+        "rule_reason": "AUTHORITY_OR_APPLICABLE_VERSION_UNRESOLVED",
+        "review_state": "ABSTAIN",
+        "review_reason": "AUTHORITY_OR_APPLICABLE_VERSION_UNRESOLVED",
+        "lineage": "[\"RAW-BU-0001-2025-01:REG_REFERENCE\",\"RAW-BU-0001-2025-01:REG_OBSERVED\"] -> set reconciliation -> REG-001@UNVERIFIED -> ABSTAIN -> ABSTAIN",
+        "authority": {
+          "authorized": false,
+          "id": "UNRESOLVED",
+          "rule_version": "UNVERIFIED",
+          "applicable_period_verified": false,
+          "effective_from": null,
+          "effective_to": null,
+          "source_ids": []
+        },
+        "rule_id": "REG-001",
+        "reference_worker_count": 108,
+        "observed_registered_worker_count": 108,
+        "missing_worker_count": 0,
+        "unexpected_worker_count": 0,
+        "discrepancy_detected": false,
+        "worker_set_valid": true,
+        "worker_set_error": "NONE",
+        "explanation_metadata_valid": true,
+        "explanation_reason": "NONE"
+      },
+      "wage": {
+        "evidence_valid": true,
+        "evidence_quality": "HIGH",
+        "evidence_reasons": [],
+        "source_metadata_valid": true,
+        "period_binding_valid": true,
+        "source_ids": [
+          "RAW-BU-0001-2025-01:WAGE_REFERENCE",
+          "RAW-BU-0001-2025-01:WAGE_OBSERVED"
+        ],
+        "source_periods": [
+          "2025-01",
+          "2025-01"
+        ],
+        "rule_result": "ABSTAIN",
+        "rule_reason": "POLICY_REQUIRED_BUT_UNRESOLVED",
+        "review_state": "ABSTAIN",
+        "review_reason": "POLICY_REQUIRED_BUT_UNRESOLVED",
+        "lineage": "[\"RAW-BU-0001-2025-01:WAGE_REFERENCE\",\"RAW-BU-0001-2025-01:WAGE_OBSERVED\"] -> wage observation -> WAGE-001@UNVERIFIED -> ABSTAIN -> ABSTAIN",
+        "authority": {
+          "authorized": false,
+          "id": "B2_UNRESOLVED",
+          "rule_version": "UNVERIFIED",
+          "applicable_period_verified": false,
+          "effective_from": null,
+          "effective_to": null,
+          "source_ids": []
+        },
+        "rule_id": "WAGE-001",
+        "reference_wage_signal_rp": 5670528,
+        "observed_wage_signal_rp": 5670528,
+        "wage_discrepancy_signal_rp": 0,
+        "discrepancy_detected": false,
+        "semantic_consistency_valid": true
+      },
+      "contribution": {
+        "evidence_valid": true,
+        "evidence_quality": "HIGH",
+        "evidence_reasons": [],
+        "source_metadata_valid": true,
+        "period_binding_valid": true,
+        "source_ids": [
+          "RAW-BU-0001-2025-01:CONTRIB_EXPECTED_SYNTHETIC",
+          "RAW-BU-0001-2025-01:CONTRIB_PAYMENT"
+        ],
+        "source_periods": [
+          "2025-01",
+          "2025-01"
+        ],
+        "rule_result": "ABSTAIN",
+        "rule_reason": "POLICY_REQUIRED_BUT_UNRESOLVED",
+        "review_state": "ABSTAIN",
+        "review_reason": "POLICY_REQUIRED_BUT_UNRESOLVED",
+        "lineage": "[\"RAW-BU-0001-2025-01:CONTRIB_EXPECTED_SYNTHETIC\",\"RAW-BU-0001-2025-01:CONTRIB_PAYMENT\"] -> payment observation -> CONTRIB-001@UNVERIFIED -> ABSTAIN -> ABSTAIN",
+        "authority": {
+          "authorized": false,
+          "id": "B2_UNRESOLVED",
+          "rule_version": "UNVERIFIED",
+          "applicable_period_verified": false,
+          "effective_from": null,
+          "effective_to": null,
+          "source_ids": []
+        },
+        "rule_id": "CONTRIB-001",
+        "observed_payment_state": "PAID_ON_TIME",
+        "validated_payment_state": "PAID_ON_TIME",
+        "payment_gap_observed": false,
+        "semantic_consistency_valid": true,
+        "payment_evidence_reason": "NO_SETTLEMENT_EXCEPTION"
+      },
+      "overall_review_state": "ABSTAIN",
+      "human_review_recommendation": "ABSTAIN__AUTHORITY_OR_POLICY_UNRESOLVED",
+      "observed_discrepancy_types": []
+    },
+    "meta": {
+      "dataset_id": "sha256:0c630a93b363a1ed3c3030b6b80186a2b4e5978756ea2d8aaebb52ea79b28ac6",
+      "source_commit": "9390d36a1adbef6f17aa6804dd6c56d290e06d04",
+      "is_synthetic": true,
+      "ml_status": "NOT_CONFIGURED",
+      "policy_status": "UNRESOLVED"
+    }
+  }
+}

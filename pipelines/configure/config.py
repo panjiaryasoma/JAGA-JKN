@@ -7,30 +7,30 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-SPLIT_SEED = 20261011 
-MODEL_SEED = 20261012 
+SPLIT_SEED = 20261011
+MODEL_SEED = 20261012
 
 # --- Input Data Paths --------------------------------------------------------
 DATA_CURATED_EVIDENCE = PROJECT_ROOT / "data/synthetic/curated/curated_kepatuhan_evidence.csv"
-DATA_MASTER_BU        = PROJECT_ROOT / "data/synthetic/curated/curated_master_badan_usaha.csv"
-DATA_SPLITS_DIR       = PROJECT_ROOT / "data/synthetic/ml_splits"
+DATA_MASTER_BU = PROJECT_ROOT / "data/synthetic/curated/curated_master_badan_usaha.csv"
+DATA_SPLITS_DIR = PROJECT_ROOT / "data/synthetic/ml_splits"
 
-# Split files 
-TRAIN_PATH    = DATA_SPLITS_DIR / "train.csv"
-VAL_PATH      = DATA_SPLITS_DIR / "val.csv"
-TEST_PATH     = DATA_SPLITS_DIR / "test.csv"
+# Split files
+TRAIN_PATH = DATA_SPLITS_DIR / "group_time/train.csv"
+VAL_PATH = DATA_SPLITS_DIR / "group_time/val.csv"
+TEST_PATH = DATA_SPLITS_DIR / "group_time/test.csv"
 MANIFEST_PATH = DATA_SPLITS_DIR / "split_manifest.json"
 
-RESULTS_DIR  = PROJECT_ROOT / "results"
-FIGURES_DIR  = RESULTS_DIR / "figures"
-MODELS_DIR   = PROJECT_ROOT / "models"
+RESULTS_DIR = PROJECT_ROOT / "results"
+FIGURES_DIR = RESULTS_DIR / "figures"
+MODELS_DIR = PROJECT_ROOT / "models"
 
 LEAKAGE_AUDIT_PATH = RESULTS_DIR / "label_and_leakage_audit.md"
-METRICS_PATH       = RESULTS_DIR / "ml_baseline_metrics.json"
-THRESHOLD_PATH     = RESULTS_DIR / "threshold_analysis.json"
-FEAT_IMP_PATH      = RESULTS_DIR / "feature_importance.csv"
+METRICS_PATH = RESULTS_DIR / "ml_baseline_metrics.json"
+THRESHOLD_PATH = RESULTS_DIR / "threshold_analysis.json"
+FEAT_IMP_PATH = RESULTS_DIR / "feature_importance.csv"
 MODEL_METADATA_PATH = MODELS_DIR / "metadata.json"
-BEST_MODEL_PATH    = MODELS_DIR / "best_model.pkl"
+BEST_MODEL_PATH = MODELS_DIR / "best_model.pkl"
 
 COLUMN_RENAME_MAP = {
     "id_badan_usaha": "company_id",
@@ -44,12 +44,11 @@ COLUMN_RENAME_MAP = {
     "kantor_cabang_bpjs": "bpjs_branch_office",
 }
 
-COL_COMPANY_ID     = "company_id"
-COL_PERIOD         = "period_month"
-COL_RAW_RISK_MODE  = "risk_mode_ground_truth"
-COL_BINARY_LABEL   = "label_binary"     # 0: NORMAL, 1: NON-NORMAL
-COL_TARGET         = "target_lead_1"    # Binary label shifted by -1 month (t+1 early warning)
-
+COL_COMPANY_ID = "company_id"
+COL_PERIOD = "period_month"
+COL_RAW_RISK_MODE = "risk_mode_ground_truth"
+COL_BINARY_LABEL = "label_binary"  # 0: NORMAL, 1: NON-NORMAL
+COL_TARGET = "target_lead_1"  # Binary label shifted by -1 month (t+1 early warning)
 
 
 # Evidence Quality & Metadata Validation (16 features)
@@ -72,11 +71,11 @@ FEATURES_EVIDENCE_QUALITY = [
     "payment_semantic_consistency_valid",
 ]
 
-# Pre-adjudication Observations Audited with Low Leakage Risk (3 features)
+# Provisional observations for the synthetic benchmark; as-of availability is unverified.
 FEATURES_OBSERVATION = [
-    "observed_registered_worker_count",  # correlation = -0.037
-    "unexpected_worker_count",           # correlation = -0.105
-    "observed_wage_signal_rp",           # correlation = -0.031
+    "observed_registered_worker_count",
+    "unexpected_worker_count",
+    "observed_wage_signal_rp",
 ]
 
 FEATURES_MASTER = [
@@ -89,7 +88,6 @@ FEATURES_MASTER = [
 ]
 
 FEATURES_ENGINEERED = [
-    "month_index",
     "is_semester_end",
     "evidence_quality_composite",
     "total_evidence_flags",
@@ -99,10 +97,7 @@ FEATURES_ENGINEERED = [
 ]
 
 ALL_FEATURES = (
-    FEATURES_EVIDENCE_QUALITY
-    + FEATURES_OBSERVATION
-    + FEATURES_MASTER
-    + FEATURES_ENGINEERED
+    FEATURES_EVIDENCE_QUALITY + FEATURES_OBSERVATION + FEATURES_MASTER + FEATURES_ENGINEERED
 )
 
 CATEGORICAL_FEATURES = FEATURES_MASTER
@@ -129,13 +124,14 @@ CONTRIB_QUALITY_COLS = [
 ALL_EVIDENCE_VALID_COLS = REG_QUALITY_COLS + WAGE_QUALITY_COLS + CONTRIB_QUALITY_COLS
 
 TRAIN_RATIO = 0.70
-VAL_RATIO   = 0.15
-TEST_RATIO  = 0.15
+VAL_RATIO = 0.15
+TEST_RATIO = 0.15
 
-DEFAULT_THRESHOLD     = 0.50
-OPERATIONAL_THRESHOLD = 0.60
+DEFAULT_THRESHOLD = 0.50
+# Thresholds are selected on validation, with no approved operational threshold.
 
 FORBIDDEN_FEATURES = [
+    "month_index",  # HOLD in the prior audit; excluded pending domain review.
     "registration_discrepancy_detected",
     "wage_discrepancy_signal_rp",
     "wage_discrepancy_detected",

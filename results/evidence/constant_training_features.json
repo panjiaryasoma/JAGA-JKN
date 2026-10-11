@@ -1,0 +1,20 @@
+[
+  "contribution_evidence_valid",
+  "contribution_period_binding_valid",
+  "contribution_quality_score",
+  "contribution_source_metadata_valid",
+  "evidence_quality_composite",
+  "payment_semantic_consistency_valid",
+  "registration_evidence_valid",
+  "registration_explanation_metadata_valid",
+  "registration_period_binding_valid",
+  "registration_quality_score",
+  "registration_source_metadata_valid",
+  "registration_worker_set_valid",
+  "total_evidence_flags",
+  "wage_evidence_valid",
+  "wage_period_binding_valid",
+  "wage_quality_score",
+  "wage_semantic_consistency_valid",
+  "wage_source_metadata_valid"
+]
