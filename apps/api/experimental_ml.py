@@ -65,7 +65,7 @@ def open_trusted_model(snapshot: Snapshot, path: Path) -> ModelService:
         raise ValueError("Curated dataset hashes do not match the artifact")
     bundle = load_bundle(path, path.with_name("metadata.json"))
     if not isinstance(bundle, dict):
-        raise ValueError("Model bundle is not a mapping")
+        raise TypeError("Model bundle is not a mapping")
     for field in ("model_version", "model_name"):
         if not isinstance(bundle.get(field), str) or not bundle[field]:
             raise ValueError("Model identity unavailable")
@@ -122,12 +122,13 @@ def assess(
     except (ValueError, KeyError, TypeError, OverflowError):
         return _abstain(service, company, evidence, "INCOMPLETE_INPUT")
 
+    import pandas as pd
+
     from packages.ml.features import RAW_COLUMNS
 
     # Predictors are scalar; required observations may legitimately be null.
     # Validate them before invoking the model, so a scorer error is never
     # silently mislabeled as a missing-data abstention.
-    import pandas as pd
 
     if any(key not in raw or bool(pd.isna(raw[key])) for key in RAW_COLUMNS):
         return _abstain(service, company, evidence, "INCOMPLETE_INPUT")
