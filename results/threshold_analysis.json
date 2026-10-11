@@ -1,0 +1,13 @@
+{
+  "model_name": "LightGBM",
+  "objective": "Early Warning Lead-1 Month (t+1)",
+  "threshold_analysis": {
+    "best_threshold": 0.0198,
+    "best_f1": 0.5652,
+    "precision_at_best": 0.4079,
+    "recall_at_best": 0.9198,
+    "pr_auc": 0.4798
+  },
+  "plot_path": "D:\\latihan\\JAGA-JKN\\results\\figures\\eval_threshold_lightgbm.png",
+  "recommendation": "PR curve optimal threshold: 0.020. Operational screening target: 0.60. Higher thresholds minimize false inspections when investigation costs are high."
+}
