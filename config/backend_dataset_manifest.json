@@ -1,0 +1,20 @@
+{
+  "manifest_version": "1.0",
+  "source_commit": "9390d36a1adbef6f17aa6804dd6c56d290e06d04",
+  "assumption_version": "SYN-2026-10-08-v3",
+  "is_synthetic": true,
+  "generation_seed": 42,
+  "raw_seed": 43,
+  "period_from": "2025-01",
+  "period_to": "2026-12",
+  "files": {
+    "curated_master_badan_usaha.csv": {
+      "sha256": "3780d7aa06f672bc8bce0a8747497a6fa35fa0f2e4fda3b231ee79ba0903022f",
+      "rows": 500
+    },
+    "curated_kepatuhan_evidence.csv": {
+      "sha256": "d6167efa531a36dc63a44e01754325ab34afab84c3997a72c03108036bda17c2",
+      "rows": 12000
+    }
+  }
+}

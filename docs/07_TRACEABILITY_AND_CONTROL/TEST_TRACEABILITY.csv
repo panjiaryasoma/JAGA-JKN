@@ -1,1 +1,33 @@
 source_id,target_id,relationship,status,notes
+BE-001,tests/backend/test_api_contract.py::test_baseline_identity_and_complete_history,verified_by,PASS_LOCAL,Full pinned 500 x 24 snapshot and declared source identity
+BE-002,tests/backend/test_api_contract.py::test_listing_filters_and_pagination,verified_by,PASS_LOCAL,Combined filters deterministic ordering and pagination
+BE-003,tests/backend/test_api_contract.py::test_not_found_is_consistent,verified_by,PASS_LOCAL,Invalid versus absent identifiers
+BE-003,tests/backend/test_api_contract.py::test_public_allowlist_hides_simulator_and_personal_fields,verified_by,PASS_LOCAL,Public field allowlist and OpenAPI isolation
+BE-004,tests/backend/test_api_contract.py::test_history_ranges_and_single_month,verified_by,PASS_LOCAL,Inclusive monthly filters and detail
+BE-004,tests/backend/test_api_contract.py::test_evidence_preserves_source_and_authority,verified_by,PASS_LOCAL,Source lineage and authority preserved
+BE-005,tests/backend/test_api_contract.py::test_null_unknown_and_zero_are_distinct,verified_by,PASS_LOCAL,Unknown is not coerced to safe or zero
+BE-006,tests/backend/test_snapshot_validation.py,verified_by,PASS_LOCAL,Hash type relational grid schema and manifest corruption fail closed
+BE-007,tests/backend/test_api_contract.py::test_invalid_request_rejected,verified_by,PASS_LOCAL,Strict query and period validation
+BE-007,tests/backend/test_api_contract.py::test_safe_unexpected_failure_and_request_log,verified_by,PASS_LOCAL,Sanitized error and no search/body values in access log
+BE-008,tests/backend/test_snapshot_validation.py::test_missing_file_degrades_readiness,verified_by,PASS_LOCAL,Liveness survives snapshot failure
+BE-008,tests/backend/test_case_workflow.py::test_lost_database_degrades_readiness_without_recreating_empty_store,verified_by,PASS_LOCAL,Database removed after startup returns 503 without empty-file recreation
+BE-009,tests/backend/test_case_workflow.py::test_dashboard_and_capabilities_are_honest,verified_by,PASS_LOCAL,No fabricated model or policy activation
+BE-010,scripts/smoke_backend.py,verified_by,PASS_LOCAL,Real HTTP server and complete snapshot with isolated database
+BE-010,.github/workflows/backend.yml,checked_by,CI_CONFIGURED,Locked dependencies and Python 3.12/3.13 checks; consult run for exact tested SHA
+BE-011,tests/backend/test_case_workflow.py::test_authentication_and_role_boundary,verified_by,PASS_LOCAL,Bearer authentication and supervisor boundary
+BE-011,tests/backend/test_case_workflow.py::test_write_input_cannot_spoof_actor_or_state,verified_by,PASS_LOCAL,Actor and state come from server
+BE-012,tests/backend/test_case_workflow.py::test_active_duplicate_and_illegal_transition_do_not_change_state,verified_by,PASS_LOCAL,Unique active case and lifecycle constraints
+BE-012,tests/backend/test_case_workflow.py::test_concurrent_create_has_one_active_case,verified_by,PASS_LOCAL,Two simultaneous creates have one winner
+BE-013,tests/backend/test_case_workflow.py::test_interventions_block_closure_until_outcome_recorded,verified_by,PASS_LOCAL,Terminal transitions blocked by planned work and outcome accepted once
+BE-013,tests/backend/test_case_workflow.py::test_intervention_cannot_be_completed_through_another_case,verified_by,PASS_LOCAL,Intervention belongs to the addressed case
+BE-014,tests/backend/test_case_workflow.py::test_case_intervention_resolution_recurrence_and_restart,verified_by,PASS_LOCAL,Complete workflow audit actor/version and restart persistence
+BE-015,tests/backend/test_case_workflow.py::test_if_match_required_and_stale_updates_rejected,verified_by,PASS_LOCAL,Strong ETag optimistic concurrency
+BE-015,tests/backend/test_case_workflow.py::test_concurrent_updates_have_one_winner,verified_by,PASS_LOCAL,One success and one stale-version rejection
+BE-016,tests/backend/test_case_workflow.py::test_idempotency_replays_original_version_and_rejects_key_reuse,verified_by,PASS_LOCAL,Stable retry response and conflict detection
+BE-016,tests/backend/test_case_workflow.py::test_atomic_failure_rolls_back_event_version_and_receipt,verified_by,PASS_LOCAL,Injected database error rolls back all writes
+BE-017,tests/backend/test_case_workflow.py::test_case_keeps_evidence_when_current_snapshot_is_unavailable,verified_by,PASS_LOCAL,Case evidence survives current-dataset loss
+BE-017,tests/backend/test_case_workflow.py::test_recurrence_requires_resolved_same_company_earlier_period,verified_by,PASS_LOCAL,Manual recurrence constraints
+BE-017,tests/backend/test_case_workflow.py::test_replay_create_survives_unavailable_current_snapshot,verified_by,PASS_LOCAL,Create retry does not need source data again
+BE-018,tests/backend/test_case_workflow.py::test_dashboard_and_capabilities_are_honest,verified_by,PASS_LOCAL,Separate true false unknown quality and abstain counts
+BE-019,tests/backend/test_case_workflow.py::test_database_failure_and_future_schema_are_explicit,verified_by,PASS_LOCAL,Unsupported schema is not silently reset
+BE-019,tests/backend/test_case_workflow.py::test_concurrent_startup_initializes_one_complete_schema,verified_by,PASS_LOCAL,Schema initialization serialized across simultaneous starts
