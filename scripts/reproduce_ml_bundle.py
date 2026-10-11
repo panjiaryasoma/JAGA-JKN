@@ -81,8 +81,22 @@ def main():
             }
             for name in compared
         }
-        if not all(value["exact_bytes_match"] for value in record["comparisons"].values()):
-            raise ValueError("Reproduction mismatch")
+        mismatches = {
+            name: values
+            for name, values in record["comparisons"].items()
+            if not values["exact_bytes_match"]
+        }
+        if mismatches:
+            for name, values in mismatches.items():
+                print(
+                    f"Reproduction mismatch: {name}; expected="
+                    f"{values['expected_sha256']}; reproduced="
+                    f"{values['reproduced_sha256']}",
+                    flush=True,
+                )
+            raise ValueError(
+                "Reproduction mismatch in: " + ", ".join(sorted(mismatches))
+            )
     record.update(
         status="PASSED",
         finished_utc=datetime.now(UTC).isoformat(),
