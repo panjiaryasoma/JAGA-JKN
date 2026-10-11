@@ -1,31 +1,20 @@
 ---
 project: JAGA-JKN
-competition: BPJS Kesehatan Healthkathon 2026
 status: DRAFT
-version: 0.1.0
-owner: TBD
-authority: TBD
-last_updated: 2026-10-07
+version: 0.2.0
+owner: Panji
+authority: Prototype Backend Contract
+last_updated: 2026-10-09
 ---
 
-# ACCESS CONTROL REQUIREMENTS
+# Kontrol akses backend prototipe
 
-## Tujuan
-Dokumen ini menjadi artefak resmi untuk **JAGA-JKN** pada area terkait.
+API baca snapshot sintetis, dashboard agregat, health, capability, dan status ML tersedia tanpa login untuk demo lokal. Semua endpoint kasus, event, intervensi, dan /me membutuhkan Authorization: Bearer.
 
-## Baseline proyek
-- Kategori: **Risiko Pemberi Kerja**
-- Produk: **web app internal BPJS Kesehatan, desktop-first responsive**
-- Konsep inti: rekonstruksi kondisi yang seharusnya → kondisi aktual → episode kepatuhan → intervensi → keputusan manusia → resolution/recurrence.
-- Data prototipe: synthetic, seeded, versioned, validated.
-- AI/ML: mendukung deteksi, prioritisasi, penjelasan, dan rekomendasi; keputusan akhir tetap pada petugas BPJS.
+Dua role demo: REVIEWER dan SUPERVISOR. Seluruh aktor demo berada pada satu workspace; belum ada multi-tenant atau pembagian wilayah. Matriks aksi mengacu CASE_LIFECYCLE_SPEC.md. Role/actor tidak diterima dari payload atau query.
 
-## Isi yang harus difinalkan
-- [ ] Scope dan batasan jelas.
-- [ ] Requirement memiliki ID unik bila relevan.
-- [ ] Dependency dan asumsi dicatat.
-- [ ] Acceptance criteria dapat diuji.
-- [ ] Traceability ke requirement/test/evidence tersedia.
+Token dikonfigurasi melalui JAGA_REVIEWER_TOKEN dan JAGA_SUPERVISOR_TOKEN, minimum 32 karakter ASCII tanpa spasi, berbeda satu sama lain. ID aktor opsional melalui JAGA_REVIEWER_ID/JAGA_SUPERVISOR_ID, harus berbeda bila kedua token aktif. Token dibandingkan melalui digest SHA-256 dan constant-time compare; token tidak disimpan dalam database kasus, log, atau respons API. --demo menghasilkan token acak baru untuk sesi lokal dan menampilkannya sekali di terminal pengguna.
 
-## Catatan
-Status awal **DRAFT**. Artefak menjadi authoritative hanya setelah review dan freeze eksplisit.
+Token tidak tersedia → 503 AUTH_NOT_CONFIGURED pada endpoint terlindungi. Token hilang/salah → 401 dengan WWW-Authenticate: Bearer. Role tidak cukup → 403. Authorization header duplikat ditolak. Tidak ada default token tetap, token di query, session cookie, login/password, refresh token, atau klaim identitas petugas BPJS sebenarnya.
+
+Server demo bind ke 127.0.0.1. CORS tidak dibuka otomatis. Deployment publik memerlukan IdP/auth produksi, TLS, manajemen secret/rotasi, pembatasan akses data, rate limiting, dan audit operasional tersendiri. Komponen ini final untuk lingkup demo yang dinyatakan, bukan autentikasi produksi.

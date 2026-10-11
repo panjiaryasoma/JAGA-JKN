@@ -50,3 +50,16 @@ Mulai dari [`docs/README.md`](docs/README.md) dan [`docs/DOCUMENT_MANIFEST.csv`]
 ## Model ML dan file PKL
 
 Training sintetis dan cara memperoleh `models/best_model.pkl` ada di [panduan model](models/README.md). Jalankan `uv sync --locked --group ml` lalu `uv run --no-sync python -m pipelines.training`. ZIP model lengkap dihasilkan pada `artifacts/jaga-jkn-ml-handoff.zip`. Evaluasi terbaru ada di [laporan perbaikan ML](results/ml_repair_report.md); hasil lama dipisahkan ke `results/historical/ff25494/`. Model ini berstatus eksperimen sintetis dan belum diaktifkan pada API.
+
+## Backend API dan alur review
+
+Backend FastAPI untuk snapshot sintetis, pencarian badan usaha, evidence per bulan, dashboard agregat, dan workflow review manusia menggunakan SQLite. Jalankan dari root repository:
+
+```bash
+uv sync --locked --group synthetic --group ml
+uv run --locked python -m apps.api --demo
+```
+
+Swagger tersedia pada `http://127.0.0.1:8000/docs`. Token demo hanya untuk reviewer dan supervisor; pemakaian publik/produksi memerlukan kontrol keamanan lanjutan. Model ML tetap eksperimen sintetis dan belum diaktifkan untuk prediksi otomatis dalam API.
+
+Dokumentasi lengkap: [Panduan Backend](apps/api/README.md) dan [Kontrak API](docs/05_PREPRODUCTION/01_CONTRACTS_ACTIVE/API_CONTRACT.md).
