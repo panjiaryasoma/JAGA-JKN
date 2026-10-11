@@ -46,3 +46,7 @@ docs/           canonical project documentation
 ## Dokumentasi
 
 Mulai dari [`docs/README.md`](docs/README.md) dan [`docs/DOCUMENT_MANIFEST.csv`](docs/DOCUMENT_MANIFEST.csv).
+
+## Model ML dan file PKL
+
+Training sintetis dan cara memperoleh `models/best_model.pkl` ada di [panduan model](models/README.md). Jalankan `uv sync --locked --group ml` lalu `uv run --no-sync python -m pipelines.training`. ZIP model lengkap dihasilkan pada `artifacts/jaga-jkn-ml-handoff.zip`. Evaluasi terbaru ada di [laporan perbaikan ML](results/ml_repair_report.md); hasil lama dipisahkan ke `results/historical/ff25494/`. Model ini berstatus eksperimen sintetis dan belum diaktifkan pada API.

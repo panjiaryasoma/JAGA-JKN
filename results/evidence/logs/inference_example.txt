@@ -1,0 +1,13 @@
+{
+  "model_version": "synthetic-958d71c85044cbca",
+  "model_name": "Logistic Regression",
+  "status": "EXPERIMENTAL_SYNTHETIC",
+  "period_month": "2025-01",
+  "target_period": "2025-02",
+  "score": 0.45770917104768427,
+  "score_semantics": "uncalibrated_synthetic_non_normal_score",
+  "threshold": 0.4938464098610924,
+  "experimental_prediction": 0,
+  "is_synthetic": true,
+  "policy_status": "UNRESOLVED"
+}

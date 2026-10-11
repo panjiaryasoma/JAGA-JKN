@@ -5,24 +5,22 @@ and summary dashboard graphic.
 
 import json
 import sys
-import warnings
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.calibration import calibration_curve
 
-warnings.filterwarnings("ignore")
-
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.configure.config import FIGURES_DIR, METRICS_PATH, RESULTS_DIR, THRESHOLD_PATH
+from pipelines.configure.config import FIGURES_DIR, METRICS_PATH, THRESHOLD_PATH
 
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-DARK_BG  = "#0f1117"
+DARK_BG = "#0f1117"
 PANEL_BG = "#1a1d27"
 
 
@@ -34,15 +32,14 @@ def _style_axes(ax):
         ax.spines[s].set_color("#444")
 
 
-def plot_calibration(model, X_arr: np.ndarray, y_true,
-                     model_name: str, n_bins: int = 10) -> Path:
+def plot_calibration(model, X_arr: np.ndarray, y_true, model_name: str, n_bins: int = 10) -> Path:
     if not hasattr(model, "predict_proba"):
         return None
 
     y_proba = model.predict_proba(X_arr)[:, 1]
     try:
         frac_pos, mean_pred = calibration_curve(y_true, y_proba, n_bins=n_bins)
-    except Exception:
+    except ValueError:
         return None
 
     fig, ax = plt.subplots(figsize=(7, 6))
@@ -51,10 +48,14 @@ def plot_calibration(model, X_arr: np.ndarray, y_true,
 
     ax.plot([0, 1], [0, 1], "--", color="#666", label="Perfectly Calibrated")
     ax.plot(mean_pred, frac_pos, "o-", color="#3498db", lw=2, label=model_name)
-    ax.set_title(f"Calibration Plot (Reliability Diagram)\n{model_name} | Early Warning",
-                 color="white", fontsize=12, fontweight="bold")
+    ax.set_title(
+        f"Calibration Plot (Reliability Diagram)\n{model_name} | Early Warning",
+        color="white",
+        fontsize=12,
+        fontweight="bold",
+    )
     ax.set_xlabel("Mean Predicted Probability", color="#aaa")
-    ax.set_ylabel("Fraction of Positives",      color="#aaa")
+    ax.set_ylabel("Fraction of Positives", color="#aaa")
     ax.legend(facecolor="#2a2d37", labelcolor="white", fontsize=10)
 
     plt.tight_layout()
@@ -92,12 +93,7 @@ def print_summary_table() -> None:
     if THRESHOLD_PATH.exists():
         with open(THRESHOLD_PATH, encoding="utf-8") as f:
             thresh_data = json.load(f)
-        thresh_info = thresh_data.get("threshold_analysis", {})
-        print("\n  [Threshold Analysis]")
-        print(f"  Best Threshold (PR curve) : {thresh_info.get('best_threshold', '-')}")
-        print(f"  F1 at Best Threshold      : {thresh_info.get('best_f1', '-')}")
-        print(f"  Precision at Best         : {thresh_info.get('precision_at_best', '-')}")
-        print(f"  Recall at Best            : {thresh_info.get('recall_at_best', '-')}")
+        print("Threshold selected on validation macro F1:", thresh_data.get("threshold"))
     print()
 
     if "classification_report" in metrics_data:
@@ -114,15 +110,15 @@ def plot_summary_dashboard() -> Path:
     tm = metrics_data.get("test_metrics", {})
 
     rows = [
-        ["Model",             metrics_data.get("model_name", "-")],
-        ["F1-Macro",          tm.get("f1_macro", "-")],
-        ["F1-Binary",         tm.get("f1_binary", "-")],
-        ["Precision",         tm.get("precision_binary", "-")],
-        ["Recall",            tm.get("recall_binary", "-")],
+        ["Model", metrics_data.get("model_name", "-")],
+        ["F1-Macro", tm.get("f1_macro", "-")],
+        ["F1-Binary", tm.get("f1_binary", "-")],
+        ["Precision", tm.get("precision_binary", "-")],
+        ["Recall", tm.get("recall_binary", "-")],
         ["Balanced Accuracy", tm.get("balanced_accuracy", "-")],
-        ["ROC-AUC",           tm.get("roc_auc", "-")],
-        ["PR-AUC",            tm.get("pr_auc", "-")],
-        ["Threshold Used",    tm.get("threshold", "-")],
+        ["ROC-AUC", tm.get("roc_auc", "-")],
+        ["PR-AUC", tm.get("pr_auc", "-")],
+        ["Threshold Used", tm.get("threshold", "-")],
         ["Test Sample Count", metrics_data.get("n_test", "-")],
     ]
 
@@ -134,7 +130,8 @@ def plot_summary_dashboard() -> Path:
     table = ax.table(
         cellText=[[str(r[0]), str(r[1])] for r in rows],
         colLabels=["Metric", "Value"],
-        cellLoc="center", loc="center",
+        cellLoc="center",
+        loc="center",
     )
     table.auto_set_font_size(False)
     table.set_fontsize(11)
@@ -147,7 +144,10 @@ def plot_summary_dashboard() -> Path:
 
     ax.set_title(
         "Model Summary Dashboard (Test Set)",
-        color="white", fontsize=13, fontweight="bold", y=0.98,
+        color="white",
+        fontsize=13,
+        fontweight="bold",
+        y=0.98,
     )
     plt.tight_layout()
     output_path = FIGURES_DIR / "eval_summary_dashboard.png"
@@ -170,15 +170,12 @@ def run(model, X_arr: np.ndarray, y_true, model_name: str) -> None:
 
 
 if __name__ == "__main__":
-    import pickle
-    from pipelines.configure.config import BEST_MODEL_PATH, COL_TARGET, TEST_PATH
-    bundle  = pickle.loads(BEST_MODEL_PATH.read_bytes())
-    test_df = pd.read_csv(TEST_PATH)
-    mask    = test_df[COL_TARGET].notna()
-    prep    = bundle["preprocessor"]
-    X_test  = test_df.loc[mask, [c for c in bundle["feature_cols"] if c in test_df.columns]]
-    y_test  = test_df.loc[mask, COL_TARGET].astype(int)
-    cat = prep["cat_encoder"].transform(X_test[prep["cat_cols"]].astype(str).fillna("MISSING"))
-    num = prep["num_scaler"].transform(prep["num_imputer"].transform(X_test[prep["num_cols"]]))
-    X_arr = np.hstack([num, cat])
+    from packages.ml.inference import load_bundle
+    from packages.ml.preprocessing import transform_features
+    from pipelines.configure.config import COL_TARGET, TEST_PATH
+
+    bundle = load_bundle()
+    test_df = pd.read_csv(TEST_PATH, dtype={"kbli_code": str})
+    X_arr = transform_features(test_df[bundle["feature_cols"]], bundle["preprocessor"])
+    y_test = test_df[COL_TARGET].astype(int)
     run(bundle["model"], X_arr, y_test, bundle["model_name"])

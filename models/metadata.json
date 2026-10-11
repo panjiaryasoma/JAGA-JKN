@@ -1,23 +1,21 @@
 {
-  "created_by": "Haidir",
-  "objective": "Early Warning Lead-1 Month (t+1)",
-  "dataset_commit": "9390d36a1adbef6f17aa6804dd6c56d290e06d04",
-  "split_seed": 20261011,
-  "model_seed": 20261012,
-  "algorithms_evaluated": [
-    "Logistic Regression",
-    "Random Forest",
-    "LightGBM"
-  ],
-  "best_model": "LightGBM",
-  "best_val_f1_macro": 0.6166,
-  "test_f1_macro": 0.568,
-  "test_f1_binary": 0.4291,
-  "test_precision": 0.47,
-  "test_recall": 0.3947,
-  "threshold_used": 0.5,
-  "threshold_operational_target": 0.6,
-  "feature_count": 32,
+  "artifact_schema_version": 1,
+  "model_version": "synthetic-958d71c85044cbca",
+  "artifact_file": "best_model.pkl",
+  "artifact_sha256": "83a4bd5362e903659d426a7d55e64756a28a3a381f72d2163a10de4829f3bb2c",
+  "runtime_versions": {
+    "python": "3.12",
+    "numpy": "2.5.4",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.1",
+    "lightgbm": "4.7.0"
+  },
+  "best_model": "Logistic Regression",
+  "threshold_used": 0.4938464098610924,
+  "threshold_selection_dataset": "validation",
+  "threshold_selection_metric": "f1_macro",
+  "operational_threshold": null,
+  "feature_count": 31,
   "features_admitted": [
     "registration_evidence_valid",
     "registration_evidence_quality",
@@ -44,7 +42,6 @@
     "legal_entity_type",
     "province",
     "bpjs_branch_office",
-    "month_index",
     "is_semester_end",
     "evidence_quality_composite",
     "total_evidence_flags",
@@ -52,37 +49,446 @@
     "wage_quality_score",
     "contribution_quality_score"
   ],
-  "disclaimer": "Synthetic benchmark dataset. Strictly forbidden for real JKN operational sanctions.",
-  "all_validation_results": {
+  "status": "EXPERIMENTAL_SYNTHETIC",
+  "calibration_status": "NOT_CALIBRATED",
+  "test_history": "PREVIOUSLY_INSPECTED_SYNTHETIC_BENCHMARK",
+  "provenance": {
+    "git_head": "ff2549427c6437bbe4a7835338974d9b538c8bf1",
+    "working_tree_dirty": true,
+    "source_sha256": "415a70f9ffff8d2d95c64049f5a1a3066f2d93cc07e4a45067128b1c14ee3fd8",
+    "source_files": {
+      "packages/ml/features.py": "c884da7d56db510261441117461a16937ec536a4d36bb98c51658300b0a38c76",
+      "packages/ml/inference.py": "1c4a65c2366bd3e7223fff40711515b031c78c33d3f54a398b3ae54d5a202ab5",
+      "packages/ml/preprocessing.py": "927e6e7d74ea1d516c45f774d7691cb2c28af385a2020f32b1a6bd469ed0099f",
+      "pipelines/audit/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pipelines/audit/eda_plots.py": "c1e16676ecdff043b29c49c537a9dc8dce3afc75caf8b280532d165393e93d80",
+      "pipelines/audit/leakage_audit.py": "f04f23d517922977284d0e83104fb2498ae6df7f412cff939441accfa00af2e2",
+      "pipelines/configure/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pipelines/configure/config.py": "4b700a8394f6b6a9b866694842fe90b73797b5b83788799426c99cef7d557067",
+      "pipelines/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pipelines/evaluation/metrics.py": "80fb8217d6418e804deb74106dfb52e92f25b9f011012c6e96b67a72b89c07d7",
+      "pipelines/evaluation/plots.py": "576be8ee8f5463ad4058978c0032e563989c3105e869c2d7b07c7d5bdd5faa8f",
+      "pipelines/evaluation/shap_analysis.py": "9e4056f103dd0446afa6e1c405178352f408aad20abc13c095c10f19b2fd6c79",
+      "pipelines/evaluation/summary_report.py": "90135ec1f58e768beaf0699a7ef51c10bd2b6418bd1648ba9f1732a691284278",
+      "pipelines/evaluation/threshold_analysis.py": "b352d1cd7e1b4e132a9497b03f4a9199d0aed5d68505031a765c50763567b5ef",
+      "pipelines/features/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pipelines/features/data_split.py": "148933a9eb2986691c6663e963c4866675efaf6e24673b3bb217ef4dc6a90857",
+      "pipelines/features/feature_engineering.py": "03819e133940936b683f84e199dbf63ea6e6e208dfaff19748ae1842d09939a8",
+      "pipelines/training/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pipelines/training/__main__.py": "ca9ac2e9b9c2492671a3b9954fa1507ae5492fa8cfad82e412591d2cbaca51e5",
+      "pipelines/training/artifacts.py": "b6e94de931efaf2308d4c87905711d5af5f1a33235f2b183eb6a50f524717334",
+      "pipelines/training/build_models.py": "ab3443329ce22cb59f8a92c09f47157d8ae49bd97e0367419ed80850ed51df29",
+      "pipelines/training/run_pipeline.py": "51cb7cae33760b09fa0d705c0b5345749a7167b87f105a22b792c4e9dcd1708e",
+      "pipelines/training/train.py": "1de4e0f475e44024253be6bc79a50f0d31de22298b23f92fffbbb912319e4ba9",
+      "pyproject.toml": "2daf01f77cedb6987bedd89f81ede8eddfbf7cb3a2509f7457e4a69805cafd9a",
+      "uv.lock": "74e6466efdf0fab17901dfdb09027276025269b13ba3b0475d853cd3d869fbe7",
+      "config/ml_company_partitions.json": "52dd04052f25a5893bb433fe3d761fa1d144bc4390c866e5f6163bfd16f95a15"
+    }
+  },
+  "regime": "group_time",
+  "model_seed": 20261012,
+  "dataset_commit": "9390d36a1adbef6f17aa6804dd6c56d290e06d04",
+  "data_sha256": {
+    "data/synthetic/curated/curated_kepatuhan_evidence.csv": "d6167efa531a36dc63a44e01754325ab34afab84c3997a72c03108036bda17c2",
+    "data/synthetic/curated/curated_master_badan_usaha.csv": "3780d7aa06f672bc8bce0a8747497a6fa35fa0f2e4fda3b231ee79ba0903022f"
+  },
+  "split_manifest_sha256": "2b82ce9138afafc6c056da556830e94230501eb0e5df526c4bb4a698ddaf8bf6",
+  "validation": {
     "Logistic Regression": {
-      "threshold": 0.5,
-      "f1_macro": 0.599,
-      "f1_binary": 0.5467,
-      "precision_binary": 0.4946,
-      "recall_binary": 0.611,
-      "balanced_accuracy": 0.6067,
-      "roc_auc": 0.6455,
-      "pr_auc": 0.4857
+      "threshold_selection": {
+        "threshold": 0.4938464098610924,
+        "f1_macro": 0.6292362365740833,
+        "selection_dataset": "validation",
+        "selection_metric": "f1_macro",
+        "candidate_count": 191,
+        "operational_threshold": null
+      },
+      "val_metrics": {
+        "threshold": 0.4938464098610924,
+        "n": 225,
+        "positive_count": 105,
+        "accuracy": 0.6311111111111111,
+        "balanced_accuracy": 0.6291666666666667,
+        "f1_macro": 0.6292362365740833,
+        "f1_binary": 0.6028708133971292,
+        "precision_binary": 0.6057692307692307,
+        "recall_binary": 0.6,
+        "confusion_matrix": [
+          [
+            79,
+            41
+          ],
+          [
+            42,
+            63
+          ]
+        ],
+        "per_class": {
+          "NORMAL": {
+            "precision": 0.6528925619834711,
+            "recall": 0.6583333333333333,
+            "f1-score": 0.6556016597510373,
+            "support": 120.0
+          },
+          "NON-NORMAL": {
+            "precision": 0.6057692307692307,
+            "recall": 0.6,
+            "f1-score": 0.6028708133971292,
+            "support": 105.0
+          },
+          "accuracy": 0.6311111111111111,
+          "macro avg": {
+            "precision": 0.6293308963763509,
+            "recall": 0.6291666666666667,
+            "f1-score": 0.6292362365740833,
+            "support": 225.0
+          },
+          "weighted avg": {
+            "precision": 0.6309016740834923,
+            "recall": 0.6311111111111111,
+            "f1-score": 0.6309939314525469,
+            "support": 225.0
+          }
+        },
+        "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.65      0.66      0.66       120\n  NON-NORMAL       0.61      0.60      0.60       105\n\n    accuracy                           0.63       225\n   macro avg       0.63      0.63      0.63       225\nweighted avg       0.63      0.63      0.63       225\n",
+        "roc_auc": 0.5857936507936508,
+        "pr_auc": 0.5176995617863,
+        "brier_score": 0.24746752972991315
+      }
     },
     "Random Forest": {
-      "threshold": 0.5,
-      "f1_macro": 0.5986,
-      "f1_binary": 0.4969,
-      "precision_binary": 0.5186,
-      "recall_binary": 0.4769,
-      "balanced_accuracy": 0.5976,
-      "roc_auc": 0.6668,
-      "pr_auc": 0.497
+      "threshold_selection": {
+        "threshold": 0.4110969467603403,
+        "f1_macro": 0.5801649244597822,
+        "selection_dataset": "validation",
+        "selection_metric": "f1_macro",
+        "candidate_count": 174,
+        "operational_threshold": null
+      },
+      "val_metrics": {
+        "threshold": 0.4110969467603403,
+        "n": 225,
+        "positive_count": 105,
+        "accuracy": 0.5866666666666667,
+        "balanced_accuracy": 0.5976190476190476,
+        "f1_macro": 0.5801649244597822,
+        "f1_binary": 0.6324110671936759,
+        "precision_binary": 0.5405405405405406,
+        "recall_binary": 0.7619047619047619,
+        "confusion_matrix": [
+          [
+            52,
+            68
+          ],
+          [
+            25,
+            80
+          ]
+        ],
+        "per_class": {
+          "NORMAL": {
+            "precision": 0.6753246753246753,
+            "recall": 0.43333333333333335,
+            "f1-score": 0.5279187817258884,
+            "support": 120.0
+          },
+          "NON-NORMAL": {
+            "precision": 0.5405405405405406,
+            "recall": 0.7619047619047619,
+            "f1-score": 0.6324110671936759,
+            "support": 105.0
+          },
+          "accuracy": 0.5866666666666667,
+          "macro avg": {
+            "precision": 0.607932607932608,
+            "recall": 0.5976190476190476,
+            "f1-score": 0.5801649244597822,
+            "support": 225.0
+          },
+          "weighted avg": {
+            "precision": 0.6124254124254124,
+            "recall": 0.5866666666666667,
+            "f1-score": 0.5766818482775226,
+            "support": 225.0
+          }
+        },
+        "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.68      0.43      0.53       120\n  NON-NORMAL       0.54      0.76      0.63       105\n\n    accuracy                           0.59       225\n   macro avg       0.61      0.60      0.58       225\nweighted avg       0.61      0.59      0.58       225\n",
+        "roc_auc": 0.5905555555555555,
+        "pr_auc": 0.5293990273269582,
+        "brier_score": 0.24273563480067492
+      }
     },
     "LightGBM": {
+      "threshold_selection": {
+        "threshold": 0.4137983890914678,
+        "f1_macro": 0.6111111111111112,
+        "selection_dataset": "validation",
+        "selection_metric": "f1_macro",
+        "candidate_count": 178,
+        "operational_threshold": null
+      },
+      "val_metrics": {
+        "threshold": 0.4137983890914678,
+        "n": 225,
+        "positive_count": 105,
+        "accuracy": 0.6266666666666667,
+        "balanced_accuracy": 0.6160714285714286,
+        "f1_macro": 0.6111111111111112,
+        "f1_binary": 0.5333333333333333,
+        "precision_binary": 0.64,
+        "recall_binary": 0.45714285714285713,
+        "confusion_matrix": [
+          [
+            93,
+            27
+          ],
+          [
+            57,
+            48
+          ]
+        ],
+        "per_class": {
+          "NORMAL": {
+            "precision": 0.62,
+            "recall": 0.775,
+            "f1-score": 0.6888888888888889,
+            "support": 120.0
+          },
+          "NON-NORMAL": {
+            "precision": 0.64,
+            "recall": 0.45714285714285713,
+            "f1-score": 0.5333333333333333,
+            "support": 105.0
+          },
+          "accuracy": 0.6266666666666667,
+          "macro avg": {
+            "precision": 0.63,
+            "recall": 0.6160714285714286,
+            "f1-score": 0.6111111111111112,
+            "support": 225.0
+          },
+          "weighted avg": {
+            "precision": 0.6293333333333334,
+            "recall": 0.6266666666666667,
+            "f1-score": 0.6162962962962963,
+            "support": 225.0
+          }
+        },
+        "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.62      0.78      0.69       120\n  NON-NORMAL       0.64      0.46      0.53       105\n\n    accuracy                           0.63       225\n   macro avg       0.63      0.62      0.61       225\nweighted avg       0.63      0.63      0.62       225\n",
+        "roc_auc": 0.6323015873015874,
+        "pr_auc": 0.6324757909804883,
+        "brier_score": 0.2820050683683322
+      }
+    }
+  },
+  "test_metrics": {
+    "threshold": 0.4938464098610924,
+    "n": 450,
+    "positive_count": 204,
+    "accuracy": 0.5911111111111111,
+    "balanced_accuracy": 0.5925394548063128,
+    "f1_macro": 0.5904558404558404,
+    "f1_binary": 0.5740740740740741,
+    "precision_binary": 0.543859649122807,
+    "recall_binary": 0.6078431372549019,
+    "confusion_matrix": [
+      [
+        142,
+        104
+      ],
+      [
+        80,
+        124
+      ]
+    ],
+    "per_class": {
+      "NORMAL": {
+        "precision": 0.6396396396396397,
+        "recall": 0.5772357723577236,
+        "f1-score": 0.6068376068376068,
+        "support": 246.0
+      },
+      "NON-NORMAL": {
+        "precision": 0.543859649122807,
+        "recall": 0.6078431372549019,
+        "f1-score": 0.5740740740740741,
+        "support": 204.0
+      },
+      "accuracy": 0.5911111111111111,
+      "macro avg": {
+        "precision": 0.5917496443812233,
+        "recall": 0.5925394548063128,
+        "f1-score": 0.5904558404558404,
+        "support": 450.0
+      },
+      "weighted avg": {
+        "precision": 0.5962193772720088,
+        "recall": 0.5911111111111111,
+        "f1-score": 0.5919848053181386,
+        "support": 450.0
+      }
+    },
+    "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.64      0.58      0.61       246\n  NON-NORMAL       0.54      0.61      0.57       204\n\n    accuracy                           0.59       450\n   macro avg       0.59      0.59      0.59       450\nweighted avg       0.60      0.59      0.59       450\n",
+    "roc_auc": 0.6022636696955205,
+    "pr_auc": 0.5152077442547333,
+    "brier_score": 0.24400119219996474
+  },
+  "baselines": {
+    "always_normal": {
       "threshold": 0.5,
-      "f1_macro": 0.6166,
-      "f1_binary": 0.5057,
-      "precision_binary": 0.5586,
-      "recall_binary": 0.462,
-      "balanced_accuracy": 0.6148,
-      "roc_auc": 0.6982,
-      "pr_auc": 0.5722
+      "n": 450,
+      "positive_count": 204,
+      "accuracy": 0.5466666666666666,
+      "balanced_accuracy": 0.5,
+      "f1_macro": 0.35344827586206895,
+      "f1_binary": 0.0,
+      "precision_binary": 0.0,
+      "recall_binary": 0.0,
+      "confusion_matrix": [
+        [
+          246,
+          0
+        ],
+        [
+          204,
+          0
+        ]
+      ],
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.5466666666666666,
+          "recall": 1.0,
+          "f1-score": 0.7068965517241379,
+          "support": 246.0
+        },
+        "NON-NORMAL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 204.0
+        },
+        "accuracy": 0.5466666666666666,
+        "macro avg": {
+          "precision": 0.2733333333333333,
+          "recall": 0.5,
+          "f1-score": 0.35344827586206895,
+          "support": 450.0
+        },
+        "weighted avg": {
+          "precision": 0.2988444444444444,
+          "recall": 0.5466666666666666,
+          "f1-score": 0.3864367816091954,
+          "support": 450.0
+        }
+      },
+      "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.55      1.00      0.71       246\n  NON-NORMAL       0.00      0.00      0.00       204\n\n    accuracy                           0.55       450\n   macro avg       0.27      0.50      0.35       450\nweighted avg       0.30      0.55      0.39       450\n",
+      "roc_auc": 0.5,
+      "pr_auc": 0.4533333333333333,
+      "brier_score": 0.4533333333333333
+    },
+    "always_non_normal": {
+      "threshold": 0.5,
+      "n": 450,
+      "positive_count": 204,
+      "accuracy": 0.4533333333333333,
+      "balanced_accuracy": 0.5,
+      "f1_macro": 0.3119266055045872,
+      "f1_binary": 0.6238532110091743,
+      "precision_binary": 0.4533333333333333,
+      "recall_binary": 1.0,
+      "confusion_matrix": [
+        [
+          0,
+          246
+        ],
+        [
+          0,
+          204
+        ]
+      ],
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 246.0
+        },
+        "NON-NORMAL": {
+          "precision": 0.4533333333333333,
+          "recall": 1.0,
+          "f1-score": 0.6238532110091743,
+          "support": 204.0
+        },
+        "accuracy": 0.4533333333333333,
+        "macro avg": {
+          "precision": 0.22666666666666666,
+          "recall": 0.5,
+          "f1-score": 0.3119266055045872,
+          "support": 450.0
+        },
+        "weighted avg": {
+          "precision": 0.2055111111111111,
+          "recall": 0.4533333333333333,
+          "f1-score": 0.2828134556574924,
+          "support": 450.0
+        }
+      },
+      "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.00      0.00      0.00       246\n  NON-NORMAL       0.45      1.00      0.62       204\n\n    accuracy                           0.45       450\n   macro avg       0.23      0.50      0.31       450\nweighted avg       0.21      0.45      0.28       450\n",
+      "roc_auc": 0.5,
+      "pr_auc": 0.4533333333333333,
+      "brier_score": 0.5466666666666666
+    },
+    "training_prior": {
+      "threshold": 0.5,
+      "n": 450,
+      "positive_count": 204,
+      "accuracy": 0.5466666666666666,
+      "balanced_accuracy": 0.5,
+      "f1_macro": 0.35344827586206895,
+      "f1_binary": 0.0,
+      "precision_binary": 0.0,
+      "recall_binary": 0.0,
+      "confusion_matrix": [
+        [
+          246,
+          0
+        ],
+        [
+          204,
+          0
+        ]
+      ],
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.5466666666666666,
+          "recall": 1.0,
+          "f1-score": 0.7068965517241379,
+          "support": 246.0
+        },
+        "NON-NORMAL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 204.0
+        },
+        "accuracy": 0.5466666666666666,
+        "macro avg": {
+          "precision": 0.2733333333333333,
+          "recall": 0.5,
+          "f1-score": 0.35344827586206895,
+          "support": 450.0
+        },
+        "weighted avg": {
+          "precision": 0.2988444444444444,
+          "recall": 0.5466666666666666,
+          "f1-score": 0.3864367816091954,
+          "support": 450.0
+        }
+      },
+      "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.55      1.00      0.71       246\n  NON-NORMAL       0.00      0.00      0.00       204\n\n    accuracy                           0.55       450\n   macro avg       0.27      0.50      0.35       450\nweighted avg       0.30      0.55      0.39       450\n",
+      "roc_auc": 0.5,
+      "pr_auc": 0.4533333333333333,
+      "brier_score": 0.2603448979591837
     }
   }
 }

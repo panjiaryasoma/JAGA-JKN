@@ -1,0 +1,19 @@
+{
+  "model_name": "LightGBM",
+  "objective": "Early Warning Lead-1 Month (t+1)",
+  "test_metrics": {
+    "threshold": 0.5,
+    "accuracy": 0.6128,
+    "balanced_accuracy": 0.5674,
+    "f1_macro": 0.568,
+    "f1_weighted": 0.6045,
+    "f1_binary": 0.4291,
+    "precision_binary": 0.47,
+    "recall_binary": 0.3947,
+    "roc_auc": 0.6279,
+    "pr_auc": 0.4798
+  },
+  "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.68      0.74      0.71      1089\n  NON-NORMAL       0.47      0.39      0.43       636\n\n    accuracy                           0.61      1725\n   macro avg       0.57      0.57      0.57      1725\nweighted avg       0.60      0.61      0.60      1725\n",
+  "n_test": 1725,
+  "n_positive_test": 636
+}

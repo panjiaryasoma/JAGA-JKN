@@ -1,0 +1,4 @@
+# Matplotlib's generated SVG path tokens contain trailing spaces.
+results/evidence/figures/*.svg whitespace=-blank-at-eol
+# Keep the original historical report byte-for-byte, including its whitespace.
+results/historical/ff25494/label_and_leakage_audit.md whitespace=-blank-at-eol

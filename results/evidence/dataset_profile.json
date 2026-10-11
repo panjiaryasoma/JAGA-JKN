@@ -1,0 +1,63 @@
+{
+  "rows": 12000,
+  "companies": 500,
+  "periods": 24,
+  "duplicate_keys": 0,
+  "feature_missing_counts": {
+    "registration_evidence_valid": 0,
+    "registration_evidence_quality": 0,
+    "registration_source_metadata_valid": 0,
+    "registration_period_binding_valid": 0,
+    "registration_worker_set_valid": 0,
+    "registration_explanation_metadata_valid": 0,
+    "wage_evidence_valid": 0,
+    "wage_evidence_quality": 0,
+    "wage_source_metadata_valid": 0,
+    "wage_period_binding_valid": 0,
+    "wage_semantic_consistency_valid": 0,
+    "contribution_evidence_valid": 0,
+    "contribution_evidence_quality": 0,
+    "contribution_source_metadata_valid": 0,
+    "contribution_period_binding_valid": 0,
+    "payment_semantic_consistency_valid": 0,
+    "observed_registered_worker_count": 0,
+    "unexpected_worker_count": 0,
+    "observed_wage_signal_rp": 0,
+    "business_scale": 0,
+    "industry_sector": 0,
+    "kbli_code": 0,
+    "legal_entity_type": 0,
+    "province": 0,
+    "bpjs_branch_office": 0,
+    "is_semester_end": 0,
+    "evidence_quality_composite": 0,
+    "total_evidence_flags": 0,
+    "registration_quality_score": 0,
+    "wage_quality_score": 0,
+    "contribution_quality_score": 0
+  },
+  "risk_mode_counts": {
+    "NORMAL": 7571,
+    "WORKER_REGISTRATION_GAP": 1861,
+    "CONTRIBUTION_PAYMENT_GAP": 1059,
+    "WAGE_REPORTING_GAP": 940,
+    "MULTI_SIGNAL": 569
+  },
+  "quality_counts": {
+    "registration": {
+      "HIGH": 5583,
+      "MEDIUM": 4711,
+      "LOW": 1706
+    },
+    "wage": {
+      "HIGH": 11161,
+      "MEDIUM": 463,
+      "LOW": 376
+    },
+    "contribution": {
+      "HIGH": 11421,
+      "LOW": 320,
+      "MEDIUM": 259
+    }
+  }
+}

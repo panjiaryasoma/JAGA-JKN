@@ -1,0 +1,403 @@
+{
+  "regime": "company_holdout",
+  "model_name": "Logistic Regression",
+  "validation": {
+    "Logistic Regression": {
+      "threshold_selection": {
+        "threshold": 0.4871762358387511,
+        "f1_macro": 0.5858693446946642,
+        "selection_dataset": "validation",
+        "selection_metric": "f1_macro",
+        "candidate_count": 1460,
+        "operational_threshold": null
+      },
+      "val_metrics": {
+        "threshold": 0.4871762358387511,
+        "n": 1725,
+        "positive_count": 671,
+        "accuracy": 0.5884057971014492,
+        "balanced_accuracy": 0.6006392509409898,
+        "f1_macro": 0.5858693446946642,
+        "f1_binary": 0.5534591194968553,
+        "precision_binary": 0.47878128400435255,
+        "recall_binary": 0.6557377049180327,
+        "confusion_matrix": [
+          [
+            575,
+            479
+          ],
+          [
+            231,
+            440
+          ]
+        ],
+        "per_class": {
+          "NORMAL": {
+            "precision": 0.7133995037220844,
+            "recall": 0.5455407969639469,
+            "f1-score": 0.6182795698924731,
+            "support": 1054.0
+          },
+          "NON-NORMAL": {
+            "precision": 0.47878128400435255,
+            "recall": 0.6557377049180327,
+            "f1-score": 0.5534591194968553,
+            "support": 671.0
+          },
+          "accuracy": 0.5884057971014492,
+          "macro avg": {
+            "precision": 0.5960903938632185,
+            "recall": 0.6006392509409898,
+            "f1-score": 0.5858693446946642,
+            "support": 1725.0
+          },
+          "weighted avg": {
+            "precision": 0.6221364165159405,
+            "recall": 0.5884057971014492,
+            "f1-score": 0.5930653541153952,
+            "support": 1725.0
+          }
+        },
+        "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.71      0.55      0.62      1054\n  NON-NORMAL       0.48      0.66      0.55       671\n\n    accuracy                           0.59      1725\n   macro avg       0.60      0.60      0.59      1725\nweighted avg       0.62      0.59      0.59      1725\n",
+        "roc_auc": 0.5923279989367027,
+        "pr_auc": 0.4429286580231686,
+        "brier_score": 0.2452312667061621
+      }
+    },
+    "Random Forest": {
+      "threshold_selection": {
+        "threshold": 0.5398983124846306,
+        "f1_macro": 0.5748978982200093,
+        "selection_dataset": "validation",
+        "selection_metric": "f1_macro",
+        "candidate_count": 1301,
+        "operational_threshold": null
+      },
+      "val_metrics": {
+        "threshold": 0.5398983124846306,
+        "n": 1725,
+        "positive_count": 671,
+        "accuracy": 0.6284057971014493,
+        "balanced_accuracy": 0.578133969803488,
+        "f1_macro": 0.5748978982200093,
+        "f1_binary": 0.42407906558849956,
+        "precision_binary": 0.5339366515837104,
+        "recall_binary": 0.35171385991058124,
+        "confusion_matrix": [
+          [
+            848,
+            206
+          ],
+          [
+            435,
+            236
+          ]
+        ],
+        "per_class": {
+          "NORMAL": {
+            "precision": 0.6609508963367108,
+            "recall": 0.8045540796963947,
+            "f1-score": 0.725716730851519,
+            "support": 1054.0
+          },
+          "NON-NORMAL": {
+            "precision": 0.5339366515837104,
+            "recall": 0.35171385991058124,
+            "f1-score": 0.42407906558849956,
+            "support": 671.0
+          },
+          "accuracy": 0.6284057971014493,
+          "macro avg": {
+            "precision": 0.5974437739602105,
+            "recall": 0.578133969803488,
+            "f1-score": 0.5748978982200093,
+            "support": 1725.0
+          },
+          "weighted avg": {
+            "precision": 0.6115441959139495,
+            "recall": 0.6284057971014493,
+            "f1-score": 0.6083840506245706,
+            "support": 1725.0
+          }
+        },
+        "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.66      0.80      0.73      1054\n  NON-NORMAL       0.53      0.35      0.42       671\n\n    accuracy                           0.63      1725\n   macro avg       0.60      0.58      0.57      1725\nweighted avg       0.61      0.63      0.61      1725\n",
+        "roc_auc": 0.5829018401264645,
+        "pr_auc": 0.4456982501003299,
+        "brier_score": 0.2385847036279234
+      }
+    },
+    "LightGBM": {
+      "threshold_selection": {
+        "threshold": 0.28439188926591275,
+        "f1_macro": 0.5778766390704351,
+        "selection_dataset": "validation",
+        "selection_metric": "f1_macro",
+        "candidate_count": 1310,
+        "operational_threshold": null
+      },
+      "val_metrics": {
+        "threshold": 0.28439188926591275,
+        "n": 1725,
+        "positive_count": 671,
+        "accuracy": 0.5872463768115942,
+        "balanced_accuracy": 0.5829025471060497,
+        "f1_macro": 0.5778766390704351,
+        "f1_binary": 0.5149863760217984,
+        "precision_binary": 0.4742785445420326,
+        "recall_binary": 0.563338301043219,
+        "confusion_matrix": [
+          [
+            635,
+            419
+          ],
+          [
+            293,
+            378
+          ]
+        ],
+        "per_class": {
+          "NORMAL": {
+            "precision": 0.6842672413793104,
+            "recall": 0.6024667931688804,
+            "f1-score": 0.6407669021190716,
+            "support": 1054.0
+          },
+          "NON-NORMAL": {
+            "precision": 0.4742785445420326,
+            "recall": 0.563338301043219,
+            "f1-score": 0.5149863760217984,
+            "support": 671.0
+          },
+          "accuracy": 0.5872463768115942,
+          "macro avg": {
+            "precision": 0.5792728929606715,
+            "recall": 0.5829025471060497,
+            "f1-score": 0.5778766390704351,
+            "support": 1725.0
+          },
+          "weighted avg": {
+            "precision": 0.6025846816240563,
+            "recall": 0.5872463768115942,
+            "f1-score": 0.5918401003734076,
+            "support": 1725.0
+          }
+        },
+        "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.68      0.60      0.64      1054\n  NON-NORMAL       0.47      0.56      0.51       671\n\n    accuracy                           0.59      1725\n   macro avg       0.58      0.58      0.58      1725\nweighted avg       0.60      0.59      0.59      1725\n",
+        "roc_auc": 0.6135465772290359,
+        "pr_auc": 0.533348472372641,
+        "brier_score": 0.28638476406427044
+      }
+    }
+  },
+  "test_history": "PREVIOUSLY_INSPECTED_SYNTHETIC_BENCHMARK",
+  "test_metrics": {
+    "threshold": 0.4871762358387511,
+    "n": 1725,
+    "positive_count": 636,
+    "accuracy": 0.5872463768115942,
+    "balanced_accuracy": 0.6034378952475008,
+    "f1_macro": 0.5833412490128016,
+    "f1_binary": 0.5430038510911425,
+    "precision_binary": 0.45878524945770066,
+    "recall_binary": 0.6650943396226415,
+    "confusion_matrix": [
+      [
+        590,
+        499
+      ],
+      [
+        213,
+        423
+      ]
+    ],
+    "per_class": {
+      "NORMAL": {
+        "precision": 0.7347447073474471,
+        "recall": 0.54178145087236,
+        "f1-score": 0.6236786469344608,
+        "support": 1089.0
+      },
+      "NON-NORMAL": {
+        "precision": 0.45878524945770066,
+        "recall": 0.6650943396226415,
+        "f1-score": 0.5430038510911425,
+        "support": 636.0
+      },
+      "accuracy": 0.5872463768115942,
+      "macro avg": {
+        "precision": 0.5967649784025739,
+        "recall": 0.6034378952475008,
+        "f1-score": 0.5833412490128016,
+        "support": 1725.0
+      },
+      "weighted avg": {
+        "precision": 0.6329996550472275,
+        "recall": 0.5872463768115942,
+        "f1-score": 0.5939342004670113,
+        "support": 1725.0
+      }
+    },
+    "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.73      0.54      0.62      1089\n  NON-NORMAL       0.46      0.67      0.54       636\n\n    accuracy                           0.59      1725\n   macro avg       0.60      0.60      0.58      1725\nweighted avg       0.63      0.59      0.59      1725\n",
+    "roc_auc": 0.6279468498593712,
+    "pr_auc": 0.47636469612370314,
+    "brier_score": 0.23785829614064705
+  },
+  "baselines": {
+    "always_normal": {
+      "threshold": 0.5,
+      "n": 1725,
+      "positive_count": 636,
+      "accuracy": 0.6313043478260869,
+      "balanced_accuracy": 0.5,
+      "f1_macro": 0.38699360341151384,
+      "f1_binary": 0.0,
+      "precision_binary": 0.0,
+      "recall_binary": 0.0,
+      "confusion_matrix": [
+        [
+          1089,
+          0
+        ],
+        [
+          636,
+          0
+        ]
+      ],
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.6313043478260869,
+          "recall": 1.0,
+          "f1-score": 0.7739872068230277,
+          "support": 1089.0
+        },
+        "NON-NORMAL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 636.0
+        },
+        "accuracy": 0.6313043478260869,
+        "macro avg": {
+          "precision": 0.31565217391304345,
+          "recall": 0.5,
+          "f1-score": 0.38699360341151384,
+          "support": 1725.0
+        },
+        "weighted avg": {
+          "precision": 0.39854517958412095,
+          "recall": 0.6313043478260869,
+          "f1-score": 0.4886214888291462,
+          "support": 1725.0
+        }
+      },
+      "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.63      1.00      0.77      1089\n  NON-NORMAL       0.00      0.00      0.00       636\n\n    accuracy                           0.63      1725\n   macro avg       0.32      0.50      0.39      1725\nweighted avg       0.40      0.63      0.49      1725\n",
+      "roc_auc": 0.5,
+      "pr_auc": 0.36869565217391304,
+      "brier_score": 0.36869565217391304
+    },
+    "always_non_normal": {
+      "threshold": 0.5,
+      "n": 1725,
+      "positive_count": 636,
+      "accuracy": 0.36869565217391304,
+      "balanced_accuracy": 0.5,
+      "f1_macro": 0.26937738246505716,
+      "f1_binary": 0.5387547649301143,
+      "precision_binary": 0.36869565217391304,
+      "recall_binary": 1.0,
+      "confusion_matrix": [
+        [
+          0,
+          1089
+        ],
+        [
+          0,
+          636
+        ]
+      ],
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1089.0
+        },
+        "NON-NORMAL": {
+          "precision": 0.36869565217391304,
+          "recall": 1.0,
+          "f1-score": 0.5387547649301143,
+          "support": 636.0
+        },
+        "accuracy": 0.36869565217391304,
+        "macro avg": {
+          "precision": 0.18434782608695652,
+          "recall": 0.5,
+          "f1-score": 0.26937738246505716,
+          "support": 1725.0
+        },
+        "weighted avg": {
+          "precision": 0.13593648393194707,
+          "recall": 0.36869565217391304,
+          "f1-score": 0.1986365394177117,
+          "support": 1725.0
+        }
+      },
+      "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.00      0.00      0.00      1089\n  NON-NORMAL       0.37      1.00      0.54       636\n\n    accuracy                           0.37      1725\n   macro avg       0.18      0.50      0.27      1725\nweighted avg       0.14      0.37      0.20      1725\n",
+      "roc_auc": 0.5,
+      "pr_auc": 0.36869565217391304,
+      "brier_score": 0.6313043478260869
+    },
+    "training_prior": {
+      "threshold": 0.5,
+      "n": 1725,
+      "positive_count": 636,
+      "accuracy": 0.6313043478260869,
+      "balanced_accuracy": 0.5,
+      "f1_macro": 0.38699360341151384,
+      "f1_binary": 0.0,
+      "precision_binary": 0.0,
+      "recall_binary": 0.0,
+      "confusion_matrix": [
+        [
+          1089,
+          0
+        ],
+        [
+          636,
+          0
+        ]
+      ],
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.6313043478260869,
+          "recall": 1.0,
+          "f1-score": 0.7739872068230277,
+          "support": 1089.0
+        },
+        "NON-NORMAL": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 636.0
+        },
+        "accuracy": 0.6313043478260869,
+        "macro avg": {
+          "precision": 0.31565217391304345,
+          "recall": 0.5,
+          "f1-score": 0.38699360341151384,
+          "support": 1725.0
+        },
+        "weighted avg": {
+          "precision": 0.39854517958412095,
+          "recall": 0.6313043478260869,
+          "f1-score": 0.4886214888291462,
+          "support": 1725.0
+        }
+      },
+      "classification_report": "              precision    recall  f1-score   support\n\n      NORMAL       0.63      1.00      0.77      1089\n  NON-NORMAL       0.00      0.00      0.00       636\n\n    accuracy                           0.63      1725\n   macro avg       0.32      0.50      0.39      1725\nweighted avg       0.40      0.63      0.49      1725\n",
+      "roc_auc": 0.5,
+      "pr_auc": 0.36869565217391304,
+      "brier_score": 0.2331251417769376
+    }
+  }
+}

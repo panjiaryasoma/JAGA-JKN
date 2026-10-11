@@ -1,5 +1,5 @@
 """
-Defines 3 operational candidate classification algorithms configured with
+Defines 3 synthetic benchmark candidate classification algorithms configured with
 class_weight='balanced' to handle class imbalance.
 """
 
@@ -7,15 +7,15 @@ import sys
 from pathlib import Path
 
 import lightgbm as lgb
-from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from pipelines.configure.config import MODEL_SEED
 
 
 def get_models() -> dict:
-    
+
     return {
         "Logistic Regression": LogisticRegression(
             class_weight="balanced",
@@ -30,7 +30,7 @@ def get_models() -> dict:
             min_samples_leaf=10,
             class_weight="balanced",
             random_state=MODEL_SEED,
-            n_jobs=-1,
+            n_jobs=1,
         ),
         "LightGBM": lgb.LGBMClassifier(
             n_estimators=500,
@@ -38,7 +38,9 @@ def get_models() -> dict:
             num_leaves=31,
             class_weight="balanced",
             random_state=MODEL_SEED,
-            n_jobs=-1,
+            n_jobs=1,
             verbose=-1,
+            deterministic=True,
+            force_col_wise=True,
         ),
     }
