@@ -16,7 +16,7 @@ import pandas as pd
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import FIGURES_DIR
+from pipelines.configure.config import FIGURES_DIR
 
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -33,12 +33,6 @@ def _style_axes(ax):
 
 
 def compute_shap_values(model, X_arr: np.ndarray, max_samples: int = 500) -> tuple:
-    """
-    Calculate SHAP attribution values using appropriate explainer:
-    - TreeExplainer for Random Forest and LightGBM
-    - LinearExplainer for Logistic Regression
-    Returns: (shap_values, sampled_features).
-    """
     try:
         import shap
     except ImportError:
@@ -128,14 +122,14 @@ def plot_shap_beeswarm(shap_values: np.ndarray, X_sample: np.ndarray,
 
 def run(model, X_arr: np.ndarray, feature_names: list, model_name: str) -> dict:
     """Execute complete SHAP interpretability suite."""
-    print(f"[SHAP] Calculating SHAP attribution values for [{model_name}]...")
+    print(f"[SHAP] Calculating SHAP attribution values for [{model_name}]")
     try:
         sv, X_sample = compute_shap_values(model, X_arr)
 
-        print("[SHAP] Generating SHAP bar chart...")
+        print("[SHAP] Generating SHAP bar chart")
         bar_path = plot_shap_bar(sv, feature_names, model_name)
 
-        print("[SHAP] Generating SHAP beeswarm plot...")
+        print("[SHAP] Generating SHAP beeswarm plot")
         bee_path = plot_shap_beeswarm(sv, X_sample, feature_names, model_name)
 
         print(f"   SHAP Bar Chart: {bar_path}")
@@ -149,7 +143,7 @@ def run(model, X_arr: np.ndarray, feature_names: list, model_name: str) -> dict:
 
 if __name__ == "__main__":
     import pickle
-    from pipelines.ml.config import BEST_MODEL_PATH, COL_TARGET, TEST_PATH
+    from pipelines.configure.config import BEST_MODEL_PATH, COL_TARGET, TEST_PATH
     bundle  = pickle.loads(BEST_MODEL_PATH.read_bytes())
     test_df = pd.read_csv(TEST_PATH)
     mask    = test_df[COL_TARGET].notna()

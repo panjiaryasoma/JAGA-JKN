@@ -15,7 +15,7 @@ from sklearn.preprocessing import LabelEncoder
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import (
+from pipelines.configure.config import (
     COL_BINARY_LABEL,
     COL_COMPANY_ID,
     COL_PERIOD,
@@ -123,18 +123,11 @@ def write_audit_report(df: pd.DataFrame, corr_df: pd.DataFrame, mi_df: pd.DataFr
     n_normal     = (df[COL_BINARY_LABEL] == 0).sum()
     n_non_normal = (df[COL_BINARY_LABEL] == 1).sum()
 
-    risk_icons = {
-        "VERY_HIGH": "🔴",
-        "HIGH": "🟠",
-        "MEDIUM": "🟡",
-        "LOW": "🟢",
-        "ERROR": "⚪",
-    }
 
     lines = [
-        "# JAGA-JKN | Feature Leakage Audit & EDA Report",
+        "# Feature Leakage Audit & EDA Report",
         "",
-        "**Lead ML Engineer:** Haidir (Dir)  ",
+        "**Lead ML Engineer:** Haidir ",
         "**Dataset Commit Reference:** `9390d36a1adbef6f17aa6804dd6c56d290e06d04`  ",
         f"**Total Records:** {total_records:,} | **Enterprises:** {df[COL_COMPANY_ID].nunique()} "
         f"| **Observation Period:** {df[COL_PERIOD].min()} to {df[COL_PERIOD].max()}  ",
@@ -169,8 +162,7 @@ def write_audit_report(df: pd.DataFrame, corr_df: pd.DataFrame, mi_df: pd.DataFr
     ]
     for _, row in corr_df.iterrows():
         c = f"{row['correlation']:.4f}" if row["correlation"] is not None else "N/A"
-        icon = risk_icons.get(row["leakage_risk"], "⚪")
-        lines.append(f"| `{row['feature']}` | {c} | {icon} {row['leakage_risk']} | {row['decision']} |")
+        lines.append(f"| `{row['feature']}` | {c} | {row['leakage_risk']} | {row['decision']} |")
 
     lines += [
         "",
@@ -208,7 +200,7 @@ def write_audit_report(df: pd.DataFrame, corr_df: pd.DataFrame, mi_df: pd.DataFr
         "",
         "---",
         "",
-        "> Disclaimer: Synthetic benchmark dataset. Strictly forbidden for real JKN operational sanctions.",
+        "> Disclaimer: Synthetic benchmark dataset.",
     ]
 
     LEAKAGE_AUDIT_PATH.write_text("\n".join(lines), encoding="utf-8")
@@ -217,13 +209,13 @@ def write_audit_report(df: pd.DataFrame, corr_df: pd.DataFrame, mi_df: pd.DataFr
 
 def run(df: pd.DataFrame) -> tuple:
     """Execute complete leakage audit and generate documentation. Returns (corr_df, mi_df)."""
-    print("[Audit] Computing Point-Biserial correlation...")
+    print("[Audit] Computing Point-Biserial correlation")
     corr_df = audit_correlation(df)
 
-    print("[Audit] Computing Mutual Information scores...")
+    print("[Audit] Computing Mutual Information scores")
     mi_df = audit_mutual_information(df)
 
-    print("[Audit] Writing formal audit documentation...")
+    print("[Audit] Writing formal audit documentation")
     write_audit_report(df, corr_df, mi_df)
 
     return corr_df, mi_df

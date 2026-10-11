@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import (
+from pipelines.configure.config import (
     ALL_FEATURES,
     COL_BINARY_LABEL,
     COL_COMPANY_ID,

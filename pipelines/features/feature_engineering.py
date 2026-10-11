@@ -12,7 +12,7 @@ import pandas as pd
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import (
+from pipelines.configure.config import (
     ALL_EVIDENCE_VALID_COLS,
     COL_BINARY_LABEL,
     COL_COMPANY_ID,
@@ -93,7 +93,7 @@ def build_full_dataset() -> pd.DataFrame:
     engineer composite features, and generate target variables.
     Returns complete DataFrame ready for stratified partitioning.
     """
-    print("[Feature Engineering] Loading raw curated data...")
+    print("[Feature Engineering] Loading raw curated data")
     evidence_df = pd.read_csv(DATA_CURATED_EVIDENCE)
     master_df   = pd.read_csv(DATA_MASTER_BU)
 
@@ -108,16 +108,16 @@ def build_full_dataset() -> pd.DataFrame:
     df = evidence_df.merge(master_clean, on=COL_COMPANY_ID, how="left")
     df = df.sort_values([COL_COMPANY_ID, COL_PERIOD]).reset_index(drop=True)
 
-    print("[Feature Engineering] Constructing binary target variable...")
+    print("[Feature Engineering] Constructing binary target variable")
     df[COL_BINARY_LABEL] = (df[COL_RAW_RISK_MODE] != "NORMAL").astype(int)
 
-    print("[Feature Engineering] Engineering temporal and composite features...")
+    print("[Feature Engineering] Engineering temporal and composite features")
     df = _cast_boolean_columns(df)
     df = _normalize_quality_columns(df)
     df = _add_temporal_features(df)
     df = _add_quality_scores(df)
 
-    print("[Feature Engineering] Constructing lead-1 (t+1 early warning) target...")
+    print("[Feature Engineering] Constructing lead-1 (t+1 early warning) target")
     df[COL_TARGET] = df.groupby(COL_COMPANY_ID)[COL_BINARY_LABEL].shift(-1)
 
     print(f"   Final dataset shape: {df.shape} | Period span: {df[COL_PERIOD].min()} to {df[COL_PERIOD].max()}")

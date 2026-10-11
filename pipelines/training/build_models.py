@@ -11,7 +11,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import MODEL_SEED
+from pipelines.configure.config import MODEL_SEED
 
 
 def get_models() -> dict:

@@ -17,7 +17,7 @@ import pandas as pd
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import COL_BINARY_LABEL, COL_RAW_RISK_MODE, FIGURES_DIR
+from pipelines.configure.config import COL_BINARY_LABEL, COL_RAW_RISK_MODE, FIGURES_DIR
 
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -68,7 +68,7 @@ def plot_label_distribution(df: pd.DataFrame) -> Path:
         ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 40,
                  f"{val:,}\n({pct:.1f}%)", ha="center", color="white", fontsize=10)
 
-    plt.suptitle("JAGA-JKN — Dataset Label Distribution Overview",
+    plt.suptitle("Dataset Label Distribution Overview",
                  color="white", fontsize=14, fontweight="bold", y=1.02)
     plt.tight_layout()
     output_path = FIGURES_DIR / "eda_01_label_distribution.png"
@@ -135,15 +135,15 @@ def plot_feature_correlation_heatmap(corr_df: pd.DataFrame) -> Path:
 
 def run(df: pd.DataFrame, corr_df: pd.DataFrame = None) -> list:
     """Execute complete EDA plotting suite. Returns list of generated image paths."""
-    print("[EDA] Generating label distribution plot...")
+    print("[EDA] Generating label distribution plot")
     p1 = plot_label_distribution(df)
 
-    print("[EDA] Generating evidence quality distribution plot...")
+    print("[EDA] Generating evidence quality distribution plot")
     p2 = plot_evidence_quality(df)
 
     paths = [p1, p2]
     if corr_df is not None:
-        print("[EDA] Generating feature correlation plot...")
+        print("[EDA] Generating feature correlation plot")
         p3 = plot_feature_correlation_heatmap(corr_df)
         paths.append(p3)
 

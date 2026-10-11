@@ -25,7 +25,7 @@ from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import (
+from pipelines.configure.config import (
     ALL_FEATURES,
     BEST_MODEL_PATH,
     CATEGORICAL_FEATURES,

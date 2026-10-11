@@ -1,6 +1,6 @@
-# JAGA-JKN | Feature Leakage Audit & EDA Report
+# Feature Leakage Audit & EDA Report
 
-**Lead ML Engineer:** Haidir (Dir)  
+**Lead ML Engineer:** Haidir 
 **Dataset Commit Reference:** `9390d36a1adbef6f17aa6804dd6c56d290e06d04`  
 **Total Records:** 12,000 | **Enterprises:** 500 | **Observation Period:** 2025-01 to 2026-12  
 
@@ -31,42 +31,42 @@
 
 | Feature | Correlation | Leakage Risk | Policy Decision |
 |---|---:|---|---|
-| `contribution_payment_gap_observed` | 0.5180 | 🟠 HIGH | FORBIDDEN (Policy) |
-| `wage_discrepancy_detected` | 0.4959 | 🟠 HIGH | FORBIDDEN (Policy) |
-| `wage_discrepancy_signal_rp` | 0.4532 | 🟠 HIGH | FORBIDDEN (Policy) |
-| `registration_discrepancy_detected` | 0.4336 | 🟠 HIGH | FORBIDDEN (Policy) |
-| `missing_worker_count` | 0.3402 | 🟡 MEDIUM | FORBIDDEN (Policy) |
-| `month_index` | 0.2509 | 🟡 MEDIUM | HOLD |
-| `unexpected_worker_count` | -0.1046 | 🟢 LOW | ALLOWED |
-| `is_semester_end` | 0.0449 | 🟢 LOW | ALLOWED |
-| `observed_registered_worker_count` | -0.0374 | 🟢 LOW | ALLOWED |
-| `observed_wage_signal_rp` | -0.0309 | 🟢 LOW | ALLOWED |
-| `registration_evidence_quality` | 0.0000 | 🟢 LOW | ALLOWED |
-| `registration_evidence_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `registration_period_binding_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `registration_source_metadata_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `contribution_evidence_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `wage_semantic_consistency_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `registration_worker_set_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `registration_explanation_metadata_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `wage_evidence_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `wage_evidence_quality` | 0.0000 | 🟢 LOW | ALLOWED |
-| `contribution_evidence_quality` | 0.0000 | 🟢 LOW | ALLOWED |
-| `contribution_source_metadata_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `contribution_period_binding_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `payment_semantic_consistency_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `wage_source_metadata_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `wage_period_binding_valid` | 0.0000 | 🟢 LOW | ALLOWED |
-| `registration_quality_score` | 0.0000 | 🟢 LOW | ALLOWED |
-| `evidence_quality_composite` | 0.0000 | 🟢 LOW | ALLOWED |
-| `wage_quality_score` | 0.0000 | 🟢 LOW | ALLOWED |
-| `contribution_quality_score` | 0.0000 | 🟢 LOW | ALLOWED |
-| `total_evidence_flags` | 0.0000 | 🟢 LOW | ALLOWED |
-| `registration_rule_result` | 0.0000 | 🟢 LOW | FORBIDDEN (Policy) |
-| `wage_rule_result` | 0.0000 | 🟢 LOW | FORBIDDEN (Policy) |
-| `contribution_rule_result` | 0.0000 | 🟢 LOW | FORBIDDEN (Policy) |
-| `registration_review_state` | 0.0000 | 🟢 LOW | FORBIDDEN (Policy) |
-| `wage_review_state` | 0.0000 | 🟢 LOW | FORBIDDEN (Policy) |
+| `contribution_payment_gap_observed` | 0.5180 | HIGH | FORBIDDEN (Policy) |
+| `wage_discrepancy_detected` | 0.4959 | HIGH | FORBIDDEN (Policy) |
+| `wage_discrepancy_signal_rp` | 0.4532 | HIGH | FORBIDDEN (Policy) |
+| `registration_discrepancy_detected` | 0.4336 | HIGH | FORBIDDEN (Policy) |
+| `missing_worker_count` | 0.3402 | MEDIUM | FORBIDDEN (Policy) |
+| `month_index` | 0.2509 | MEDIUM | HOLD |
+| `unexpected_worker_count` | -0.1046 | LOW | ALLOWED |
+| `is_semester_end` | 0.0449 | LOW | ALLOWED |
+| `observed_registered_worker_count` | -0.0374 | LOW | ALLOWED |
+| `observed_wage_signal_rp` | -0.0309 | LOW | ALLOWED |
+| `registration_evidence_quality` | 0.0000 | LOW | ALLOWED |
+| `registration_evidence_valid` | 0.0000 | LOW | ALLOWED |
+| `registration_period_binding_valid` | 0.0000 | LOW | ALLOWED |
+| `registration_source_metadata_valid` | 0.0000 | LOW | ALLOWED |
+| `contribution_evidence_valid` | 0.0000 | LOW | ALLOWED |
+| `wage_semantic_consistency_valid` | 0.0000 | LOW | ALLOWED |
+| `registration_worker_set_valid` | 0.0000 | LOW | ALLOWED |
+| `registration_explanation_metadata_valid` | 0.0000 | LOW | ALLOWED |
+| `wage_evidence_valid` | 0.0000 | LOW | ALLOWED |
+| `wage_evidence_quality` | 0.0000 | LOW | ALLOWED |
+| `contribution_evidence_quality` | 0.0000 | LOW | ALLOWED |
+| `contribution_source_metadata_valid` | 0.0000 | LOW | ALLOWED |
+| `contribution_period_binding_valid` | 0.0000 | LOW | ALLOWED |
+| `payment_semantic_consistency_valid` | 0.0000 | LOW | ALLOWED |
+| `wage_source_metadata_valid` | 0.0000 | LOW | ALLOWED |
+| `wage_period_binding_valid` | 0.0000 | LOW | ALLOWED |
+| `registration_quality_score` | 0.0000 | LOW | ALLOWED |
+| `evidence_quality_composite` | 0.0000 | LOW | ALLOWED |
+| `wage_quality_score` | 0.0000 | LOW | ALLOWED |
+| `contribution_quality_score` | 0.0000 | LOW | ALLOWED |
+| `total_evidence_flags` | 0.0000 | LOW | ALLOWED |
+| `registration_rule_result` | 0.0000 | LOW | FORBIDDEN (Policy) |
+| `wage_rule_result` | 0.0000 | LOW | FORBIDDEN (Policy) |
+| `contribution_rule_result` | 0.0000 | LOW | FORBIDDEN (Policy) |
+| `registration_review_state` | 0.0000 | LOW | FORBIDDEN (Policy) |
+| `wage_review_state` | 0.0000 | LOW | FORBIDDEN (Policy) |
 
 ---
 

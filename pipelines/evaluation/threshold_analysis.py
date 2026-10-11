@@ -18,7 +18,7 @@ from sklearn.metrics import average_precision_score, precision_recall_curve
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import (
+from pipelines.configure.config import (
     FIGURES_DIR,
     OPERATIONAL_THRESHOLD,
     RESULTS_DIR,
@@ -126,7 +126,7 @@ def run(model_name: str, y_true, y_proba) -> dict:
 
 if __name__ == "__main__":
     import pickle
-    from pipelines.ml.config import BEST_MODEL_PATH, COL_TARGET, TEST_PATH
+    from pipelines.configure.config import BEST_MODEL_PATH, COL_TARGET, TEST_PATH
     import pandas as pd
     bundle  = pickle.loads(BEST_MODEL_PATH.read_bytes())
     test_df = pd.read_csv(TEST_PATH)

@@ -18,7 +18,7 @@ from sklearn.calibration import calibration_curve
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from pipelines.ml.config import FIGURES_DIR, METRICS_PATH, RESULTS_DIR, THRESHOLD_PATH
+from pipelines.configure.config import FIGURES_DIR, METRICS_PATH, RESULTS_DIR, THRESHOLD_PATH
 
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -74,9 +74,9 @@ def print_summary_table() -> None:
     tm = metrics_data.get("test_metrics", {})
 
     print()
-    print("=" * 70)
-    print("  BEST MODEL EVALUATION SUMMARY — EARLY WARNING (t+1)")
-    print("=" * 70)
+    print("-" * 70)
+    print("  MODEL EVALUATION SUMMARY — EARLY WARNING (t+1)")
+    print("-" * 70)
     print(f"  Model Name       : {metrics_data.get('model_name', '-')}")
     print(f"  F1-Macro         : {tm.get('f1_macro', '-')}")
     print(f"  F1-Binary        : {tm.get('f1_binary', '-')}")
@@ -87,7 +87,7 @@ def print_summary_table() -> None:
     print(f"  PR-AUC           : {tm.get('pr_auc', '-')}")
     print(f"  Threshold Used   : {tm.get('threshold', '-')}")
     print(f"  Test Sample Count: {metrics_data.get('n_test', '-')}")
-    print("=" * 70)
+    print("-" * 70)
 
     if THRESHOLD_PATH.exists():
         with open(THRESHOLD_PATH, encoding="utf-8") as f:
@@ -146,7 +146,7 @@ def plot_summary_dashboard() -> Path:
         cell.set_edgecolor("#444")
 
     ax.set_title(
-        "JAGA-JKN ML — Best Model Summary Dashboard (Test Set)",
+        "Model Summary Dashboard (Test Set)",
         color="white", fontsize=13, fontweight="bold", y=0.98,
     )
     plt.tight_layout()
@@ -159,19 +159,19 @@ def plot_summary_dashboard() -> Path:
 
 def run(model, X_arr: np.ndarray, y_true, model_name: str) -> None:
     """Execute complete reporting suite."""
-    print("[Summary] Generating calibration plot...")
+    print("[Summary] Generating calibration plot")
     plot_calibration(model, X_arr, y_true, model_name)
 
-    print("[Summary] Generating visual dashboard table...")
+    print("[Summary] Generating visual dashboard table")
     plot_summary_dashboard()
 
-    print("[Summary] Printing evaluation summary table...")
+    print("[Summary] Printing evaluation summary table")
     print_summary_table()
 
 
 if __name__ == "__main__":
     import pickle
-    from pipelines.ml.config import BEST_MODEL_PATH, COL_TARGET, TEST_PATH
+    from pipelines.configure.config import BEST_MODEL_PATH, COL_TARGET, TEST_PATH
     bundle  = pickle.loads(BEST_MODEL_PATH.read_bytes())
     test_df = pd.read_csv(TEST_PATH)
     mask    = test_df[COL_TARGET].notna()
