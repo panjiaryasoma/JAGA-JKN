@@ -60,6 +60,6 @@ uv sync --locked --group synthetic --group ml
 uv run --locked python -m apps.api --demo
 ```
 
-Swagger tersedia pada `http://127.0.0.1:8000/docs`. Token demo hanya untuk reviewer dan supervisor; pemakaian publik/produksi memerlukan kontrol keamanan lanjutan. Model ML tetap eksperimen sintetis dan belum diaktifkan untuk prediksi otomatis dalam API.
+Swagger tersedia pada `http://127.0.0.1:8000/docs`. Token demo hanya untuk reviewer dan supervisor; pemakaian publik/produksi memerlukan kontrol keamanan lanjutan. Model ML tetap sintetis, tidak dikalibrasi dan bukan penetapan kepatuhan. Default API tetap NOT_CONFIGURED. Setelah training tepercaya, endpoint read-only eksperimental dapat diaktifkan dengan JAGA_EXPERIMENTAL_ML_ENABLED=1; keputusan kebijakan tetap UNRESOLVED.
 
 Dokumentasi lengkap: [Panduan Backend](apps/api/README.md) dan [Kontrak API](docs/05_PREPRODUCTION/01_CONTRACTS_ACTIVE/API_CONTRACT.md).
