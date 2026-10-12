@@ -10,6 +10,22 @@ JAGA-JKN adalah platform web decision-support berbasis AI/ML untuk membantu BPJS
 
 Project scaffold / preproduction baseline untuk Healthkathon BPJS Kesehatan 2026.
 
+## Frontend dan ruang telaah
+
+Landing page, panduan penggunaan, direktori badan usaha, telaah bukti bulanan,
+serta kasus review tersedia dalam frontend prototipe. Jalankan frontend dan API
+pada origin yang sama dari root repository:
+
+```bash
+uv sync --locked
+uv run --locked python -m apps.web --demo
+```
+
+Buka `http://127.0.0.1:8000/`. Penjelajahan data sintetis tidak perlu masuk;
+pencatatan kasus memakai kunci reviewer/supervisor yang dicetak launcher.
+Panduan, batas penggunaan, preview mandiri, dan pengujian tersedia di
+[README frontend](apps/web/README.md).
+
 ## Struktur utama
 
 ```text
