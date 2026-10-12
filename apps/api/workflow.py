@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, Header, Query, Request, Response
 from fastapi.responses import JSONResponse
 
 from apps.api.auth import require_actor
+from apps.api.experimental_ml import ExperimentalResult, InferenceUnavailable, assess
 from apps.api.schemas import (
     DataResponse,
     EmptyQuery,
@@ -67,6 +68,7 @@ class Dashboard(ReadModel):
 
 class MLStatus(ReadModel):
     status: Literal["NOT_CONFIGURED"] = "NOT_CONFIGURED"
+    experimental_status: Literal["DISABLED", "UNAVAILABLE", "READY"] = "DISABLED"
     model_version: None = None
     prediction_available: Literal[False] = False
 
@@ -77,6 +79,7 @@ class Capabilities(ReadModel):
     case_store: Literal["AVAILABLE", "UNAVAILABLE"]
     authentication: Literal["DEMO_STATIC_TOKEN", "NOT_CONFIGURED"]
     ml: Literal["NOT_CONFIGURED"] = "NOT_CONFIGURED"
+    experimental_ml: Literal["DISABLED", "UNAVAILABLE", "READY"] = "DISABLED"
     policy: Literal["UNRESOLVED"] = "UNRESOLVED"
 
 
@@ -190,6 +193,7 @@ def capabilities(request: Request, params: NoQuery):
         data=Capabilities(
             snapshot="AVAILABLE" if request.app.state.snapshot is not None else "UNAVAILABLE",
             case_store=persistence,
+            experimental_ml=request.app.state.ml_experimental_status,
             authentication="DEMO_STATIC_TOKEN"
             if request.app.state.auth_registry
             else "NOT_CONFIGURED",
@@ -198,8 +202,40 @@ def capabilities(request: Request, params: NoQuery):
 
 
 @router.get("/ml/status", response_model=ObjectResponse[MLStatus], tags=["Capabilities"])
-def ml_status(params: NoQuery):
-    return ObjectResponse[MLStatus](data=MLStatus())
+def ml_status(request: Request, params: NoQuery):
+    return ObjectResponse[MLStatus](
+        data=MLStatus(experimental_status=request.app.state.ml_experimental_status)
+    )
+
+
+@router.get(
+    "/ml/experimental/badan-usaha/{id_badan_usaha}/{periode_bulan}",
+    response_model=DataResponse[ExperimentalResult],
+    tags=["Experimental ML"],
+)
+def experimental_ml(
+    id_badan_usaha: CompanyId,
+    periode_bulan: Period,
+    request: Request,
+    actor: ActorDep,
+    params: NoQuery,
+):
+    state = request.app.state
+    if state.ml_experimental_status == "DISABLED":
+        raise WorkflowError(503, "ML_EXPERIMENT_DISABLED")
+    if state.snapshot is None:
+        raise WorkflowError(503, state.dataset_error)
+    if state.ml_service is None:
+        raise WorkflowError(503, "ML_ARTIFACT_UNAVAILABLE")
+    company = state.snapshot.company_index.get(id_badan_usaha)
+    evidence = state.snapshot.evidence_index.get((id_badan_usaha, periode_bulan))
+    if company is None or evidence is None:
+        raise WorkflowError(404, "NOT_FOUND")
+    try:
+        output = assess(state.snapshot, state.ml_service, company, evidence)
+    except InferenceUnavailable as exc:
+        raise WorkflowError(503, "ML_INFERENCE_UNAVAILABLE") from exc
+    return DataResponse[ExperimentalResult](data=output, meta=state.snapshot.ref)
 
 
 @router.get("/dashboard", response_model=DataResponse[Dashboard], tags=["Dataset"])
