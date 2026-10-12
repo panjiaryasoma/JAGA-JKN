@@ -1,0 +1,50 @@
+name: Frontend verification
+
+on:
+  pull_request:
+    paths: ['apps/web/**', 'apps/api/**', 'packages/data/**', 'packages/domain/**', 'tests/frontend/**', 'scripts/build_web_preview.py', 'data/synthetic/curated/**', 'config/backend_dataset_manifest.json', 'pyproject.toml', 'uv.lock', '.github/workflows/frontend.yml']
+  push:
+    branches: [main, panji-frontend-implementation]
+    paths: ['apps/web/**', 'apps/api/**', 'packages/data/**', 'packages/domain/**', 'tests/frontend/**', 'scripts/build_web_preview.py', 'data/synthetic/curated/**', 'config/backend_dataset_manifest.json', 'pyproject.toml', 'uv.lock', '.github/workflows/frontend.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install locked Python dependencies
+        run: |
+          python -m pip install uv==0.12.23
+          uv sync --locked --python 3.12
+      - name: JavaScript semantics, API boundaries, and view tests
+        run: node --test apps/web/tests/*.test.mjs
+      - name: Frontend origin and persistent workflow integration
+        run: uv run --no-sync pytest tests/frontend -q --junitxml=artifacts/frontend-tests.xml
+      - name: Python checks
+        run: |
+          uv run --no-sync ruff check apps/web tests/frontend scripts/build_web_preview.py
+          uv run --no-sync ruff format --check apps/web tests/frontend scripts/build_web_preview.py
+      - name: Build standalone preview
+        run: uv run --no-sync python -m scripts.build_web_preview
+      - name: Upload review preview and test evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: jaga-jkn-frontend-preview
+          path: |
+            apps/web/dist/JAGA_JKN_frontend_preview.html
+            artifacts/frontend-tests.xml
+          if-no-files-found: error
+          retention-days: 14
