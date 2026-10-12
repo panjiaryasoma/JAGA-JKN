@@ -134,6 +134,7 @@ Only the trusted local `models/best_model.pkl` and its adjacent `metadata.json` 
 - `GET /api/v1/capabilities` exposes the same independent state as `experimental_ml`.
 - Authenticated `GET /api/v1/ml/experimental/badan-usaha/{id_badan_usaha}/{periode_bulan}` returns an existing `data/meta` envelope, an explicitly experimental synthetic score or `ABSTAIN` with `null` score/prediction when evidence is insufficient.
 - Disabled, missing or invalid bundle yields an explicit 503; it does not break dataset browsing, core readiness, dashboard or persisted cases. Exceptions and artifact paths never appear in HTTP error bodies.
+- Successful predictions require complete values, the exact next calendar month, the loaded model's threshold, and an integer decision consistent with `score >= threshold`. Inconsistent scorer output returns `503 ML_INFERENCE_UNAVAILABLE`; abstention requires a reason and null scored values.
 - The model predicts a next-month simulator label. The uncalibrated score is not a probability of JKN non-compliance. Its validation-selected threshold is not operationally authorized. `policy_status=UNRESOLVED` remains unchanged.
 - No POST, case mutation, legal sanction, real-world external integration, risk ranking or background scoring is introduced.
 
@@ -145,4 +146,4 @@ uv run --no-sync pytest tests/ml -q
 uv run --no-sync python scripts/smoke_backend.py
 ```
 
-Backend CI tests default-disabled operation without optional ML dependencies; ML CI rebuilds a trusted bundle in each pinned Python version before exercising the HTTP integration test. Contracts: `docs/05_PREPRODUCTION/01_CONTRACTS_ACTIVE/INFERENCE_CONTRACT.md`. Serving remains a local, synthetic, experimental prototype and requires separate business/domain acceptance.
+Backend CI tests default-disabled operation without optional ML dependencies; ML CI rebuilds a trusted bundle in each pinned Python version before exercising the HTTP integration test. ML CI also runs for serving, data/manifest, domain-model and backend-test changes, including pushes to `main` and the serving branch. Its integration step sets the test-only `JAGA_REQUIRE_ML_ARTIFACT=1`, so a missing model fails verification instead of skipping. Contracts: `docs/05_PREPRODUCTION/01_CONTRACTS_ACTIVE/INFERENCE_CONTRACT.md`. Serving remains a local, synthetic, experimental prototype and requires separate business/domain acceptance.

@@ -1,6 +1,7 @@
 """Experimental ML serving: failure modes, access control and serving isolation."""
 
 import json
+import os
 import sys
 from dataclasses import replace
 from pathlib import Path
@@ -184,6 +185,8 @@ def test_real_trained_artifact_http_integration(snapshot):
     """Runs after ML CI training; backend-only CI deliberately has no pickle."""
     model_path = Path(__file__).resolve().parents[2] / "models/best_model.pkl"
     if not model_path.is_file():
+        if os.environ.get("JAGA_REQUIRE_ML_ARTIFACT") == "1":
+            pytest.fail("Required ML artifact is missing; integration verification cannot skip")
         pytest.skip("ML bundle not installed; run the ML pipeline first")
     from apps.api.config import ROOT
 
@@ -289,3 +292,122 @@ def test_wrong_model_response_never_escapes(snapshot, monkeypatch):
     )
     with pytest.raises(InferenceUnavailable, match="contract mismatch"):
         assess(loaded, ModelService({}, "synthetic-test", "TestModel"), company, evidence)
+
+
+@pytest.fixture
+def scoring_boundary(snapshot, monkeypatch):
+    """Exercise the real adapter and HTTP boundary with a faulty scorer."""
+    from packages.ml.features import RAW_COLUMNS
+
+    prediction = {
+        "status": "EXPERIMENTAL_SYNTHETIC",
+        "policy_status": "UNRESOLVED",
+        "is_synthetic": True,
+        "period_month": "2025-01",
+        "target_period": "2025-02",
+        "model_version": "synthetic-test",
+        "model_name": "TestModel",
+        "score": 0.25,
+        "score_semantics": "uncalibrated_synthetic_non_normal_score",
+        "threshold": 0.5,
+        "experimental_prediction": 0,
+    }
+    monkeypatch.setattr(
+        "apps.api.main.open_trusted_model",
+        lambda *args: ModelService({"threshold": 0.5}, "synthetic-test", "TestModel"),
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "packages.ml.inference",
+        SimpleNamespace(
+            record_from_api=lambda *args: {key: 1 for key in RAW_COLUMNS},
+            predict_record=lambda *args: dict(prediction),
+        ),
+    )
+    with TestClient(create_app(enabled(snapshot))) as client:
+        yield client, prediction
+
+
+@pytest.mark.parametrize(
+    "updates",
+    [
+        {"score": None},
+        {"threshold": None},
+        {"experimental_prediction": None},
+        {"target_period": None},
+        {"target_period": "2025-01"},
+        {"target_period": "2025-03"},
+        {"target_period": "not-a-month"},
+        {"score": 0.9, "experimental_prediction": 0},
+        {"score": 0.5, "experimental_prediction": 0},
+        {"score": 0.25, "experimental_prediction": 1},
+        {"threshold": 0.4},
+        {"score": 0.75, "experimental_prediction": True},
+    ],
+    ids=[
+        "null-score",
+        "null-threshold",
+        "null-prediction",
+        "null-target",
+        "same-month-target",
+        "two-month-target",
+        "invalid-target-format",
+        "wrong-positive-decision",
+        "threshold-equality-is-positive",
+        "wrong-negative-decision",
+        "threshold-differs-from-bundle",
+        "boolean-is-not-binary-integer",
+    ],
+)
+def test_inconsistent_scorer_output_is_unavailable(scoring_boundary, updates):
+    client, prediction = scoring_boundary
+    prediction.update(updates)
+    assert_safe_error(client.get(PREDICT, headers=auth()), 503, "ML_INFERENCE_UNAVAILABLE")
+    assert client.get("/api/v1/cases", headers=auth()).json()["data"] == []
+    assert client.get("/health/ready").status_code == 200
+
+
+@pytest.mark.parametrize("score,decision", [(0.0, 0), (0.5, 1), (1.0, 1)])
+def test_consistent_scorer_output_preserves_threshold_boundary(scoring_boundary, score, decision):
+    client, prediction = scoring_boundary
+    prediction.update(score=score, experimental_prediction=decision)
+    response = client.get(PREDICT, headers=auth())
+    assert response.status_code == 200
+    result = response.json()["data"]
+    assert result["score"] == score
+    assert result["experimental_prediction"] == decision
+    assert result["threshold"] == 0.5
+    assert result["target_period"] == "2025-02"
+
+
+def test_successful_result_accepts_next_calendar_year():
+    result = success_result(
+        None,
+        ModelService({}, "synthetic-test", "TestModel"),
+        SimpleNamespace(id_badan_usaha="BU-0001"),
+        SimpleNamespace(periode_bulan="2025-01"),
+    ).model_dump()
+    result.update(period_month="2026-12", target_period="2027-01")
+    assert ExperimentalResult(**result).target_period == "2027-01"
+
+
+@pytest.mark.parametrize(
+    "updates",
+    [
+        {"status": "ABSTAIN", "reason_code": "INCOMPLETE_INPUT"},
+        {"reason_code": "INCOMPLETE_INPUT"},
+    ],
+    ids=["abstention-cannot-contain-score", "success-cannot-carry-abstention-reason"],
+)
+def test_result_status_cannot_contradict_its_payload(updates):
+    from pydantic import ValidationError
+
+    result = success_result(
+        None,
+        ModelService({}, "synthetic-test", "TestModel"),
+        SimpleNamespace(id_badan_usaha="BU-0001"),
+        SimpleNamespace(periode_bulan="2025-01"),
+    ).model_dump()
+    result.update(updates)
+    with pytest.raises(ValidationError):
+        ExperimentalResult(**result)

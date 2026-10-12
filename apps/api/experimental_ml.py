@@ -10,10 +10,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, field_validator, model_validator
 
 from packages.data.snapshot import Snapshot
-from packages.domain.read_models import Company, MonthlyEvidence, ReadModel
+from packages.domain.read_models import Company, MonthlyEvidence, Period, ReadModel
 
 FILE_PREFIX = "data/synthetic/curated/"
 
@@ -21,8 +21,8 @@ FILE_PREFIX = "data/synthetic/curated/"
 class ExperimentalResult(ReadModel):
     status: Literal["EXPERIMENTAL_SYNTHETIC", "ABSTAIN"]
     id_badan_usaha: str
-    period_month: str
-    target_period: str | None
+    period_month: Period
+    target_period: Period | None
     model_version: str
     model_name: str
     score: float | None = Field(ge=0, le=1, allow_inf_nan=False)
@@ -32,6 +32,30 @@ class ExperimentalResult(ReadModel):
     is_synthetic: Literal[True] = True
     policy_status: Literal["UNRESOLVED"] = "UNRESOLVED"
     reason_code: Literal["EVIDENCE_NOT_VALIDATED", "INCOMPLETE_INPUT"] | None = None
+
+    @field_validator("experimental_prediction", mode="before")
+    @classmethod
+    def require_binary_integer(cls, value):
+        if value is not None and type(value) is not int:
+            raise ValueError("Prediction must be an integer, not a coerced boolean or float")
+        return value
+
+    @model_validator(mode="after")
+    def validate_result_consistency(self):
+        values = (self.score, self.threshold, self.experimental_prediction, self.target_period)
+        if self.status == "ABSTAIN":
+            if self.reason_code is None or any(value is not None for value in values):
+                raise ValueError("Abstention requires a reason and no scored values")
+            return self
+        if self.reason_code is not None or any(value is None for value in values):
+            raise ValueError("Successful inference requires all scored values and no reason")
+        year, month = map(int, self.period_month.split("-"))
+        expected_target = f"{year + (month == 12):04d}-{month % 12 + 1:02d}"
+        if self.target_period != expected_target:
+            raise ValueError("Target must be exactly the next calendar month")
+        if self.experimental_prediction != int(self.score >= self.threshold):
+            raise ValueError("Prediction contradicts score and threshold")
+        return self
 
 
 @dataclass(frozen=True)
@@ -138,12 +162,14 @@ def assess(
         raise InferenceUnavailable("Model calculation failed") from exc
 
     if (
-        prediction.get("status") != "EXPERIMENTAL_SYNTHETIC"
+        not isinstance(prediction, dict)
+        or prediction.get("status") != "EXPERIMENTAL_SYNTHETIC"
         or prediction.get("policy_status") != "UNRESOLVED"
         or prediction.get("is_synthetic") is not True
         or prediction.get("period_month") != evidence.periode_bulan
         or prediction.get("model_version") != service.model_version
         or prediction.get("model_name") != service.model_name
+        or prediction.get("threshold") != service.bundle["threshold"]
     ):
         raise InferenceUnavailable("Model response contract mismatch")
     try:

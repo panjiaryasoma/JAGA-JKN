@@ -31,7 +31,9 @@ The pinned model forecasts the *simulator's* next-month `NON-NORMAL` class. Its 
 
 Response envelope `{data: {...}, meta: DatasetRef}` (no mutation and no side effects). For an eligible input, `data` includes `status: EXPERIMENTAL_SYNTHETIC`, `id_badan_usaha`, `period_month`, `target_period`, `model_version`, `model_name`, `score`, `score_semantics: uncalibrated_synthetic_non_normal_score`, `threshold`, `experimental_prediction`, `is_synthetic: true`, `policy_status: UNRESOLVED`. Fields have strict JSON types and finite numeric ranges. `target_period` is precisely one calendar month after evidence; it is *not* a claim of point-in-time operational availability.
 
-When evidence cannot support the full feature vector, respond with `status: ABSTAIN`, a finite enumerated `reason_code`, `score: null` and `experimental_prediction: null`. Do not convert missing/unknown data into zero or "low risk". Invalid, non-synthetic, or mismatched model/dataset provenance is never scored.
+A successful result requires non-null score, threshold, binary integer prediction and target month, with no abstention reason. The threshold must equal the loaded bundle's threshold; the decision must be exactly `int(score >= threshold)`, including equality. Boolean or float predictions are not accepted as binary integers. Any missing or contradictory scorer output yields sanitized `503 ML_INFERENCE_UNAVAILABLE`, including an incorrect target month.
+
+When evidence cannot support the full feature vector, respond with `status: ABSTAIN`, a required enumerated `reason_code`, and null score, threshold, prediction and target month. Do not convert missing/unknown data into zero or "low risk". Invalid, non-synthetic, or mismatched model/dataset provenance is never scored.
 
 `GET /api/v1/ml/status` keeps operational `status: NOT_CONFIGURED` and reports an **independent** experiment readiness state, e.g. `DISABLED`, `UNAVAILABLE`, or `READY`. Readiness of ordinary evidence/workflow services must not claim ML availability.
 
@@ -49,8 +51,8 @@ Error requirements: unauthenticated 401 or auth not configured 503; invalid iden
 | INF-006 | Score is constrained to [0,1], described as uncalibrated simulator score, and cannot mutate cases. |
 | INF-007 | Predict endpoint is authenticated, exposes no personal identifiers, raw simulator labels, or policy decisions. |
 | INF-008 | Disabled model and model errors do not block snapshot, dashboard, or case-review endpoints. |
-| INF-009 | Automated contract tests cover enabled success, abstain, role/auth, absent artifact, version/provenance mismatch, and score failure. |
-| INF-010 | Real-HTTP smoke and pinned CI verify existing backend + ML regressions before integration is accepted. |
+| INF-009 | Automated contract tests cover enabled success, abstain, role/auth, absent artifact, version/provenance mismatch, score failure and cross-field consistency, including threshold equality and next-year targets. |
+| INF-010 | Real-HTTP smoke and pinned CI verify existing backend + ML regressions before integration is accepted. Serving, data/manifest, domain-model and backend-test changes trigger trained-model CI; a missing model fails that job rather than skipping integration. |
 
 ## Dependencies / gates
 
