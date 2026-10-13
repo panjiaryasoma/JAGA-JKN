@@ -1,0 +1,92 @@
+﻿nomor,nama_kolom,klasifikasi,langsung_sebagai_fitur,perlu_persetujuan,panduan
+0,id_badan_usaha,KUNCI_GABUNG_BUKAN_FITUR,TIDAK,TIDAK,Untuk penggabungan data, pemisahan perusahaan, atau penentuan batas waktu prediksi; jangan digunakan langsung sebagai fitur model."
+1,periode_bulan,KUNCI_GABUNG_BUKAN_FITUR,TIDAK,TIDAK,Untuk penggabungan data, pemisahan perusahaan, atau penentuan batas waktu prediksi; jangan digunakan langsung sebagai fitur model."
+2,source_record_id,KUNCI_GABUNG_BUKAN_FITUR,TIDAK,TIDAK,Untuk penggabungan data, pemisahan perusahaan, atau penentuan batas waktu prediksi; jangan digunakan langsung sebagai fitur model."
+3,reference_worker_count,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+4,observed_registered_worker_count,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+5,missing_worker_count,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+6,unexpected_worker_count,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+7,missing_worker_ids_json,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Memuat daftar pengenal pekerja; hanya untuk penelusuran, jangan dijadikan fitur model."
+8,unexpected_worker_ids_json,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Memuat daftar pengenal pekerja; hanya untuk penelusuran, jangan dijadikan fitur model."
+9,registration_discrepancy_detected,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+10,registration_evidence_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+11,registration_evidence_quality,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+12,registration_evidence_reasons,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+13,registration_source_metadata_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+14,registration_period_binding_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+15,registration_source_ids_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+16,registration_source_periods_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+17,registration_worker_set_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+18,registration_worker_set_error,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+19,registration_explanation_metadata_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+20,registration_explanation_reason,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+21,registration_rule_id,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+22,registration_rule_result,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+23,registration_rule_reason,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+24,registration_review_state,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+25,registration_review_reason,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+26,registration_lineage,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+27,reference_wage_signal_rp,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+28,observed_wage_signal_rp,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+29,wage_discrepancy_signal_rp,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+30,wage_discrepancy_detected,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+31,wage_evidence_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+32,wage_evidence_quality,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+33,wage_evidence_reasons,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+34,wage_source_metadata_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+35,wage_period_binding_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+36,wage_source_ids_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+37,wage_source_periods_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+38,wage_semantic_consistency_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+39,wage_rule_id,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+40,wage_rule_result,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+41,wage_rule_reason,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+42,wage_review_state,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+43,wage_review_reason,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+44,wage_lineage,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+45,observed_payment_state,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+46,validated_payment_state,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+47,contribution_payment_gap_observed,OBSERVASI_BERSYARAT,TIDAK,YA,Calon fitur hanya jika tersedia saat prediksi, asal bukti jelas, bebas kebocoran label, dan sesuai daftar fitur yang disetujui."
+48,contribution_evidence_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+49,contribution_evidence_quality,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+50,contribution_evidence_reasons,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+51,contribution_source_metadata_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+52,contribution_period_binding_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+53,contribution_source_ids_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+54,contribution_source_periods_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+55,payment_semantic_consistency_valid,KUALITAS_BUKTI_BERSYARAT,TIDAK,YA,Calon fitur bersyarat jika kualitas atau validitas bukti sudah diketahui saat prediksi dan tidak mengungkap label.
+56,payment_evidence_reason,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+57,contribution_rule_id,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+58,contribution_rule_result,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+59,contribution_rule_reason,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+60,contribution_review_state,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+61,contribution_review_reason,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+62,contribution_lineage,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+63,overall_review_state,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+64,human_review_recommendation,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Hasil penilaian aturan atau proses peninjauan yang terjadi setelah observasi; tidak boleh digunakan sebagai fitur prediksi.
+65,observed_discrepancy_types,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Ringkasan jenis selisih yang diturunkan dari hasil pemeriksaan; berisiko membocorkan label.
+66,estimated_exposure_synthetic_rp,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Estimasi nilai sintetis bukan kerugian empiris dan dilarang sebagai dasar penentuan kepatuhan atau fitur keputusan.
+67,exposure_decision_role,DILARANG_SEBAGAI_FITUR,TIDAK,TIDAK,Estimasi nilai sintetis bukan kerugian empiris dan dilarang sebagai dasar penentuan kepatuhan atau fitur keputusan.
+68,synthetic_risk_mode_ground_truth,KANDIDAT_LABEL_SAJA,TIDAK,YA,Calon label simulasi (y), bukan fitur (X). Belum disahkan; perlu audit kebocoran label dan rumusan tujuan prediksi."
+69,is_synthetic,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+70,registration_authority_authorized,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+71,registration_authority_id,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+72,registration_rule_version,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+73,registration_applicable_period_verified,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+74,registration_authority_effective_from,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+75,registration_authority_effective_to,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+76,registration_authority_source_ids_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+77,wage_authority_authorized,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+78,wage_authority_id,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+79,wage_rule_version,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+80,wage_applicable_period_verified,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+81,wage_authority_effective_from,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+82,wage_authority_effective_to,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+83,wage_authority_source_ids_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+84,contribution_authority_authorized,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+85,contribution_authority_id,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+86,contribution_rule_version,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+87,contribution_applicable_period_verified,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+88,contribution_authority_effective_from,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+89,contribution_authority_effective_to,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."
+90,contribution_authority_source_ids_json,METADATA_PENELUSURAN_SAJA,TIDAK,TIDAK,Hanya untuk penelusuran sumber, kualitas pengelolaan, alasan pemeriksaan, atau asal data simulasi; jangan masukkan ke fitur model."

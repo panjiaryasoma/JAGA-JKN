@@ -1,136 +1,199 @@
-// =============================================================================
-// DAX MEASURES - SISTEM INTELIJEN KEPATUHAN PEMBERI KERJA (ECIS) BPJS KESEHATAN
-// Versi: 2.1.0-Enterprise
-// Salin rumus berikut ke dalam Power BI Desktop (Model view / Table Tools > New Measure)
-// =============================================================================
+// ==============================================================================
+// JAGA-JKN: DAX MEASURES (CANONICAL REBIND & COMPLIANCE INTELLIGENCE)
+// Divalidasi terhadap dataset kanonis powerbi/data/ dan aturan tata kelola
+// ==============================================================================
 
-// -----------------------------------------------------------------------------
-// 1. KPI UTAMA KETENAGAKERJAAN & KEPESERTAAN
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// 1. VOLUME OBSERVASI & ENTITAS TERPANTAU
+// ------------------------------------------------------------------------------
 
-Total Tenaga Kerja Seharusnya = 
-SUM(Fact_Kepatuhan_Bulanan[jumlah_pekerja_seharusnya])
+Total Entitas Terpantau = 
+DISTINCTCOUNT(Dim_Badan_Usaha[id_badan_usaha])
 
-Total Tenaga Kerja Terdaftar = 
-SUM(Fact_Kepatuhan_Bulanan[jumlah_pekerja_terdaftar_jkn])
+Total Observasi Bulanan = 
+COUNTROWS(Fact_Risk_Evidence)
 
-Total Selisih Pekerja (Gap Naker) = 
-SUM(Fact_Kepatuhan_Bulanan[selisih_pekerja])
+// ------------------------------------------------------------------------------
+// 2. DISKREPANSI FAKTUAL TERAMATI (OBSERVED DISCREPANCIES)
+// Catatan: Ini adalah observasi sinyal fisik/administratif, bukan vonis pelanggaran hukum.
+// ------------------------------------------------------------------------------
 
-Rata-rata Rasio Kepatuhan Kepesertaan = 
-DIVIDE([Total Tenaga Kerja Terdaftar], [Total Tenaga Kerja Seharusnya], 1.0)
-
-Persentase Gap Naker = 
-DIVIDE([Total Selisih Pekerja (Gap Naker)], [Total Tenaga Kerja Seharusnya], 0.0)
-
-// -----------------------------------------------------------------------------
-// 2. METRIK FINANSIAL & IURAN JKN (PERPRES 64/2020)
-// -----------------------------------------------------------------------------
-
-Total Iuran Seharusnya = 
-SUM(Fact_Kepatuhan_Bulanan[iuran_seharusnya_rp])
-
-Total Iuran Tertagih Edabu = 
-SUM(Fact_Kepatuhan_Bulanan[iuran_tertagih_edabu_rp])
-
-Total Iuran Terbayar Riil = 
-SUM(Fact_Kepatuhan_Bulanan[iuran_terbayar_rp])
-
-Total Potensi Kerugian Iuran (Kebocoran Finansial) = 
-SUM(Fact_Kepatuhan_Bulanan[selisih_iuran_potensial_rp])
-
-Rasio Kolektibilitas Iuran = 
-DIVIDE([Total Iuran Terbayar Riil], [Total Iuran Seharusnya], 0.0)
-
-Total Denda Keterlambatan = 
-SUM(Fact_Kepatuhan_Bulanan[denda_keterlambatan_rp])
-
-// -----------------------------------------------------------------------------
-// 3. METRIK WASRIK & PENEGAKAN HUKUM (PP 86/2013)
-// -----------------------------------------------------------------------------
-
-Total Kasus Perkara Dikelola = 
-COUNTROWS(Fact_Intervensi_Wasrik)
-
-Total Kasus Aktif Berjalan = 
+Kasus Diskrepansi Kepesertaan = 
 CALCULATE(
-    COUNTROWS(Fact_Intervensi_Wasrik),
-    NOT(CONTAINSSTRING(Fact_Intervensi_Wasrik[hasil_resolusi_kasus], "Tuntas"))
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[registration_discrepancy_detected] = TRUE()
 )
 
-Total Kasus Selesai Tuntas = 
-CALCULATE(
-    COUNTROWS(Fact_Intervensi_Wasrik),
-    CONTAINSSTRING(Fact_Intervensi_Wasrik[hasil_resolusi_kasus], "Tuntas")
+Rasio Diskrepansi Kepesertaan = 
+DIVIDE(
+    [Kasus Diskrepansi Kepesertaan],
+    [Total Observasi Bulanan],
+    0
 )
 
-Persentase Tingkat Penyelesaian Kasus = 
-DIVIDE([Total Kasus Selesai Tuntas], [Total Kasus Perkara Dikelola], 0.0)
-
-Rata-rata Durasi Penyelesaian (Hari) = 
-AVERAGE(Fact_Intervensi_Wasrik[waktu_penyelesaian_hari])
-
-Total Potensi Iuran Berisiko Wasrik = 
-SUM(Fact_Intervensi_Wasrik[total_potensi_iuran_hilang_rp])
-
-Total Iuran Berhasil Dipulihkan = 
-SUM(Fact_Intervensi_Wasrik[nominal_iuran_terpulihkan_rp])
-
-Recovery Rate Penerimaan Wasrik = 
-DIVIDE([Total Iuran Berhasil Dipulihkan], [Total Potensi Iuran Berisiko Wasrik], 0.0)
-
-// -----------------------------------------------------------------------------
-// 4. METRIK HUMAN-IN-THE-LOOP & RESIDIVISME
-// -----------------------------------------------------------------------------
-
-Total Kasus Sesuai Rekomendasi AI = 
+Kasus Diskrepansi Upah = 
 CALCULATE(
-    COUNTROWS(Fact_Intervensi_Wasrik),
-    Fact_Intervensi_Wasrik[kesesuaian_rekomendasi_petugas] = "Sesuai Rekomendasi Sistem"
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[wage_discrepancy_detected] = TRUE()
 )
 
-Tingkat Persetujuan Petugas (AI Agreement Rate) = 
-DIVIDE([Total Kasus Sesuai Rekomendasi AI], [Total Kasus Perkara Dikelola], 0.0)
-
-Total Kasus Diskresi Petugas = 
-CALCULATE(
-    COUNTROWS(Fact_Intervensi_Wasrik),
-    Fact_Intervensi_Wasrik[kesesuaian_rekomendasi_petugas] = "Diskresi / Penyesuaian Petugas"
+Rasio Diskrepansi Upah = 
+DIVIDE(
+    [Kasus Diskrepansi Upah],
+    [Total Observasi Bulanan],
+    0
 )
 
-Total Kasus Residivis (Masalah Berulang) = 
+Kasus Gap Pembayaran Iuran = 
 CALCULATE(
-    COUNTROWS(Fact_Intervensi_Wasrik),
-    Fact_Intervensi_Wasrik[flag_residivis] = 1
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[contribution_payment_gap_observed] = TRUE()
 )
 
-Rasio Residivisme = 
-DIVIDE([Total Kasus Residivis (Masalah Berulang)], [Total Kasus Perkara Dikelola], 0.0)
+Rasio Gap Pembayaran Iuran = 
+DIVIDE(
+    [Kasus Gap Pembayaran Iuran],
+    [Total Observasi Bulanan],
+    0
+)
 
-// -----------------------------------------------------------------------------
-// 5. STATUS KARTU DINAMIS & FORMATTING DAX
-// -----------------------------------------------------------------------------
+Kasus Terindikasi Diskrepansi = 
+CALCULATE(
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[registration_discrepancy_detected] = TRUE() ||
+    Fact_Risk_Evidence[wage_discrepancy_detected] = TRUE() ||
+    Fact_Risk_Evidence[contribution_payment_gap_observed] = TRUE()
+)
 
-Status Ringkasan Kepatuhan = 
-VAR Rasio = [Rata-rata Rasio Kepatuhan Kepesertaan]
-RETURN
-    SWITCH(
-        TRUE(),
-        Rasio >= 0.95, "Tingkat Kepatuhan Sangat Baik (>= 95%)",
-        Rasio >= 0.85, "Tingkat Kepatuhan Cukup (85% - 94%)",
-        Rasio >= 0.70, "Peringatan: Kepatuhan Menurun (70% - 84%)",
-        "Kritis: Desinkronisasi Berat (< 70%)"
-    )
+Rasio Entitas Terindikasi = 
+DIVIDE(
+    [Kasus Terindikasi Diskrepansi],
+    [Total Observasi Bulanan],
+    0
+)
 
-Warna Indikator Urgensi = 
-VAR Urgensi = SELECTEDVALUE(Fact_Kepatuhan_Bulanan[tingkat_urgensi_sistem])
-RETURN
-    SWITCH(
-        Urgensi,
-        "Normal", "#008B45",    // Hijau BPJS
-        "Rendah", "#1E88E5",    // Biru Muda
-        "Sedang", "#FFA000",    // Oranye Amber
-        "Tinggi", "#E53935",    // Merah Terang
-        "Kritis", "#B71C1C",    // Merah Tua Gelap
-        "#546E7A"               // Default Abu-abu
-    )
+// ------------------------------------------------------------------------------
+// 3. KUALITAS BUKTI & PEMISAHAN KASUS (EVIDENCE QUALITY TRIAGE)
+// Membedakan mana kasus dengan bukti kuat vs mana yang belum cukup bukti
+// ------------------------------------------------------------------------------
+
+Diskrepansi Kepesertaan Bukti Kuat (HIGH) = 
+CALCULATE(
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[registration_discrepancy_detected] = TRUE(),
+    Fact_Risk_Evidence[registration_evidence_quality] = "HIGH"
+)
+
+Diskrepansi Kepesertaan Bukti Sedang (MEDIUM) = 
+CALCULATE(
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[registration_discrepancy_detected] = TRUE(),
+    Fact_Risk_Evidence[registration_evidence_quality] = "MEDIUM"
+)
+
+Diskrepansi Kepesertaan Bukti Lemah (LOW) = 
+CALCULATE(
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[registration_discrepancy_detected] = TRUE(),
+    Fact_Risk_Evidence[registration_evidence_quality] = "LOW"
+)
+
+Kasus Butuh Pengayaan Bukti = 
+CALCULATE(
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[registration_discrepancy_detected] = TRUE(),
+    Fact_Risk_Evidence[registration_evidence_quality] IN {"MEDIUM", "LOW"}
+)
+
+Proporsi Kasus Siap Telaah Petugas = 
+DIVIDE(
+    [Diskrepansi Kepesertaan Bukti Kuat (HIGH)],
+    [Kasus Diskrepansi Kepesertaan],
+    0
+)
+
+// ------------------------------------------------------------------------------
+// 4. TRANSPARANSI TATA KELOLA & REGULASI (GOVERNANCE TRANSPARENCY)
+// Kebijakan fail-closed: Abstain jika dasar aturan B1/B2 belum disahkan
+// ------------------------------------------------------------------------------
+
+Kasus Diblokir Tata Kelola = 
+CALCULATE(
+    COUNTROWS(Fact_Risk_Evidence),
+    Fact_Risk_Evidence[flag_governance_blocked] = 1
+)
+
+Status Otoritas Regulasi = 
+"ABSTAIN - Kewenangan Regulasi B1/B2 Belum Disahkan (Fail-Closed)"
+
+Status Prior Sektor = 
+"NO_EMPIRICAL_PRIOR__DO_NOT_INFER_SIGNAL_FROM_SECTOR_ALONE"
+
+// ------------------------------------------------------------------------------
+// 5. ESTIMASI PAPARAN FINANSIAL SINTETIS (EXPOSURE ESTIMATE)
+// Catatan: Estimasi simulasi, bukan kerugian empiris yang diputuskan hukum
+// ------------------------------------------------------------------------------
+
+Total Estimasi Paparan Sintetis (Rp) = 
+SUM(Fact_Risk_Evidence[estimated_exposure_synthetic_rp])
+
+Rata-rata Paparan per Kasus Diskrepansi = 
+DIVIDE(
+    [Total Estimasi Paparan Sintetis (Rp)],
+    [Kasus Terindikasi Diskrepansi],
+    0
+)
+
+Keterangan Paparan Finansial = 
+"SIMULATED_ESTIMATE__NOT_EMPIRICAL_LOSS__NOT_FOR_DECISION"
+
+// ------------------------------------------------------------------------------
+// 6. LOG TINJAUAN PETUGAS (HUMAN-IN-THE-LOOP AUDIT TRAIL)
+// Dari Fact_Human_Review_Synthetic
+// ------------------------------------------------------------------------------
+
+Total Kasus Ditinjau Petugas = 
+COUNTROWS(Fact_Human_Review_Synthetic)
+
+Tinjauan Dikonfirmasi Petugas = 
+CALCULATE(
+    COUNTROWS(Fact_Human_Review_Synthetic),
+    Fact_Human_Review_Synthetic[human_review_outcome_synthetic] = "REVIEW_CONFIRMED"
+)
+
+Tinjauan Butuh Bukti Tambahan = 
+CALCULATE(
+    COUNTROWS(Fact_Human_Review_Synthetic),
+    Fact_Human_Review_Synthetic[human_review_outcome_synthetic] = "REQUEST_MORE_EVIDENCE"
+)
+
+Tinjauan Tanpa Tindakan Lanjut = 
+CALCULATE(
+    COUNTROWS(Fact_Human_Review_Synthetic),
+    Fact_Human_Review_Synthetic[human_review_outcome_synthetic] = "NO_ACTION_AFTER_REVIEW"
+)
+
+Tingkat Konfirmasi Petugas = 
+DIVIDE(
+    [Tinjauan Dikonfirmasi Petugas],
+    [Total Kasus Ditinjau Petugas],
+    0
+)
+
+Kasus Resolusi Selesai (Resolved) = 
+CALCULATE(
+    COUNTROWS(Fact_Human_Review_Synthetic),
+    Fact_Human_Review_Synthetic[simulated_resolution_state] = "RESOLVED_SYNTHETIC"
+)
+
+Kasus Sedang Monitoring = 
+CALCULATE(
+    COUNTROWS(Fact_Human_Review_Synthetic),
+    Fact_Human_Review_Synthetic[simulated_resolution_state] = "MONITORING"
+)
+
+Kasus Terbuka (Open) = 
+CALCULATE(
+    COUNTROWS(Fact_Human_Review_Synthetic),
+    Fact_Human_Review_Synthetic[simulated_resolution_state] = "OPEN"
+)

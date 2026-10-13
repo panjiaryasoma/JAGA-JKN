@@ -1,149 +1,151 @@
-// =============================================================================
-// POWER QUERY (M) SCRIPTS - ADVANCED EDITOR
-// SISTEM INTELIJEN KEPATUHAN PEMBERI KERJA (ECIS) BPJS KESEHATAN
-// Buka Advanced Editor pada masing-masing tabel dan ganti seluruh teksnya.
-// =============================================================================
+// ==============================================================================
+// JAGA-JKN: POWER QUERY M SCRIPTS (CANONICAL REBIND)
+// Sesuai dengan Kontrak Data powerbi/data/ dan parameter DataRoot
+// ==============================================================================
 
-// -----------------------------------------------------------------------------
-// 1. QUERY: Dim_Badan_Usaha
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// PARAMETER: DataRoot
+// Atur nilai DataRoot pada menu Home -> Manage Parameters di Power BI Desktop.
+// Contoh path lokal: "C:/Users/linta/OneDrive/Documents/Hackathon BPJS/Dataset/JAGA-JKN/powerbi/data"
+// Tanpa tanda garis miring (slash) di akhir.
+// ------------------------------------------------------------------------------
 let
-    Source = Csv.Document(File.Contents("C:\Users\linta\OneDrive\Documents\Hackathon BPJS\Dataset\powerbi\data\Dim_Badan_Usaha.csv"),[Delimiter=",", Columns=17, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+    DataRoot = "C:/Users/linta/OneDrive/Documents/Hackathon BPJS/Dataset/JAGA-JKN/powerbi/data" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+in
+    DataRoot
+
+// ------------------------------------------------------------------------------
+// TABEL DIMENSI 1: Dim_Badan_Usaha
+// ------------------------------------------------------------------------------
+let
+    Source = Csv.Document(File.Contents(DataRoot & "/Dim_Badan_Usaha.csv"),[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
     #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{
         {"id_badan_usaha", type text},
-        {"nama_badan_usaha", type text},
+        {"nama_badan_usaha_terstandarisasi", type text},
         {"bentuk_badan_hukum", type text},
         {"kode_kbli", type text},
         {"sektor_industri", type text},
         {"skala_usaha", type text},
         {"provinsi", type text},
         {"kantor_cabang_bpjs", type text},
-        {"kode_kantor_cabang", type text},
-        {"ump_provinsi_2026", type number},
-        {"tanggal_registrasi_bpjs", type date},
-        {"nomor_va_bpjs", type text},
-        {"nama_pic_hrd", type text},
-        {"profil_kepatuhan_dasar", type text},
-        {"baseline_tenaga_kerja", Int64.Type},
-        {"baseline_upah_riil", type number},
+        {"synthetic_assumption_version", type text},
         {"urutan_skala_usaha", Int64.Type}
     })
 in
     #"Changed Type"
 
-
-// -----------------------------------------------------------------------------
-// 2. QUERY: Dim_Kalender
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// TABEL DIMENSI 2: Dim_Kalender
+// ------------------------------------------------------------------------------
 let
-    Source = Csv.Document(File.Contents("C:\Users\linta\OneDrive\Documents\Hackathon BPJS\Dataset\powerbi\data\Dim_Kalender.csv"),[Delimiter=",", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+    Source = Csv.Document(File.Contents(DataRoot & "/Dim_Kalender.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
     #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{
         {"Tanggal", type date},
         {"Tahun", Int64.Type},
         {"Nomor_Bulan", Int64.Type},
-        {"Nama_Bulan", type text},
-        {"Nama_Bulan_Singkat", type text},
         {"Tahun_Bulan", type text},
-        {"Kuartal", type text},
-        {"Tahun_Kuartal", type text},
-        {"Hari_Ke_Minggu", Int64.Type},
-        {"Hari_Nama", type text},
         {"Urutan_Tahun_Bulan", Int64.Type},
         {"Tanggal_Awal_Bulan", type date}
     })
 in
     #"Changed Type"
 
-
-// -----------------------------------------------------------------------------
-// 3. QUERY: Dim_Sektor_KBLI
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// TABEL DIMENSI 3: Dim_Sektor_KBLI
+// ------------------------------------------------------------------------------
 let
-    Source = Csv.Document(File.Contents("C:\Users\linta\OneDrive\Documents\Hackathon BPJS\Dataset\powerbi\data\Dim_Sektor_KBLI.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+    Source = Csv.Document(File.Contents(DataRoot & "/Dim_Sektor_KBLI.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
     #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{
         {"kode_kbli", type text},
         {"sektor_industri", type text},
-        {"kategori_profil_risiko", type text}
+        {"sector_prior_status", type text}
     })
 in
     #"Changed Type"
 
-
-// -----------------------------------------------------------------------------
-// 4. QUERY: Fact_Kepatuhan_Bulanan
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// TABEL FAKTA 1: Fact_Risk_Evidence (Observasi Risiko, Bukti, dan Status Regulasi)
+// ------------------------------------------------------------------------------
 let
-    Source = Csv.Document(File.Contents("C:\Users\linta\OneDrive\Documents\Hackathon BPJS\Dataset\powerbi\data\Fact_Kepatuhan_Bulanan.csv"),[Delimiter=",", Columns=28, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+    Source = Csv.Document(File.Contents(DataRoot & "/Fact_Risk_Evidence.csv"),[Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
     #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{
         {"id_badan_usaha", type text},
         {"periode_bulan", type text},
-        {"jumlah_pekerja_seharusnya", Int64.Type},
-        {"jumlah_pekerja_terdaftar_jkn", Int64.Type},
-        {"selisih_pekerja", Int64.Type},
-        {"rasio_kepatuhan_kepesertaan_pct", type number},
-        {"rata_rata_upah_seharusnya_rp", type number},
-        {"rata_rata_upah_dilaporkan_rp", type number},
-        {"selisih_upah_per_pekerja_rp", type number},
-        {"rasio_pelaporan_upah_pct", type number},
-        {"iuran_seharusnya_rp", type number},
-        {"iuran_tertagih_edabu_rp", type number},
-        {"iuran_terbayar_rp", type number},
-        {"selisih_iuran_potensial_rp", type number},
-        {"status_pembayaran_iuran", type text},
-        {"hari_keterlambatan_bayar", Int64.Type},
-        {"denda_keterlambatan_rp", type number},
-        {"kategori_indikasi_masalah", type text},
-        {"durasi_masalah_berjalan_bulan", Int64.Type},
-        {"tren_perkembangan_gap", type text},
-        {"tingkat_urgensi_sistem", type text},
-        {"rekomendasi_tindakan_otomatis", type text},
         {"tanggal_evaluasi", type date},
-        {"urutan_tingkat_urgensi", Int64.Type},
-        {"flag_anomali_naker", Int64.Type},
-        {"flag_anomali_upah", Int64.Type},
-        {"flag_menunggak", Int64.Type},
-        {"flag_bermasalah_aktif", Int64.Type}
+        {"registration_discrepancy_detected", type logical},
+        {"registration_rule_result", type text},
+        {"registration_rule_reason", type text},
+        {"registration_review_state", type text},
+        {"registration_review_reason", type text},
+        {"registration_evidence_quality", type text},
+        {"registration_evidence_valid", type logical},
+        {"registration_rule_id", type text},
+        {"registration_authority_authorized", type logical},
+        {"registration_authority_id", type text},
+        {"registration_rule_version", type text},
+        {"registration_applicable_period_verified", type logical},
+        {"wage_discrepancy_detected", type logical},
+        {"wage_rule_result", type text},
+        {"wage_rule_reason", type text},
+        {"wage_review_state", type text},
+        {"wage_review_reason", type text},
+        {"wage_evidence_quality", type text},
+        {"wage_evidence_valid", type logical},
+        {"wage_rule_id", type text},
+        {"wage_authority_authorized", type logical},
+        {"wage_authority_id", type text},
+        {"wage_rule_version", type text},
+        {"wage_applicable_period_verified", type logical},
+        {"contribution_payment_gap_observed", type logical},
+        {"contribution_rule_result", type text},
+        {"contribution_rule_reason", type text},
+        {"contribution_review_state", type text},
+        {"contribution_review_reason", type text},
+        {"contribution_evidence_quality", type text},
+        {"contribution_evidence_valid", type logical},
+        {"contribution_rule_id", type text},
+        {"contribution_authority_authorized", type logical},
+        {"contribution_authority_id", type text},
+        {"contribution_rule_version", type text},
+        {"contribution_applicable_period_verified", type logical},
+        {"overall_review_state", type text},
+        {"human_review_recommendation", type text},
+        {"observed_discrepancy_types", type text},
+        {"estimated_exposure_synthetic_rp", Int64.Type},
+        {"exposure_decision_role", type text},
+        {"is_synthetic", type logical},
+        {"flag_reviewable", Int64.Type},
+        {"flag_needs_enrichment", Int64.Type},
+        {"flag_abstain", Int64.Type},
+        {"flag_governance_blocked", Int64.Type},
+        {"flag_needs_human_attention", Int64.Type},
+        {"exposure_label", type text},
+        {"presentation_contract", type text}
     })
 in
     #"Changed Type"
 
-
-// -----------------------------------------------------------------------------
-// 5. QUERY: Fact_Intervensi_Wasrik
-// -----------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// TABEL FAKTA 2: Fact_Human_Review_Synthetic (Log Audit Tinjauan Petugas)
+// ------------------------------------------------------------------------------
 let
-    Source = Csv.Document(File.Contents("C:\Users\linta\OneDrive\Documents\Hackathon BPJS\Dataset\powerbi\data\Fact_Intervensi_Wasrik.csv"),[Delimiter=",", Columns=25, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+    Source = Csv.Document(File.Contents(DataRoot & "/Fact_Human_Review_Synthetic.csv"),[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
     #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{
-        {"id_kasus", type text},
+        {"id_review", type text},
         {"id_badan_usaha", type text},
-        {"nama_badan_usaha", type text},
-        {"kantor_cabang_bpjs", type text},
-        {"periode_deteksi_kasus", type text},
-        {"periode_intervensi", type text},
-        {"jenis_pelanggaran", type text},
-        {"durasi_sebelum_ditindak_bulan", Int64.Type},
-        {"total_potensi_iuran_hilang_rp", type number},
-        {"skor_urgensi_sistem", type text},
-        {"rekomendasi_tindakan_sistem", type text},
-        {"keputusan_petugas_bpjs", type text},
-        {"nama_petugas_wasrik", type text},
-        {"respon_badan_usaha", type text},
-        {"hasil_resolusi_kasus", type text},
-        {"waktu_penyelesaian_hari", Int64.Type},
-        {"nominal_iuran_terpulihkan_rp", type number},
-        {"status_residivis", type text},
-        {"tanggal_deteksi", type date},
-        {"tanggal_intervensi", type date},
-        {"urutan_tingkat_urgensi", Int64.Type},
-        {"kesesuaian_rekomendasi_petugas", type text},
-        {"flag_residivis", Int64.Type},
-        {"flag_tuntas", Int64.Type},
-        {"rasio_pemulihan_pct", type number}
+        {"periode_review", type text},
+        {"system_recommendation", type text},
+        {"human_review_outcome_synthetic", type text},
+        {"simulated_resolution_state", type text},
+        {"synthetic_outcome_assumption", type logical},
+        {"is_synthetic", type logical},
+        {"tanggal_review", type date},
+        {"outcome_label", type text}
     })
 in
     #"Changed Type"
